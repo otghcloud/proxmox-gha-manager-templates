@@ -1,7 +1,7 @@
 name: Release (shared)
 
 # Reusable version/tag/release logic, ported from github-actions-proxmox-monorepo. Called with a
-# repo-specific tag prefix so releases can be cut independently: core/v0.1.0, templates/v1.2.3, etc.
+# Each repository has independent plain semantic version tags: v0.1.0, v1.2.3, etc.
 
 on:
   workflow_call:

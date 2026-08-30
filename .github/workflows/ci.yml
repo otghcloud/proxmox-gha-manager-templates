@@ -38,7 +38,7 @@ jobs:
           required_fields=(
             id target name description platform os_family os_version
             architecture builder template_path template_json_path packer_file image_name
-            version release_date runner_images_commit default_labels build_stages
+            version release_date runner_images_commit default_labels build_requirements
           )
 
           jq -c '.templates[]' templates.json | while IFS= read -r entry; do
