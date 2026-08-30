@@ -1,0 +1,62 @@
+name: CI templates
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-templates-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate-metadata:
+    name: validate:metadata
+    runs-on: [self-hosted, ubuntu-slim]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+
+      - name: Validate generated artifacts when present
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f templates.json ]]; then
+            echo "No generated template artifact is present yet."
+            exit 0
+          fi
+
+          jq empty templates.json
+
+          required_fields=(
+            id target name description platform os_family os_version
+            architecture builder template_path template_json_path packer_file image_name
+            version release_date runner_images_commit default_labels build_stages
+          )
+
+          jq -c '.templates[]' templates.json | while IFS= read -r entry; do
+            for field in "${required_fields[@]}"; do
+              if ! echo "${entry}" | jq -e --arg field "${field}" 'has($field)' >/dev/null; then
+                id=$(echo "${entry}" | jq -r '.id // "unknown"')
+                echo "Template ${id}: missing required field ${field}" >&2
+                exit 1
+              fi
+            done
+          done
+
+          for template_json in $(find templates -name template.json | sort); do
+            packer_file=$(jq -r '.packer_file' "${template_json}")
+            if [[ ! -f "${packer_file}" ]]; then
+              echo "${template_json}: packer_file '${packer_file}' does not exist" >&2
+              exit 1
+            fi
+          done
+
+          echo "Validated $(jq '.templates | length' templates.json) template metadata entries."

@@ -1,0 +1,58 @@
+name: Release templates
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      bump_override:
+        description: Force a specific semantic version bump.
+        required: true
+        default: auto
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+
+concurrency:
+  group: release-templates
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  version:
+    name: Version and tag
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    permissions:
+      contents: write
+      pull-requests: read
+    uses: ./.github/workflows/release-common.yml
+    with:
+      tag_prefix: templates/v
+      bump_override: ${{ inputs.bump_override || 'auto' }}
+
+  all-checks-passed:
+    name: Release templates / All checks passed
+    runs-on: [self-hosted, ubuntu-slim]
+    permissions: {}
+    needs:
+      - version
+    if: always() && (github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true)
+    steps:
+      - name: Check all jobs passed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ needs.version.result }}" != "success" && "${{ needs.version.result }}" != "skipped" ]]; then
+            echo "One or more required jobs did not succeed."
+            exit 1
+          fi

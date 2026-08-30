@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# Shared
+# ---------------------------------------------------------------------------
+*.bak
+*.log
+.DS_Store
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# ---------------------------------------------------------------------------
+# Secrets - never commit
+# ---------------------------------------------------------------------------
+.env
+**/*.auto.pkrvars.hcl
+**/*_secret*
+
+# Rendered from *.tpl by scripts/build.sh using .env - contain plaintext/hashed passwords
+templates/proxmox/ubuntu/*/http/user-data
+templates/proxmox/windows/*/unattend/autounattend.xml
+templates/qemu/ubuntu/*/http/user-data
+templates/qemu/windows/*/unattend/autounattend.xml
+
+# Release-time generated manifests
+manifests/
+
+# Packer working files
+packer_cache/
+.packer.d/
+templates/**/.cache/
+crash.log
+
+# Build outputs
+output-*/
