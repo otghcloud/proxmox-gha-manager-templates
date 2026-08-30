@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-01-01T00:00:00Z",
-  "image_builder_version": "0.0.0-dev",
+  "generated_at": "2026-08-30T15:02:11Z",
+  "image_builder_version": "0.0.2",
   "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
   "templates": [
     {
@@ -18,70 +18,14 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu-slim",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-slim"
-      ],
-      "build_stages": [
-        {
-          "id": "prepare-image-generation",
-          "name": "Prepare image generation workspace",
-          "marker": "[image-builder:stage:prepare-image-generation]",
-          "description": "Prepare image generation workspace",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-slim-assets",
-          "name": "Upload ubuntu-slim scripts and assets",
-          "marker": "[image-builder:stage:upload-slim-assets]",
-          "description": "Upload ubuntu-slim scripts and assets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "install-slim-toolset",
-          "name": "Install ubuntu-slim toolset",
-          "marker": "[image-builder:stage:install-slim-toolset]",
-          "description": "Install ubuntu-slim toolset",
-          "category": "install",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "install-actions-runner",
-          "name": "Install GitHub Actions runner",
-          "marker": "[image-builder:stage:install-actions-runner]",
-          "description": "Install GitHub Actions runner",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
-          "category": "cleanup",
-          "sequence": 6,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -90,8 +34,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": false,
         "estimated_minutes": 25
-      },
-      "stage_count": 6
+      }
     },
     {
       "id": "ubuntu-24.04-proxmox-x64",
@@ -107,8 +50,8 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu2404",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -117,260 +60,6 @@
         "ubuntu-24.04",
         "ubuntu-latest"
       ],
-      "build_stages": [
-        {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "category": "configure",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "category": "configure",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "category": "configure",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "category": "configure",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "category": "build",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "category": "configure",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "category": "install",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "category": "configure",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "category": "install",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "category": "install",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "category": "configure",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "category": "install",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "category": "reboot",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "category": "configure",
-          "sequence": 25,
-          "required": true
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "category": "build",
-          "sequence": 26,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 27,
-          "required": true
-        },
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "category": "cleanup",
-          "sequence": 28,
-          "required": true
-        }
-      ],
       "build_requirements": {
         "cpu_cores": 6,
         "memory_mb": 8192,
@@ -378,8 +67,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": false,
         "estimated_minutes": 60
-      },
-      "stage_count": 28
+      }
     },
     {
       "id": "ubuntu-26.04-proxmox-x64",
@@ -395,268 +83,14 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu2604",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-26.04"
-      ],
-      "build_stages": [
-        {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "category": "configure",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "category": "configure",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "category": "configure",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "category": "configure",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "category": "build",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "category": "configure",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "category": "install",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "category": "configure",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "category": "install",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "category": "install",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "category": "configure",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "category": "install",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "category": "reboot",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "category": "configure",
-          "sequence": 25,
-          "required": true
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "category": "build",
-          "sequence": 26,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 27,
-          "required": true
-        },
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "category": "cleanup",
-          "sequence": 28,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -665,8 +99,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": false,
         "estimated_minutes": 60
-      },
-      "stage_count": 28
+      }
     },
     {
       "id": "windows-server-2022-proxmox-x64",
@@ -682,241 +115,14 @@
       "template_json_path": "templates/proxmox/windows/windows2022/template.json",
       "packer_file": "templates/proxmox/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-pmx-windows2022",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "windows",
         "x64",
         "windows-2022"
-      ],
-      "build_stages": [
-        {
-          "id": "create-image-and-temp-directories",
-          "name": "Create image and temp directories",
-          "marker": "[image-builder:stage:create-image-and-temp-directories]",
-          "description": "Create image and temp directories",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-upstream-assets-scripts-and-toolsets",
-          "name": "Upload upstream assets, scripts and toolsets",
-          "marker": "[image-builder:stage:upload-upstream-assets-scripts-and-toolsets]",
-          "description": "Upload upstream assets, scripts and toolsets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "rearrange-helper-modules-and-toolset-file",
-          "name": "Rearrange helper modules and toolset file",
-          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
-          "description": "Rearrange helper modules and toolset file",
-          "category": "install",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "create-installer-admin-account-and-enable-winrm-basic-auth",
-          "name": "Create installer admin account and enable WinRM basic auth",
-          "marker": "[image-builder:stage:create-installer-admin-account-and-enable-winrm-basic-auth]",
-          "description": "Create installer admin account and enable WinRM basic auth",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "verify-installer-account-is-a-local-admin",
-          "name": "Verify installer account is a local admin",
-          "marker": "[image-builder:stage:verify-installer-account-is-a-local-admin]",
-          "description": "Verify installer account is a local admin",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "enable-driver-test-signing",
-          "name": "Enable driver test signing",
-          "marker": "[image-builder:stage:enable-driver-test-signing]",
-          "description": "Enable driver test signing",
-          "category": "validate",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "base-image-config-defender-powershell-windows-features-chocolatey",
-          "name": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
-          "marker": "[image-builder:stage:base-image-config-defender-powershell-windows-features-chocolatey]",
-          "description": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-the-containers-feature-to-finish-enabling",
-          "name": "Reboot, waiting for the Containers feature to finish enabling",
-          "marker": "[image-builder:stage:reboot-waiting-for-the-containers-feature-to-finish-enabling]",
-          "description": "Reboot, waiting for the Containers feature to finish enabling",
-          "category": "reboot",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "disable-the-wlan-service",
-          "name": "Disable the WLAN service",
-          "marker": "[image-builder:stage:disable-the-wlan-service]",
-          "description": "Disable the WLAN service",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "install-docker-compose-powershell-core-webpi-and-tortoisesvn",
-          "name": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
-          "marker": "[image-builder:stage:install-docker-compose-powershell-core-webpi-and-tortoisesvn]",
-          "description": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
-          "category": "install",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-docker-install",
-          "name": "Reboot after the Docker install",
-          "marker": "[image-builder:stage:reboot-after-the-docker-install]",
-          "description": "Reboot after the Docker install",
-          "category": "reboot",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "install-visual-studio-and-kubernetes-tools",
-          "name": "Install Visual Studio and Kubernetes tools",
-          "marker": "[image-builder:stage:install-visual-studio-and-kubernetes-tools]",
-          "description": "Install Visual Studio and Kubernetes tools",
-          "category": "install",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "reboot-after-visual-studio",
-          "name": "Reboot after Visual Studio",
-          "marker": "[image-builder:stage:reboot-after-visual-studio]",
-          "description": "Reboot after Visual Studio",
-          "category": "reboot",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli",
-          "name": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "marker": "[image-builder:stage:install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli]",
-          "description": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-the-service-fabric-sdk",
-          "name": "Install the Service Fabric SDK",
-          "marker": "[image-builder:stage:install-the-service-fabric-sdk]",
-          "description": "Install the Service Fabric SDK",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-service-fabric-sdk",
-          "name": "Reboot after the Service Fabric SDK",
-          "marker": "[image-builder:stage:reboot-after-the-service-fabric-sdk]",
-          "description": "Reboot after the Service Fabric SDK",
-          "category": "reboot",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "uninstall-the-bundled-azure-powershell-msi",
-          "name": "Uninstall the bundled Azure PowerShell MSI",
-          "marker": "[image-builder:stage:uninstall-the-bundled-azure-powershell-msi]",
-          "description": "Uninstall the bundled Azure PowerShell MSI",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "windows-updates-shell-and-developer-mode-config-llvm",
-          "name": "Windows Updates, shell and developer mode config, LLVM",
-          "marker": "[image-builder:stage:windows-updates-shell-and-developer-mode-config-llvm]",
-          "description": "Windows Updates, shell and developer mode config, LLVM",
-          "category": "build",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-windows-update-servicing-to-complete",
-          "name": "Reboot, waiting for Windows Update servicing to complete",
-          "marker": "[image-builder:stage:reboot-waiting-for-windows-update-servicing-to-complete]",
-          "description": "Reboot, waiting for Windows Update servicing to complete",
-          "category": "reboot",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "post-reboot-windows-updates-and-cleanup",
-          "name": "Post-reboot Windows Updates and cleanup",
-          "marker": "[image-builder:stage:post-reboot-windows-updates-and-cleanup]",
-          "description": "Post-reboot Windows Updates and cleanup",
-          "category": "reboot",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "native-images-system-and-user-config-post-build-validation",
-          "name": "Native images, system and user config, post-build validation",
-          "marker": "[image-builder:stage:native-images-system-and-user-config-post-build-validation]",
-          "description": "Native images, system and user config, post-build validation",
-          "category": "build",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "final-reboot-before-sysprep",
-          "name": "Final reboot before sysprep",
-          "marker": "[image-builder:stage:final-reboot-before-sysprep]",
-          "description": "Final reboot before sysprep",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "sysprep-generalize-for-the-proxmox-template",
-          "name": "Sysprep generalize for the Proxmox template",
-          "marker": "[image-builder:stage:sysprep-generalize-for-the-proxmox-template]",
-          "description": "Sysprep generalize for the Proxmox template",
-          "category": "build",
-          "sequence": 25,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -925,8 +131,7 @@
         "temp_disk_gb": 50,
         "requires_nested_virtualization": false,
         "estimated_minutes": 240
-      },
-      "stage_count": 25
+      }
     },
     {
       "id": "windows-server-2025-proxmox-x64",
@@ -942,241 +147,14 @@
       "template_json_path": "templates/proxmox/windows/windows2025/template.json",
       "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-pmx-windows2025",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "windows",
         "x64",
         "windows-2025"
-      ],
-      "build_stages": [
-        {
-          "id": "create-image-and-temp-directories",
-          "name": "Create image and temp directories",
-          "marker": "[image-builder:stage:create-image-and-temp-directories]",
-          "description": "Create image and temp directories",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-upstream-assets-scripts-and-toolsets",
-          "name": "Upload upstream assets, scripts and toolsets",
-          "marker": "[image-builder:stage:upload-upstream-assets-scripts-and-toolsets]",
-          "description": "Upload upstream assets, scripts and toolsets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "rearrange-helper-modules-and-toolset-file",
-          "name": "Rearrange helper modules and toolset file",
-          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
-          "description": "Rearrange helper modules and toolset file",
-          "category": "install",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "create-installer-admin-account-and-enable-winrm-basic-auth",
-          "name": "Create installer admin account and enable WinRM basic auth",
-          "marker": "[image-builder:stage:create-installer-admin-account-and-enable-winrm-basic-auth]",
-          "description": "Create installer admin account and enable WinRM basic auth",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "verify-installer-account-is-a-local-admin",
-          "name": "Verify installer account is a local admin",
-          "marker": "[image-builder:stage:verify-installer-account-is-a-local-admin]",
-          "description": "Verify installer account is a local admin",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "enable-driver-test-signing",
-          "name": "Enable driver test signing",
-          "marker": "[image-builder:stage:enable-driver-test-signing]",
-          "description": "Enable driver test signing",
-          "category": "validate",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "base-image-config-defender-powershell-wsl2-windows-features-chocolatey",
-          "name": "Base image config: Defender, PowerShell, WSL2, Windows features, Chocolatey",
-          "marker": "[image-builder:stage:base-image-config-defender-powershell-wsl2-windows-features-chocolatey]",
-          "description": "Base image config: Defender, PowerShell, WSL2, Windows features, Chocolatey",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-the-containers-feature-to-finish-enabling",
-          "name": "Reboot, waiting for the Containers feature to finish enabling",
-          "marker": "[image-builder:stage:reboot-waiting-for-the-containers-feature-to-finish-enabling]",
-          "description": "Reboot, waiting for the Containers feature to finish enabling",
-          "category": "reboot",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "disable-the-wlan-service",
-          "name": "Disable the WLAN service",
-          "marker": "[image-builder:stage:disable-the-wlan-service]",
-          "description": "Disable the WLAN service",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "install-docker-compose-powershell-core-and-webpi",
-          "name": "Install Docker, Compose, PowerShell Core and WebPI",
-          "marker": "[image-builder:stage:install-docker-compose-powershell-core-and-webpi]",
-          "description": "Install Docker, Compose, PowerShell Core and WebPI",
-          "category": "install",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-docker-install",
-          "name": "Reboot after the Docker install",
-          "marker": "[image-builder:stage:reboot-after-the-docker-install]",
-          "description": "Reboot after the Docker install",
-          "category": "reboot",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "install-visual-studio-and-kubernetes-tools",
-          "name": "Install Visual Studio and Kubernetes tools",
-          "marker": "[image-builder:stage:install-visual-studio-and-kubernetes-tools]",
-          "description": "Install Visual Studio and Kubernetes tools",
-          "category": "install",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "reboot-after-visual-studio",
-          "name": "Reboot after Visual Studio",
-          "marker": "[image-builder:stage:reboot-after-visual-studio]",
-          "description": "Reboot after Visual Studio",
-          "category": "reboot",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-wix-vs-extensions-azure-cli-chocolatey-packages-java-kotlin-op",
-          "name": "Install WiX, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "marker": "[image-builder:stage:install-wix-vs-extensions-azure-cli-chocolatey-packages-java-kotlin-op]",
-          "description": "Install WiX, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-the-service-fabric-sdk",
-          "name": "Install the Service Fabric SDK",
-          "marker": "[image-builder:stage:install-the-service-fabric-sdk]",
-          "description": "Install the Service Fabric SDK",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-service-fabric-sdk",
-          "name": "Reboot after the Service Fabric SDK",
-          "marker": "[image-builder:stage:reboot-after-the-service-fabric-sdk]",
-          "description": "Reboot after the Service Fabric SDK",
-          "category": "reboot",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "uninstall-the-bundled-azure-powershell-msi",
-          "name": "Uninstall the bundled Azure PowerShell MSI",
-          "marker": "[image-builder:stage:uninstall-the-bundled-azure-powershell-msi]",
-          "description": "Uninstall the bundled Azure PowerShell MSI",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "postgresql-windows-updates-shell-and-developer-mode-config-llvm",
-          "name": "PostgreSQL, Windows Updates, shell and developer mode config, LLVM",
-          "marker": "[image-builder:stage:postgresql-windows-updates-shell-and-developer-mode-config-llvm]",
-          "description": "PostgreSQL, Windows Updates, shell and developer mode config, LLVM",
-          "category": "build",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-windows-update-servicing-to-complete",
-          "name": "Reboot, waiting for Windows Update servicing to complete",
-          "marker": "[image-builder:stage:reboot-waiting-for-windows-update-servicing-to-complete]",
-          "description": "Reboot, waiting for Windows Update servicing to complete",
-          "category": "reboot",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "post-reboot-windows-updates-and-cleanup",
-          "name": "Post-reboot Windows Updates and cleanup",
-          "marker": "[image-builder:stage:post-reboot-windows-updates-and-cleanup]",
-          "description": "Post-reboot Windows Updates and cleanup",
-          "category": "reboot",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "native-images-system-and-user-config-post-build-validation",
-          "name": "Native images, system and user config, post-build validation",
-          "marker": "[image-builder:stage:native-images-system-and-user-config-post-build-validation]",
-          "description": "Native images, system and user config, post-build validation",
-          "category": "build",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "final-reboot-before-sysprep",
-          "name": "Final reboot before sysprep",
-          "marker": "[image-builder:stage:final-reboot-before-sysprep]",
-          "description": "Final reboot before sysprep",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "sysprep-generalize-for-the-proxmox-template",
-          "name": "Sysprep generalize for the Proxmox template",
-          "marker": "[image-builder:stage:sysprep-generalize-for-the-proxmox-template]",
-          "description": "Sysprep generalize for the Proxmox template",
-          "category": "build",
-          "sequence": 25,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -1185,8 +163,7 @@
         "temp_disk_gb": 50,
         "requires_nested_virtualization": false,
         "estimated_minutes": 240
-      },
-      "stage_count": 25
+      }
     },
     {
       "id": "ubuntu-slim-qemu-x64",
@@ -1202,70 +179,14 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu-slim",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-slim"
-      ],
-      "build_stages": [
-        {
-          "id": "prepare-image-generation",
-          "name": "Prepare image generation workspace",
-          "marker": "[image-builder:stage:prepare-image-generation]",
-          "description": "Prepare image generation workspace",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-slim-assets",
-          "name": "Upload ubuntu-slim scripts and assets",
-          "marker": "[image-builder:stage:upload-slim-assets]",
-          "description": "Upload ubuntu-slim scripts and assets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "install-slim-toolset",
-          "name": "Install ubuntu-slim toolset",
-          "marker": "[image-builder:stage:install-slim-toolset]",
-          "description": "Install ubuntu-slim toolset",
-          "category": "install",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "install-actions-runner",
-          "name": "Install GitHub Actions runner",
-          "marker": "[image-builder:stage:install-actions-runner]",
-          "description": "Install GitHub Actions runner",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
-          "category": "cleanup",
-          "sequence": 6,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -1274,8 +195,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": true,
         "estimated_minutes": 25
-      },
-      "stage_count": 6
+      }
     },
     {
       "id": "ubuntu-24.04-qemu-x64",
@@ -1291,8 +211,8 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu2404",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -1301,260 +221,6 @@
         "ubuntu-24.04",
         "ubuntu-latest"
       ],
-      "build_stages": [
-        {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "category": "configure",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "category": "configure",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "category": "configure",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "category": "configure",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "category": "build",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "category": "configure",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "category": "install",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "category": "configure",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "category": "install",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "category": "install",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "category": "configure",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "category": "install",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "category": "reboot",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "category": "configure",
-          "sequence": 25,
-          "required": true
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "category": "build",
-          "sequence": 26,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 27,
-          "required": true
-        },
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "category": "cleanup",
-          "sequence": 28,
-          "required": true
-        }
-      ],
       "build_requirements": {
         "cpu_cores": 6,
         "memory_mb": 8192,
@@ -1562,8 +228,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": true,
         "estimated_minutes": 60
-      },
-      "stage_count": 28
+      }
     },
     {
       "id": "ubuntu-26.04-qemu-x64",
@@ -1579,268 +244,14 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu2604",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-26.04"
-      ],
-      "build_stages": [
-        {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "category": "configure",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "category": "configure",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "category": "configure",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "category": "configure",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "category": "configure",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "category": "build",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "category": "configure",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "category": "install",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "category": "configure",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "category": "install",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "category": "install",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "category": "configure",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "category": "install",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "category": "reboot",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "category": "configure",
-          "sequence": 25,
-          "required": true
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "category": "build",
-          "sequence": 26,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 27,
-          "required": true
-        },
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "category": "cleanup",
-          "sequence": 28,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -1849,8 +260,7 @@
         "temp_disk_gb": null,
         "requires_nested_virtualization": true,
         "estimated_minutes": 60
-      },
-      "stage_count": 28
+      }
     },
     {
       "id": "windows-server-2022-qemu-x64",
@@ -1866,241 +276,14 @@
       "template_json_path": "templates/qemu/windows/windows2022/template.json",
       "packer_file": "templates/qemu/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-qemu-windows2022",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "windows",
         "x64",
         "windows-2022"
-      ],
-      "build_stages": [
-        {
-          "id": "create-image-and-temp-directories",
-          "name": "Create image and temp directories",
-          "marker": "[image-builder:stage:create-image-and-temp-directories]",
-          "description": "Create image and temp directories",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-upstream-assets-scripts-and-toolsets",
-          "name": "Upload upstream assets, scripts and toolsets",
-          "marker": "[image-builder:stage:upload-upstream-assets-scripts-and-toolsets]",
-          "description": "Upload upstream assets, scripts and toolsets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "rearrange-helper-modules-and-toolset-file",
-          "name": "Rearrange helper modules and toolset file",
-          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
-          "description": "Rearrange helper modules and toolset file",
-          "category": "install",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "create-installer-admin-account-and-enable-winrm-basic-auth",
-          "name": "Create installer admin account and enable WinRM basic auth",
-          "marker": "[image-builder:stage:create-installer-admin-account-and-enable-winrm-basic-auth]",
-          "description": "Create installer admin account and enable WinRM basic auth",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "verify-installer-account-is-a-local-admin",
-          "name": "Verify installer account is a local admin",
-          "marker": "[image-builder:stage:verify-installer-account-is-a-local-admin]",
-          "description": "Verify installer account is a local admin",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "enable-driver-test-signing",
-          "name": "Enable driver test signing",
-          "marker": "[image-builder:stage:enable-driver-test-signing]",
-          "description": "Enable driver test signing",
-          "category": "validate",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "base-image-config-defender-powershell-windows-features-chocolatey",
-          "name": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
-          "marker": "[image-builder:stage:base-image-config-defender-powershell-windows-features-chocolatey]",
-          "description": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-the-containers-feature-to-finish-enabling",
-          "name": "Reboot, waiting for the Containers feature to finish enabling",
-          "marker": "[image-builder:stage:reboot-waiting-for-the-containers-feature-to-finish-enabling]",
-          "description": "Reboot, waiting for the Containers feature to finish enabling",
-          "category": "reboot",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "disable-the-wlan-service",
-          "name": "Disable the WLAN service",
-          "marker": "[image-builder:stage:disable-the-wlan-service]",
-          "description": "Disable the WLAN service",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "install-docker-compose-powershell-core-webpi-and-tortoisesvn",
-          "name": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
-          "marker": "[image-builder:stage:install-docker-compose-powershell-core-webpi-and-tortoisesvn]",
-          "description": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
-          "category": "install",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-docker-install",
-          "name": "Reboot after the Docker install",
-          "marker": "[image-builder:stage:reboot-after-the-docker-install]",
-          "description": "Reboot after the Docker install",
-          "category": "reboot",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "install-visual-studio-and-kubernetes-tools",
-          "name": "Install Visual Studio and Kubernetes tools",
-          "marker": "[image-builder:stage:install-visual-studio-and-kubernetes-tools]",
-          "description": "Install Visual Studio and Kubernetes tools",
-          "category": "install",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "reboot-after-visual-studio",
-          "name": "Reboot after Visual Studio",
-          "marker": "[image-builder:stage:reboot-after-visual-studio]",
-          "description": "Reboot after Visual Studio",
-          "category": "reboot",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli",
-          "name": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "marker": "[image-builder:stage:install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli]",
-          "description": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-the-service-fabric-sdk",
-          "name": "Install the Service Fabric SDK",
-          "marker": "[image-builder:stage:install-the-service-fabric-sdk]",
-          "description": "Install the Service Fabric SDK",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-service-fabric-sdk",
-          "name": "Reboot after the Service Fabric SDK",
-          "marker": "[image-builder:stage:reboot-after-the-service-fabric-sdk]",
-          "description": "Reboot after the Service Fabric SDK",
-          "category": "reboot",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "uninstall-the-bundled-azure-powershell-msi",
-          "name": "Uninstall the bundled Azure PowerShell MSI",
-          "marker": "[image-builder:stage:uninstall-the-bundled-azure-powershell-msi]",
-          "description": "Uninstall the bundled Azure PowerShell MSI",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "windows-updates-shell-and-developer-mode-config-llvm",
-          "name": "Windows Updates, shell and developer mode config, LLVM",
-          "marker": "[image-builder:stage:windows-updates-shell-and-developer-mode-config-llvm]",
-          "description": "Windows Updates, shell and developer mode config, LLVM",
-          "category": "build",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-windows-update-servicing-to-complete",
-          "name": "Reboot, waiting for Windows Update servicing to complete",
-          "marker": "[image-builder:stage:reboot-waiting-for-windows-update-servicing-to-complete]",
-          "description": "Reboot, waiting for Windows Update servicing to complete",
-          "category": "reboot",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "post-reboot-windows-updates-and-cleanup",
-          "name": "Post-reboot Windows Updates and cleanup",
-          "marker": "[image-builder:stage:post-reboot-windows-updates-and-cleanup]",
-          "description": "Post-reboot Windows Updates and cleanup",
-          "category": "reboot",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "native-images-system-and-user-config-post-build-validation",
-          "name": "Native images, system and user config, post-build validation",
-          "marker": "[image-builder:stage:native-images-system-and-user-config-post-build-validation]",
-          "description": "Native images, system and user config, post-build validation",
-          "category": "build",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "final-reboot-before-sysprep",
-          "name": "Final reboot before sysprep",
-          "marker": "[image-builder:stage:final-reboot-before-sysprep]",
-          "description": "Final reboot before sysprep",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "sysprep-generalize-for-the-proxmox-template",
-          "name": "Sysprep generalize for the Proxmox template",
-          "marker": "[image-builder:stage:sysprep-generalize-for-the-proxmox-template]",
-          "description": "Sysprep generalize for the Proxmox template",
-          "category": "build",
-          "sequence": 25,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -2109,8 +292,7 @@
         "temp_disk_gb": 50,
         "requires_nested_virtualization": true,
         "estimated_minutes": 240
-      },
-      "stage_count": 25
+      }
     },
     {
       "id": "windows-server-2025-qemu-x64",
@@ -2126,241 +308,14 @@
       "template_json_path": "templates/qemu/windows/windows2025/template.json",
       "packer_file": "templates/qemu/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-qemu-windows2025",
-      "version": "0.0.0-dev",
-      "release_date": null,
+      "version": "0.0.2",
+      "release_date": "2026-08-30",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
         "windows",
         "x64",
         "windows-2025"
-      ],
-      "build_stages": [
-        {
-          "id": "create-image-and-temp-directories",
-          "name": "Create image and temp directories",
-          "marker": "[image-builder:stage:create-image-and-temp-directories]",
-          "description": "Create image and temp directories",
-          "category": "configure",
-          "sequence": 1,
-          "required": true
-        },
-        {
-          "id": "upload-upstream-assets-scripts-and-toolsets",
-          "name": "Upload upstream assets, scripts and toolsets",
-          "marker": "[image-builder:stage:upload-upstream-assets-scripts-and-toolsets]",
-          "description": "Upload upstream assets, scripts and toolsets",
-          "category": "configure",
-          "sequence": 2,
-          "required": true
-        },
-        {
-          "id": "rearrange-helper-modules-and-toolset-file",
-          "name": "Rearrange helper modules and toolset file",
-          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
-          "description": "Rearrange helper modules and toolset file",
-          "category": "install",
-          "sequence": 3,
-          "required": true
-        },
-        {
-          "id": "create-installer-admin-account-and-enable-winrm-basic-auth",
-          "name": "Create installer admin account and enable WinRM basic auth",
-          "marker": "[image-builder:stage:create-installer-admin-account-and-enable-winrm-basic-auth]",
-          "description": "Create installer admin account and enable WinRM basic auth",
-          "category": "configure",
-          "sequence": 4,
-          "required": true
-        },
-        {
-          "id": "verify-installer-account-is-a-local-admin",
-          "name": "Verify installer account is a local admin",
-          "marker": "[image-builder:stage:verify-installer-account-is-a-local-admin]",
-          "description": "Verify installer account is a local admin",
-          "category": "install",
-          "sequence": 5,
-          "required": true
-        },
-        {
-          "id": "enable-driver-test-signing",
-          "name": "Enable driver test signing",
-          "marker": "[image-builder:stage:enable-driver-test-signing]",
-          "description": "Enable driver test signing",
-          "category": "validate",
-          "sequence": 6,
-          "required": true
-        },
-        {
-          "id": "base-image-config-defender-powershell-wsl2-windows-features-chocolatey",
-          "name": "Base image config: Defender, PowerShell, WSL2, Windows features, Chocolatey",
-          "marker": "[image-builder:stage:base-image-config-defender-powershell-wsl2-windows-features-chocolatey]",
-          "description": "Base image config: Defender, PowerShell, WSL2, Windows features, Chocolatey",
-          "category": "configure",
-          "sequence": 7,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-the-containers-feature-to-finish-enabling",
-          "name": "Reboot, waiting for the Containers feature to finish enabling",
-          "marker": "[image-builder:stage:reboot-waiting-for-the-containers-feature-to-finish-enabling]",
-          "description": "Reboot, waiting for the Containers feature to finish enabling",
-          "category": "reboot",
-          "sequence": 8,
-          "required": true
-        },
-        {
-          "id": "disable-the-wlan-service",
-          "name": "Disable the WLAN service",
-          "marker": "[image-builder:stage:disable-the-wlan-service]",
-          "description": "Disable the WLAN service",
-          "category": "build",
-          "sequence": 9,
-          "required": true
-        },
-        {
-          "id": "install-docker-compose-powershell-core-and-webpi",
-          "name": "Install Docker, Compose, PowerShell Core and WebPI",
-          "marker": "[image-builder:stage:install-docker-compose-powershell-core-and-webpi]",
-          "description": "Install Docker, Compose, PowerShell Core and WebPI",
-          "category": "install",
-          "sequence": 10,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-docker-install",
-          "name": "Reboot after the Docker install",
-          "marker": "[image-builder:stage:reboot-after-the-docker-install]",
-          "description": "Reboot after the Docker install",
-          "category": "reboot",
-          "sequence": 11,
-          "required": true
-        },
-        {
-          "id": "install-visual-studio-and-kubernetes-tools",
-          "name": "Install Visual Studio and Kubernetes tools",
-          "marker": "[image-builder:stage:install-visual-studio-and-kubernetes-tools]",
-          "description": "Install Visual Studio and Kubernetes tools",
-          "category": "install",
-          "sequence": 12,
-          "required": true
-        },
-        {
-          "id": "reboot-after-visual-studio",
-          "name": "Reboot after Visual Studio",
-          "marker": "[image-builder:stage:reboot-after-visual-studio]",
-          "description": "Reboot after Visual Studio",
-          "category": "reboot",
-          "sequence": 13,
-          "required": true
-        },
-        {
-          "id": "install-wix-vs-extensions-azure-cli-chocolatey-packages-java-kotlin-op",
-          "name": "Install WiX, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "marker": "[image-builder:stage:install-wix-vs-extensions-azure-cli-chocolatey-packages-java-kotlin-op]",
-          "description": "Install WiX, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
-          "category": "install",
-          "sequence": 14,
-          "required": true
-        },
-        {
-          "id": "install-the-service-fabric-sdk",
-          "name": "Install the Service Fabric SDK",
-          "marker": "[image-builder:stage:install-the-service-fabric-sdk]",
-          "description": "Install the Service Fabric SDK",
-          "category": "install",
-          "sequence": 15,
-          "required": true
-        },
-        {
-          "id": "reboot-after-the-service-fabric-sdk",
-          "name": "Reboot after the Service Fabric SDK",
-          "marker": "[image-builder:stage:reboot-after-the-service-fabric-sdk]",
-          "description": "Reboot after the Service Fabric SDK",
-          "category": "reboot",
-          "sequence": 16,
-          "required": true
-        },
-        {
-          "id": "uninstall-the-bundled-azure-powershell-msi",
-          "name": "Uninstall the bundled Azure PowerShell MSI",
-          "marker": "[image-builder:stage:uninstall-the-bundled-azure-powershell-msi]",
-          "description": "Uninstall the bundled Azure PowerShell MSI",
-          "category": "install",
-          "sequence": 17,
-          "required": true
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "category": "install",
-          "sequence": 18,
-          "required": true
-        },
-        {
-          "id": "postgresql-windows-updates-shell-and-developer-mode-config-llvm",
-          "name": "PostgreSQL, Windows Updates, shell and developer mode config, LLVM",
-          "marker": "[image-builder:stage:postgresql-windows-updates-shell-and-developer-mode-config-llvm]",
-          "description": "PostgreSQL, Windows Updates, shell and developer mode config, LLVM",
-          "category": "build",
-          "sequence": 19,
-          "required": true
-        },
-        {
-          "id": "reboot-waiting-for-windows-update-servicing-to-complete",
-          "name": "Reboot, waiting for Windows Update servicing to complete",
-          "marker": "[image-builder:stage:reboot-waiting-for-windows-update-servicing-to-complete]",
-          "description": "Reboot, waiting for Windows Update servicing to complete",
-          "category": "reboot",
-          "sequence": 20,
-          "required": true
-        },
-        {
-          "id": "post-reboot-windows-updates-and-cleanup",
-          "name": "Post-reboot Windows Updates and cleanup",
-          "marker": "[image-builder:stage:post-reboot-windows-updates-and-cleanup]",
-          "description": "Post-reboot Windows Updates and cleanup",
-          "category": "reboot",
-          "sequence": 21,
-          "required": true
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "category": "build",
-          "sequence": 22,
-          "required": true
-        },
-        {
-          "id": "native-images-system-and-user-config-post-build-validation",
-          "name": "Native images, system and user config, post-build validation",
-          "marker": "[image-builder:stage:native-images-system-and-user-config-post-build-validation]",
-          "description": "Native images, system and user config, post-build validation",
-          "category": "build",
-          "sequence": 23,
-          "required": true
-        },
-        {
-          "id": "final-reboot-before-sysprep",
-          "name": "Final reboot before sysprep",
-          "marker": "[image-builder:stage:final-reboot-before-sysprep]",
-          "description": "Final reboot before sysprep",
-          "category": "reboot",
-          "sequence": 24,
-          "required": true
-        },
-        {
-          "id": "sysprep-generalize-for-the-proxmox-template",
-          "name": "Sysprep generalize for the Proxmox template",
-          "marker": "[image-builder:stage:sysprep-generalize-for-the-proxmox-template]",
-          "description": "Sysprep generalize for the Proxmox template",
-          "category": "build",
-          "sequence": 25,
-          "required": true
-        }
       ],
       "build_requirements": {
         "cpu_cores": 6,
@@ -2369,8 +324,7 @@
         "temp_disk_gb": 50,
         "requires_nested_virtualization": true,
         "estimated_minutes": 240
-      },
-      "stage_count": 25
+      }
     }
   ],
   "labels": {
