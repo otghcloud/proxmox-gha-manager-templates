@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T18:45:22Z",
-  "image_builder_version": "0.0.6",
+  "generated_at": "2026-08-31T19:26:13Z",
+  "image_builder_version": "0.0.7",
   "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
   "templates": [
     {
@@ -18,7 +18,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu-slim",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -50,7 +50,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu2404",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -83,7 +83,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "runner-image-pmx-ubuntu2604",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -115,7 +115,7 @@
       "template_json_path": "templates/proxmox/windows/windows2022/template.json",
       "packer_file": "templates/proxmox/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-pmx-windows2022",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -147,7 +147,7 @@
       "template_json_path": "templates/proxmox/windows/windows2025/template.json",
       "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-pmx-windows2025",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -179,7 +179,7 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu-slim",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -211,7 +211,7 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu2404",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -244,7 +244,7 @@
       "template_json_path": "templates/qemu/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/qemu/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "runner-image-qemu-ubuntu2604",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -276,7 +276,7 @@
       "template_json_path": "templates/qemu/windows/windows2022/template.json",
       "packer_file": "templates/qemu/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-qemu-windows2022",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
@@ -308,7 +308,7 @@
       "template_json_path": "templates/qemu/windows/windows2025/template.json",
       "packer_file": "templates/qemu/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-qemu-windows2025",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "release_date": "2026-08-31",
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
