@@ -12,7 +12,7 @@
   "template_path": "templates/proxmox/ubuntu/ubuntu2404",
   "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
   "image_name": "runner-image-pmx-ubuntu2404",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "release_date": "2026-08-31",
   "source": {
     "runner_images_repo": "actions/runner-images",
