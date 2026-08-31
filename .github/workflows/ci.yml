@@ -16,7 +16,8 @@ permissions:
 jobs:
   validate-metadata:
     name: validate:metadata
-    runs-on: [self-hosted, ubuntu-slim]
+    # Reinstate the self-hosted label once the runner fleet is healthy again.
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
         uses: actions/checkout@v7
