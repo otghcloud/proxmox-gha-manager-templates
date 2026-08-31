@@ -1,2 +1,2 @@
-instance-id: github-runner-ubuntu2604
-local-hostname: github-runner-ubuntu2604
+instance-id: tpl-ubuntu-2604
+local-hostname: tpl-ubuntu-2604

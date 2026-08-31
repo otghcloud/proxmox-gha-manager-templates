@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "id": "ubuntu-26.04-proxmox-x64",
-  "target": "pmx-ubuntu2604",
-  "name": "Ubuntu 26.04 Proxmox",
-  "description": "Ubuntu 26.04 GitHub Actions self-hosted runner image for Proxmox VE",
+  "target": "ubuntu-26.04",
+  "name": "Ubuntu 26.04",
+  "description": "GHA-MGR Image - ubuntu-26.04",
   "platform": "linux",
   "os_family": "ubuntu",
   "os_version": "26.04",
@@ -11,9 +11,10 @@
   "builder": "proxmox",
   "template_path": "templates/proxmox/ubuntu/ubuntu2604",
   "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
-  "image_name": "runner-image-pmx-ubuntu2604",
-  "version": "0.0.7",
+  "image_name": "gha-ubuntu-26.04",
+  "version": "0.0.8",
   "release_date": "2026-08-31",
+  "iso_url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
   "source": {
     "runner_images_repo": "actions/runner-images",
     "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
@@ -22,7 +23,7 @@
   "build_requirements": {
     "cpu_cores": 6,
     "memory_mb": 8192,
-    "disk_gb": 160,
+    "disk_gb": 100,
     "temp_disk_gb": null,
     "requires_nested_virtualization": false,
     "estimated_minutes": 60

@@ -16,7 +16,7 @@ source "proxmox-iso" "ubuntu2604" {
   node                 = var.pmx_node
   vm_id                = var.pmx_template_vmid
   vm_name              = var.pmx_template_name
-  template_description = "Ubuntu 26.04 GitHub Actions self-hosted runner image"
+  template_description = "GHA-MGR Image - ubuntu-26.04"
 
   boot_iso {
     iso_file = var.pmx_ubuntu2604_iso_file

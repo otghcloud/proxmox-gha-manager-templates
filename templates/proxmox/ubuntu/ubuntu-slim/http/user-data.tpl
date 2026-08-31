@@ -16,7 +16,7 @@ autoinstall:
     install-server: true
     allow-pw: true
   identity:
-    hostname: github-runner-ubuntu-slim
+    hostname: tpl-ubuntu-slim
     username: ${RUNNER_USERNAME}
     password: "${RUNNER_PASSWORD_HASH}"
   storage:
