@@ -23,7 +23,7 @@ variable "pmx_template_vmid" {
 
 variable "pmx_template_name" {
   type        = string
-  default     = "runner-image-pmx-ubuntu-slim"
+  default     = "tpl-ubuntu-slim"
   description = "Name given to the generated Proxmox VM template"
 }
 
@@ -60,24 +60,24 @@ variable "pmx_cpu_type" {
 
 variable "ubuntu_cpu_cores" {
   type        = number
-  default     = 6
+  default     = 2
   description = "vCPU cores assigned to the Ubuntu build VM"
 }
 
 variable "ubuntu_memory_mb" {
   type        = number
-  default     = 8192
+  default     = 4096
   description = "Memory in MB assigned to the Ubuntu build VM"
 }
 
 variable "ubuntu_disk_size_gb" {
   type        = number
-  default     = 160
+  default     = 50
   description = "Ubuntu build VM disk size in GB"
 
   validation {
-    condition     = var.ubuntu_disk_size_gb >= 100
-    error_message = "Ubuntu disk size must be at least 100 GB."
+    condition     = var.ubuntu_disk_size_gb >= 50
+    error_message = "Disk size must be at least 50 GB."
   }
 }
 
@@ -113,5 +113,5 @@ variable "ssh_password" {
 
 variable "ssh_username" {
   type    = string
-  default = "packer"
+  default = "runner"
 }

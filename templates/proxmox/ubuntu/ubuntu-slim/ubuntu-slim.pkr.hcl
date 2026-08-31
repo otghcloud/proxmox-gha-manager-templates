@@ -16,7 +16,7 @@ source "proxmox-iso" "ubuntu-slim" {
   node                 = var.pmx_node
   vm_id                = var.pmx_template_vmid
   vm_name              = var.pmx_template_name
-  template_description = "Ubuntu 24.04 GitHub Actions ubuntu-slim VM image"
+  template_description = "GHA-MGR Image - ubuntu-slim"
 
   boot_iso {
     iso_file = var.pmx_ubuntu_slim_iso_file

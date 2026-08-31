@@ -16,7 +16,7 @@ autoinstall:
     install-server: true
     allow-pw: true
   identity:
-    hostname: github-runner-ubuntu2404
+    hostname: tpl-ubuntu-2404
     username: ${RUNNER_USERNAME}
     password: "${RUNNER_PASSWORD_HASH}"
   storage:
