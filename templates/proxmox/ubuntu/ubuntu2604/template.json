@@ -12,11 +12,11 @@
   "template_path": "templates/proxmox/ubuntu/ubuntu2604",
   "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
   "image_name": "runner-image-pmx-ubuntu2604",
-  "version": "0.0.2",
-  "release_date": "2026-08-30",
+  "version": "0.0.4",
+  "release_date": "2026-08-31",
   "source": {
     "runner_images_repo": "actions/runner-images",
-    "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
+    "runner_images_commit": "259c79eaf7bb3dde3d88a843bc4a4c57ea342d20",
     "toolset_file": "toolsets/toolset-2604.json"
   },
   "build_requirements": {
