@@ -12,7 +12,7 @@
   "template_path": "templates/qemu/windows/windows2022",
   "packer_file": "templates/qemu/windows/windows2022/windows2022.pkr.hcl",
   "image_name": "runner-image-qemu-windows2022",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "release_date": "2026-08-31",
   "source": {
     "runner_images_repo": "actions/runner-images",

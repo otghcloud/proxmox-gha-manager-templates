@@ -27,10 +27,12 @@ if [[ "${is_github_api_call}" == true ]]; then
   header_file="$(mktemp)"
   trap 'rm -f "${header_file}"' EXIT
 
+  # GET, not HEAD: the API answers HEAD /rate_limit with a 404, which loses the headers
+  # this reads and prints a misleading curl error into every build log.
   if [[ -n "${TOKEN}" ]]; then
-    "${CURL_BIN}" -fsSIL -H "Authorization: Bearer ${TOKEN}" -H "Accept: application/vnd.github+json" https://api.github.com/rate_limit > "${header_file}" || true
+    "${CURL_BIN}" -fsSL -H "Authorization: Bearer ${TOKEN}" -H "Accept: application/vnd.github+json" -o /dev/null -D "${header_file}" https://api.github.com/rate_limit || true
   else
-    "${CURL_BIN}" -fsSIL -H "Accept: application/vnd.github+json" https://api.github.com/rate_limit > "${header_file}" || true
+    "${CURL_BIN}" -fsSL -H "Accept: application/vnd.github+json" -o /dev/null -D "${header_file}" https://api.github.com/rate_limit || true
   fi
 
   remaining="$(awk -F': ' 'tolower($1)=="x-ratelimit-remaining" {gsub("\r","",$2); print $2}' "${header_file}" | tail -n1 || true)"
