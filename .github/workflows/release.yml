@@ -41,7 +41,8 @@ jobs:
 
   all-checks-passed:
     name: Release templates / All checks passed
-    runs-on: [self-hosted, ubuntu-slim]
+    # Reinstate the self-hosted label once the runner fleet is healthy again.
+    runs-on: ubuntu-slim
     permissions: {}
     needs:
       - version
