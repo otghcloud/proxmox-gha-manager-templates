@@ -47,7 +47,7 @@ variable "pmx_vm_storage" {
   type = string
 }
 
-variable "pmx_windows2025_iso_file" {
+variable "pmx_iso_file" {
   type        = string
   description = "Proxmox volume ID of the Windows Server 2025 installation ISO"
 }
@@ -58,30 +58,30 @@ variable "pmx_cpu_type" {
   description = "QEMU CPU model"
 }
 
-variable "windows_cpu_cores" {
+variable "build_cpu_cores" {
   type        = number
   default     = 6
   description = "vCPU cores assigned to the Windows build VM"
 }
 
-variable "windows_memory_mb" {
+variable "build_memory_mb" {
   type        = number
   default     = 8192
   description = "Memory in MB assigned to the Windows build VM"
 }
 
-variable "windows_disk_size_gb" {
+variable "build_disk_gb" {
   type        = number
   default     = 200
   description = "Windows build VM disk size in GB"
 
   validation {
-    condition     = var.windows_disk_size_gb >= 150
+    condition     = var.build_disk_gb >= 150
     error_message = "Windows disk size must be at least 150 GB."
   }
 }
 
-variable "windows_temp_disk_size_gb" {
+variable "build_temp_disk_gb" {
   type        = number
   default     = 50
   description = "Size in GB of the secondary disk formatted as D: for upstream scripts' TEMP_DIR (matches Azure's ephemeral disk upstream expects)"

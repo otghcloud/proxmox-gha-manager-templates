@@ -19,7 +19,7 @@ source "proxmox-iso" "windows2022" {
   template_description = "Windows Server 2022 GitHub Actions self-hosted runner image"
 
   boot_iso {
-    iso_file = var.pmx_windows2022_iso_file
+    iso_file = var.pmx_iso_file
     unmount  = true
     type     = "ide"
     index    = "0"
@@ -55,20 +55,20 @@ source "proxmox-iso" "windows2022" {
 
   machine         = "q35"
   cpu_type        = var.pmx_cpu_type
-  cores           = var.windows_cpu_cores
-  memory          = var.windows_memory_mb
+  cores           = var.build_cpu_cores
+  memory          = var.build_memory_mb
   scsi_controller = "virtio-scsi-single"
 
   disks {
     type         = "virtio"
-    disk_size    = "${var.windows_disk_size_gb}G"
+    disk_size    = "${var.build_disk_gb}G"
     storage_pool = var.pmx_vm_storage
   }
 
   # Formatted as D: in unattend/autounattend.xml.tpl - upstream scripts expect a D: temp drive.
   disks {
     type         = "virtio"
-    disk_size    = "${var.windows_temp_disk_size_gb}G"
+    disk_size    = "${var.build_temp_disk_gb}G"
     storage_pool = var.pmx_vm_storage
   }
 

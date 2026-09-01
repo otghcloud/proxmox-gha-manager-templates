@@ -12,9 +12,25 @@
   "template_path": "templates/proxmox/ubuntu/ubuntu2404",
   "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
   "image_name": "gha-ubuntu-24.04",
-  "version": "0.0.8",
-  "release_date": "2026-08-31",
+  "version": "0.0.9",
+  "release_date": "2026-09-01",
   "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
+  "build_capability": {
+    "enabled": true,
+    "disabled_reason": null,
+    "communicator": "ssh"
+  },
+  "packer": {
+    "interface_version": 1,
+    "runner_images_directory": "images/ubuntu",
+    "scripts_root_required": true,
+    "installation_media": [
+      {
+        "key": "primary_iso",
+        "required": true
+      }
+    ]
+  },
   "source": {
     "runner_images_repo": "actions/runner-images",
     "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T22:57:53Z",
-  "image_builder_version": "0.0.8",
+  "generated_at": "2026-09-01T01:25:03Z",
+  "image_builder_version": "0.0.9",
   "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
   "templates": [
     {
@@ -18,9 +18,29 @@
       "template_json_path": "templates/proxmox/windows/windows2022/template.json",
       "packer_file": "templates/proxmox/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-pmx-windows2022",
-      "version": "0.0.8",
-      "release_date": "2026-08-31",
+      "version": "0.0.9",
+      "release_date": "2026-09-01",
       "iso_url": null,
+      "build_capability": {
+        "enabled": false,
+        "disabled_reason": "Windows image builds are not yet supported by the manager.",
+        "communicator": "winrm"
+      },
+      "packer": {
+        "interface_version": 1,
+        "runner_images_directory": "images/windows",
+        "scripts_root_required": false,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          },
+          {
+            "key": "virtio_iso",
+            "required": true
+          }
+        ]
+      },
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -51,9 +71,29 @@
       "template_json_path": "templates/proxmox/windows/windows2025/template.json",
       "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-pmx-windows2025",
-      "version": "0.0.8",
-      "release_date": "2026-08-31",
+      "version": "0.0.9",
+      "release_date": "2026-09-01",
       "iso_url": null,
+      "build_capability": {
+        "enabled": false,
+        "disabled_reason": "Windows image builds are not yet supported by the manager.",
+        "communicator": "winrm"
+      },
+      "packer": {
+        "interface_version": 1,
+        "runner_images_directory": "images/windows",
+        "scripts_root_required": false,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          },
+          {
+            "key": "virtio_iso",
+            "required": true
+          }
+        ]
+      },
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -84,9 +124,25 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "gha-ubuntu-24.04",
-      "version": "0.0.8",
-      "release_date": "2026-08-31",
+      "version": "0.0.9",
+      "release_date": "2026-09-01",
       "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
+      "build_capability": {
+        "enabled": true,
+        "disabled_reason": null,
+        "communicator": "ssh"
+      },
+      "packer": {
+        "interface_version": 1,
+        "runner_images_directory": "images/ubuntu",
+        "scripts_root_required": true,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          }
+        ]
+      },
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -118,9 +174,25 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "gha-ubuntu-26.04",
-      "version": "0.0.8",
-      "release_date": "2026-08-31",
+      "version": "0.0.9",
+      "release_date": "2026-09-01",
       "iso_url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
+      "build_capability": {
+        "enabled": true,
+        "disabled_reason": null,
+        "communicator": "ssh"
+      },
+      "packer": {
+        "interface_version": 1,
+        "runner_images_directory": "images/ubuntu",
+        "scripts_root_required": true,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          }
+        ]
+      },
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",
@@ -151,9 +223,25 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "gha-ubuntu-slim",
-      "version": "0.0.8",
-      "release_date": "2026-08-31",
+      "version": "0.0.9",
+      "release_date": "2026-09-01",
       "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
+      "build_capability": {
+        "enabled": true,
+        "disabled_reason": null,
+        "communicator": "ssh"
+      },
+      "packer": {
+        "interface_version": 1,
+        "runner_images_directory": "images/ubuntu-slim",
+        "scripts_root_required": true,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          }
+        ]
+      },
       "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
       "default_labels": [
         "self-hosted",

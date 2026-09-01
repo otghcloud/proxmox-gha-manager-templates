@@ -19,7 +19,7 @@ source "proxmox-iso" "ubuntu2604" {
   template_description = "GHA-MGR Image - ubuntu-26.04"
 
   boot_iso {
-    iso_file = var.pmx_ubuntu2604_iso_file
+    iso_file = var.pmx_iso_file
     unmount  = true
   }
 
@@ -35,13 +35,13 @@ source "proxmox-iso" "ubuntu2604" {
   }
 
   cpu_type        = var.pmx_cpu_type
-  cores           = var.ubuntu_cpu_cores
-  memory          = var.ubuntu_memory_mb
+  cores           = var.build_cpu_cores
+  memory          = var.build_memory_mb
   scsi_controller = "virtio-scsi-single"
 
   disks {
     type         = "virtio"
-    disk_size    = "${var.ubuntu_disk_size_gb}G"
+    disk_size    = "${var.build_disk_gb}G"
     storage_pool = var.pmx_vm_storage
   }
 
@@ -78,7 +78,7 @@ source "proxmox-iso" "ubuntu2604" {
 }
 
 locals {
-  ubuntu_root             = var.ubuntu_scripts_root != "" ? var.ubuntu_scripts_root : "${path.root}/../../../../vendor/runner-images/images/ubuntu"
+  ubuntu_root             = var.runner_images_root != "" ? var.runner_images_root : "${path.root}/../../../../vendor/runner-images/images/ubuntu"
   helper_script_folder    = "/imagegeneration/helpers"
   image_folder            = "/imagegeneration"
   installer_script_folder = "/imagegeneration/installers"
