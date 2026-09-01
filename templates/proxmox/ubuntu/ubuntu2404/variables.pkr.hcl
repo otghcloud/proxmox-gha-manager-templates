@@ -47,7 +47,7 @@ variable "pmx_vm_storage" {
   type = string
 }
 
-variable "pmx_ubuntu2404_iso_file" {
+variable "pmx_iso_file" {
   type        = string
   description = "Proxmox volume ID of the Ubuntu 24.04 Server installation ISO"
 }
@@ -58,25 +58,25 @@ variable "pmx_cpu_type" {
   description = "QEMU CPU model - kvm64 (the Proxmox default) lacks SSSE3, which Homebrew's Linux x86_64 build requires"
 }
 
-variable "ubuntu_cpu_cores" {
+variable "build_cpu_cores" {
   type        = number
   default     = 6
   description = "vCPU cores assigned to the Ubuntu build VM"
 }
 
-variable "ubuntu_memory_mb" {
+variable "build_memory_mb" {
   type        = number
   default     = 8192
   description = "Memory in MB assigned to the Ubuntu build VM"
 }
 
-variable "ubuntu_disk_size_gb" {
+variable "build_disk_gb" {
   type        = number
   default     = 75
   description = "Ubuntu build VM disk size in GB"
 
   validation {
-    condition     = var.ubuntu_disk_size_gb >= 75
+    condition     = var.build_disk_gb >= 75
     error_message = "Disk size must be at least 75 GB."
   }
 }
@@ -106,7 +106,7 @@ variable "github_api_wait_buffer_seconds" {
   description = "Extra seconds to wait after GitHub's reset time before resuming requests"
 }
 
-variable "ubuntu_scripts_root" {
+variable "runner_images_root" {
   type        = string
   default     = ""
   description = "Optional override for the Ubuntu upstream scripts root (used by sanitized mode)"

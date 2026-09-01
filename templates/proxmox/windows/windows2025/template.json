@@ -12,9 +12,29 @@
   "template_path": "templates/proxmox/windows/windows2025",
   "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
   "image_name": "runner-image-pmx-windows2025",
-  "version": "0.0.8",
-  "release_date": "2026-08-31",
+  "version": "0.0.9",
+  "release_date": "2026-09-01",
   "iso_url": null,
+  "build_capability": {
+    "enabled": false,
+    "disabled_reason": "Windows image builds are not yet supported by the manager.",
+    "communicator": "winrm"
+  },
+  "packer": {
+    "interface_version": 1,
+    "runner_images_directory": "images/windows",
+    "scripts_root_required": false,
+    "installation_media": [
+      {
+        "key": "primary_iso",
+        "required": true
+      },
+      {
+        "key": "virtio_iso",
+        "required": true
+      }
+    ]
+  },
   "source": {
     "runner_images_repo": "actions/runner-images",
     "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
