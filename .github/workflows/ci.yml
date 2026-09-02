@@ -1,10 +1,8 @@
-name: CI templates
+name: CI
 
 on:
   workflow_dispatch:
   pull_request:
-  push:
-    branches: [main]
 
 concurrency:
   group: ci-templates-${{ github.event.pull_request.number || github.ref }}
@@ -15,9 +13,8 @@ permissions:
 
 jobs:
   validate-metadata:
-    name: validate:metadata
-    # Reinstate the self-hosted label once the runner fleet is healthy again.
-    runs-on: ubuntu-slim
+    name: ci:metadata
+    runs-on: ['self-hosted', 'ubuntu-slim']
     steps:
       - name: Checkout
         uses: actions/checkout@v7

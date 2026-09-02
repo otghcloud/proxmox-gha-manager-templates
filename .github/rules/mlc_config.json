@@ -1,9 +1,6 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "^https://github.com/otghcloud/proxmox-gha-manager"
-    },
-    {
       "pattern": "^https://github.com/actions/runner-images"
     }
   ],
