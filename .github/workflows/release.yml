@@ -1,4 +1,4 @@
-name: Release templates
+name: Release
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ permissions:
 
 jobs:
   version:
-    name: Version and tag
+    name: release:version-and-tag
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     permissions:
       contents: write
@@ -40,9 +40,8 @@ jobs:
       bump_override: ${{ inputs.bump_override || 'auto' }}
 
   all-checks-passed:
-    name: Release templates / All checks passed
-    # Reinstate the self-hosted label once the runner fleet is healthy again.
-    runs-on: ubuntu-slim
+    name: release:all-checks-passed
+    runs-on: ['self-hosted', 'ubuntu-slim']
     permissions: {}
     needs:
       - version

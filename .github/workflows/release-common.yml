@@ -1,17 +1,14 @@
 name: Release (shared)
 
-# Reusable version/tag/release logic, ported from github-actions-proxmox-monorepo. Called with a
-# Each repository has independent plain semantic version tags: v0.1.0, v1.2.3, etc.
-
 on:
   workflow_call:
     inputs:
       tag_prefix:
-        description: Tag prefix for this subproject, including the trailing "v".
+        description: Tag prefix, including the trailing "v".
         required: true
         type: string
       bump_override:
-        description: Force a specific semantic version bump.
+        description: Semver override.
         required: false
         default: auto
         type: string
@@ -32,9 +29,8 @@ permissions:
 
 jobs:
   bump:
-    name: Bump version
-    # Reinstate the self-hosted label once the runner fleet is healthy again.
-    runs-on: ubuntu-slim
+    name: release:bump
+    runs-on: ['self-hosted', 'ubuntu-slim']
     outputs:
       skip: ${{ steps.skip_check.outputs.skip }}
       version: ${{ steps.next_version.outputs.version }}
@@ -171,11 +167,11 @@ jobs:
           fi
 
   release:
-    name: Tag and release
+    name: release
     needs:
       - bump
     if: needs.bump.outputs.skip == 'false'
-    runs-on: ubuntu-slim
+    runs-on: ['self-hosted', 'ubuntu-slim']
     permissions:
       contents: write
     outputs:
