@@ -25,9 +25,13 @@ fi
 export PIPX_BIN_DIR=/opt/pipx_bin
 export PIPX_HOME=/opt/pipx
 
-# packaging is apt-owned here and has no RECORD file, so pip cannot uninstall it
-# to satisfy pipx's packaging>=26 requirement. Install alongside it instead.
-python3 -m pip install --ignore-installed packaging pipx
+if is_ubuntu24; then
+    # Noble ships Debian-managed packaging 24.0, which pip cannot replace for pipx 1.17.1.
+    # Keep this pin for the Ubuntu 24.04 lifetime unless the distro package is upgraded.
+    python3 -m pip install "pipx==1.16.7"
+else
+    python3 -m pip install pipx
+fi
 python3 -m pipx ensurepath
 
 # Update /etc/environment

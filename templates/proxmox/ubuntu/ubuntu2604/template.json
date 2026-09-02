@@ -12,8 +12,8 @@
   "template_path": "templates/proxmox/ubuntu/ubuntu2604",
   "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
   "image_name": "gha-ubuntu-26.04",
-  "version": "0.0.9",
-  "release_date": "2026-09-01",
+  "version": "0.0.10",
+  "release_date": "2026-09-02",
   "iso_url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
   "build_capability": {
     "enabled": true,
@@ -33,7 +33,7 @@
   },
   "source": {
     "runner_images_repo": "actions/runner-images",
-    "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
+    "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
     "toolset_file": "toolsets/toolset-2604.json"
   },
   "build_requirements": {

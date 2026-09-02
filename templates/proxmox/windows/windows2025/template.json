@@ -12,8 +12,8 @@
   "template_path": "templates/proxmox/windows/windows2025",
   "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
   "image_name": "runner-image-pmx-windows2025",
-  "version": "0.0.9",
-  "release_date": "2026-09-01",
+  "version": "0.0.10",
+  "release_date": "2026-09-02",
   "iso_url": null,
   "build_capability": {
     "enabled": false,
@@ -37,7 +37,7 @@
   },
   "source": {
     "runner_images_repo": "actions/runner-images",
-    "runner_images_commit": "fde5e4c6e016034bcc7754e203b8e9d8ef5160c4",
+    "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
     "toolset_file": "toolsets/toolset-2025.json"
   },
   "build_requirements": {
