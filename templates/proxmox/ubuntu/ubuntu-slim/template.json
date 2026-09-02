@@ -12,7 +12,7 @@
   "template_path": "templates/proxmox/ubuntu/ubuntu-slim",
   "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
   "image_name": "gha-ubuntu-slim",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "release_date": "2026-09-02",
   "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
   "build_capability": {
