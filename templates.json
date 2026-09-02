@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-02T15:34:06Z",
-  "image_builder_version": "0.0.11",
+  "generated_at": "2026-09-02T22:23:35Z",
+  "image_builder_version": "0.0.12",
   "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
   "templates": [
     {
@@ -18,7 +18,7 @@
       "template_json_path": "templates/proxmox/windows/windows2022/template.json",
       "packer_file": "templates/proxmox/windows/windows2022/windows2022.pkr.hcl",
       "image_name": "runner-image-pmx-windows2022",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "release_date": "2026-09-02",
       "iso_url": null,
       "build_capability": {
@@ -71,7 +71,7 @@
       "template_json_path": "templates/proxmox/windows/windows2025/template.json",
       "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
       "image_name": "runner-image-pmx-windows2025",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "release_date": "2026-09-02",
       "iso_url": null,
       "build_capability": {
@@ -124,7 +124,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2404/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
       "image_name": "gha-ubuntu-24.04",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "release_date": "2026-09-02",
       "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
       "build_capability": {
@@ -174,7 +174,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu2604/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
       "image_name": "gha-ubuntu-26.04",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "release_date": "2026-09-02",
       "iso_url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
       "build_capability": {
@@ -223,7 +223,7 @@
       "template_json_path": "templates/proxmox/ubuntu/ubuntu-slim/template.json",
       "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
       "image_name": "gha-ubuntu-slim",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "release_date": "2026-09-02",
       "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
       "build_capability": {

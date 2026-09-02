@@ -12,7 +12,7 @@
   "template_path": "templates/proxmox/windows/windows2025",
   "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
   "image_name": "runner-image-pmx-windows2025",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "release_date": "2026-09-02",
   "iso_url": null,
   "build_capability": {
