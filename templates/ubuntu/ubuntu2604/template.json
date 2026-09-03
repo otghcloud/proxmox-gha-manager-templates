@@ -4,8 +4,8 @@
   "name": "Ubuntu 26.04",
   "description": "Proxmox compatible Ubuntu 26.04 GitHub Actions runner image",
   "metadata": {
-    "build_timestamp": "2026-09-03T00:00:00Z",
-    "version": "2026.09.03.1",
+    "build_timestamp": "2026-09-03T22:45:00Z",
+    "version": "2026.09.03.2",
     "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
   },
   "platform": {
