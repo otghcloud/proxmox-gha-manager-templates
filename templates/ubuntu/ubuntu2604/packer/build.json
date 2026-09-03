@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "builder": "packer",
+  "template_id": "ubuntu-26.04",
+  "display_name": "Packer build",
+  "stage_groups": [
+    {
+      "id": "configure",
+      "label": "Configure",
+      "display_order": 1,
+      "stages": [
+        {
+          "id": "create-the-image-generation-directory",
+          "name": "Create the image generation directory",
+          "marker": "[image-builder:stage:create-the-image-generation-directory]",
+          "description": "Create the image generation directory",
+          "required": true,
+          "sequence": 1
+        },
+        {
+          "id": "upload-helper-scripts",
+          "name": "Upload helper scripts",
+          "marker": "[image-builder:stage:upload-helper-scripts]",
+          "description": "Upload helper scripts",
+          "required": true,
+          "sequence": 2
+        },
+        {
+          "id": "upload-github-api-curl-wrapper",
+          "name": "Upload GitHub API curl wrapper",
+          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+          "description": "Upload GitHub API curl wrapper",
+          "required": true,
+          "sequence": 3
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "label": "Install",
+      "display_order": 2,
+      "stages": [
+        {
+          "id": "install-the-main-runner-toolset",
+          "name": "Install the main runner toolset",
+          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
+          "description": "Install the main runner toolset",
+          "required": true,
+          "sequence": 4
+        },
+        {
+          "id": "install-docker",
+          "name": "Install Docker",
+          "marker": "[image-builder:stage:install-docker]",
+          "description": "Install Docker",
+          "required": true,
+          "sequence": 5
+        }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "display_order": 3,
+      "stages": [
+        {
+          "id": "cleanup-template",
+          "name": "Cleanup prior to template creation",
+          "marker": "[image-builder:stage:cleanup-template]",
+          "description": "Cleanup prior to template creation",
+          "required": true,
+          "sequence": 6
+        }
+      ]
+    }
+  ]
+}

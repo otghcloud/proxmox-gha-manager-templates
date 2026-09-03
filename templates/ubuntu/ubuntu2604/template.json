@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "id": "ubuntu-26.04",
+  "name": "Ubuntu 26.04",
+  "description": "Proxmox compatible Ubuntu 26.04 GitHub Actions runner image",
+  "metadata": {
+    "build_timestamp": "2026-09-03T00:00:00Z",
+    "version": "2026.09.03.1",
+    "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
+  },
+  "platform": {
+    "arch": "x64",
+    "type": "linux",
+    "os_family": "ubuntu",
+    "os_version": "26.04"
+  },
+  "default_labels": [
+    "self-hosted",
+    "linux",
+    "x64",
+    "ubuntu-26.04"
+  ],
+  "builders": {
+    "cloudimg": {
+      "buildable": false,
+      "disabled_reason": "Cloud image builds are not yet supported.",
+      "label": "cloudimg",
+      "display_name": "Cloud image",
+      "type": "cloudimg",
+      "path": "templates/ubuntu/ubuntu2604/cloudimg",
+      "build_manifest": "templates/ubuntu/ubuntu2604/cloudimg/build.json",
+      "artifact": {
+        "kind": "image_url",
+        "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/resolute-server-pmx-cloudimg-amd64.img",
+        "file": null
+      },
+      "provisioner": {
+        "interface_version": 2,
+        "runner_images_directory": "images/ubuntu",
+        "scripts_root_required": true,
+        "installation_media": [
+          {
+            "key": "cloudimg",
+            "required": true
+          }
+        ]
+      },
+      "build_groups": [
+        "configure",
+        "install",
+        "cleanup"
+      ],
+      "build_requirements": {
+        "cpu_cores": 6,
+        "memory_mb": 8192,
+        "disk_gb": 100,
+        "temp_disk_gb": null,
+        "estimated_minutes": 60
+      }
+    },
+    "packer": {
+      "buildable": true,
+      "disabled_reason": null,
+      "label": "packer",
+      "display_name": "Packer",
+      "type": "packer",
+      "path": "templates/ubuntu/ubuntu2604/packer",
+      "build_manifest": "templates/ubuntu/ubuntu2604/packer/build.json",
+      "artifact": {
+        "kind": "iso",
+        "url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
+        "file": "ubuntu-26.04.1-live-server-amd64.iso"
+      },
+      "provisioner": {
+        "interface_version": 2,
+        "runner_images_directory": "images/ubuntu",
+        "scripts_root_required": true,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          }
+        ]
+      },
+      "build_groups": [
+        "configure",
+        "install",
+        "cleanup"
+      ],
+      "build_requirements": {
+        "cpu_cores": 6,
+        "memory_mb": 8192,
+        "disk_gb": 100,
+        "temp_disk_gb": null,
+        "estimated_minutes": 60
+      }
+    }
+  },
+  "template_path": "templates/ubuntu/ubuntu2604",
+  "template_json_path": "templates/ubuntu/ubuntu2604/template.json"
+}
