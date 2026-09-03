@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "builder": "cloudimg",
+  "template_id": "ubuntu-slim",
+  "display_name": "Cloud image build",
+  "stage_groups": [
+    {
+      "id": "configure",
+      "label": "Configure",
+      "display_order": 1,
+      "stages": [
+        {
+          "id": "prepare-image-generation",
+          "name": "Prepare image generation workspace",
+          "marker": "[image-builder:stage:prepare-image-generation]",
+          "description": "Prepare image generation workspace",
+          "required": true,
+          "sequence": 1
+        },
+        {
+          "id": "upload-slim-assets",
+          "name": "Upload ubuntu-slim scripts and assets",
+          "marker": "[image-builder:stage:upload-slim-assets]",
+          "description": "Upload ubuntu-slim scripts and assets",
+          "required": true,
+          "sequence": 2
+        },
+        {
+          "id": "configure-github-api-wrapper",
+          "name": "Configure GitHub API rate-limit wrapper",
+          "marker": "[image-builder:stage:configure-github-api-wrapper]",
+          "description": "Configure GitHub API rate-limit wrapper",
+          "required": true,
+          "sequence": 3
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "label": "Install",
+      "display_order": 2,
+      "stages": [
+        {
+          "id": "install-slim-toolset",
+          "name": "Install ubuntu-slim toolset",
+          "marker": "[image-builder:stage:install-slim-toolset]",
+          "description": "Install ubuntu-slim toolset",
+          "required": true,
+          "sequence": 4
+        },
+        {
+          "id": "install-actions-runner",
+          "name": "Install GitHub Actions runner",
+          "marker": "[image-builder:stage:install-actions-runner]",
+          "description": "Install GitHub Actions runner",
+          "required": true,
+          "sequence": 5
+        }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "display_order": 3,
+      "stages": [
+        {
+          "id": "cleanup-template",
+          "name": "Cleanup prior to template creation",
+          "marker": "[image-builder:stage:cleanup-template]",
+          "description": "Cleanup prior to template creation",
+          "required": true,
+          "sequence": 6
+        }
+      ]
+    }
+  ]
+}

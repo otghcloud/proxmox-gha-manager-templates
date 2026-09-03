@@ -17,10 +17,8 @@
 **/*_secret*
 
 # Rendered from *.tpl by scripts/build.sh using .env - contain plaintext/hashed passwords
-templates/proxmox/ubuntu/*/http/user-data
-templates/proxmox/windows/*/unattend/autounattend.xml
-templates/qemu/ubuntu/*/http/user-data
-templates/qemu/windows/*/unattend/autounattend.xml
+templates/ubuntu/*/packer/http/user-data
+templates/windows/*/packer/unattend/autounattend.xml
 
 # Release-time generated manifests
 manifests/

@@ -34,9 +34,7 @@ jobs:
           jq empty templates.json
 
           required_fields=(
-            id target name description platform os_family os_version
-            architecture builder template_path template_json_path packer_file image_name
-            version release_date runner_images_commit default_labels build_requirements
+            schema_version id name description metadata platform default_labels builders
           )
 
           jq -c '.templates[]' templates.json | while IFS= read -r entry; do
@@ -47,14 +45,21 @@ jobs:
                 exit 1
               fi
             done
-          done
 
-          for template_json in $(find templates -name template.json | sort); do
-            packer_file=$(jq -r '.packer_file' "${template_json}")
-            if [[ ! -f "${packer_file}" ]]; then
-              echo "${template_json}: packer_file '${packer_file}' does not exist" >&2
+            if ! echo "${entry}" | jq -e '.builders | type == "object" and length > 0' >/dev/null; then
+              echo "Template $(echo "${entry}" | jq -r '.id // "unknown"'): missing builders object" >&2
               exit 1
             fi
           done
+
+          while IFS= read -r template_json; do
+            while IFS= read -r builder_name; do
+              build_manifest=$(jq -r --arg builder "${builder_name}" '.builders[$builder].build_manifest' "${template_json}")
+              if [[ -n "${build_manifest}" && ! -f "${build_manifest}" ]]; then
+                echo "${template_json}: build_manifest '${build_manifest}' does not exist" >&2
+                exit 1
+              fi
+            done < <(jq -r '.builders | keys[]' "${template_json}")
+          done < <(find templates -name template.json | sort)
 
           echo "Validated $(jq '.templates | length' templates.json) template metadata entries."

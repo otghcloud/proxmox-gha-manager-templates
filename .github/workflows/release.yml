@@ -7,17 +7,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      bump_override:
-        description: Force a specific semantic version bump.
-        required: true
-        default: auto
-        type: choice
-        options:
-          - auto
-          - patch
-          - minor
-          - major
 
 concurrency:
   group: release-templates
@@ -35,9 +24,6 @@ jobs:
       contents: write
       pull-requests: read
     uses: ./.github/workflows/release-common.yml
-    with:
-      tag_prefix: v
-      bump_override: ${{ inputs.bump_override || 'auto' }}
 
   all-checks-passed:
     name: release:all-checks-passed

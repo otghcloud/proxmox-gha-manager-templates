@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "builder": "packer",
+  "template_id": "windows-server-2022",
+  "display_name": "Packer build",
+  "stage_groups": [
+    {
+      "id": "configure",
+      "label": "Configure",
+      "display_order": 1,
+      "stages": [
+        {
+          "id": "create-image-and-temp-directories",
+          "name": "Create image and temp directories",
+          "marker": "[image-builder:stage:create-image-and-temp-directories]",
+          "description": "Create image and temp directories",
+          "required": true,
+          "sequence": 1
+        },
+        {
+          "id": "upload-upstream-assets-scripts-and-toolsets",
+          "name": "Upload upstream assets, scripts and toolsets",
+          "marker": "[image-builder:stage:upload-upstream-assets-scripts-and-toolsets]",
+          "description": "Upload upstream assets, scripts and toolsets",
+          "required": true,
+          "sequence": 2
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "label": "Install",
+      "display_order": 2,
+      "stages": [
+        {
+          "id": "rearrange-helper-modules-and-toolset-file",
+          "name": "Rearrange helper modules and toolset file",
+          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
+          "description": "Rearrange helper modules and toolset file",
+          "required": true,
+          "sequence": 3
+        }
+      ]
+    },
+    {
+      "id": "reboot",
+      "label": "Reboot",
+      "display_order": 3,
+      "stages": [
+        {
+          "id": "reboot-waiting-for-the-containers-feature-to-finish-enabling",
+          "name": "Reboot, waiting for the Containers feature to finish enabling",
+          "marker": "[image-builder:stage:reboot-waiting-for-the-containers-feature-to-finish-enabling]",
+          "description": "Reboot, waiting for the Containers feature to finish enabling",
+          "required": true,
+          "sequence": 8
+        }
+      ]
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "display_order": 4,
+      "stages": [
+        {
+          "id": "cleanup-template",
+          "name": "Cleanup prior to template creation",
+          "marker": "[image-builder:stage:cleanup-template]",
+          "description": "Cleanup prior to template creation",
+          "required": true,
+          "sequence": 30
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "id": "windows-server-2025",
+  "name": "Windows Server 2025",
+  "description": "Proxmox compatible Windows Server 2025 GitHub Actions runner image",
+  "metadata": {
+    "build_timestamp": "2026-09-03T00:00:00Z",
+    "version": "2026.09.03.1",
+    "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
+  },
+  "platform": {
+    "arch": "x64",
+    "type": "windows",
+    "os_family": "windows-server",
+    "os_version": "2025"
+  },
+  "default_labels": [
+    "self-hosted",
+    "windows",
+    "x64",
+    "windows-2025"
+  ],
+  "builders": {
+    "packer": {
+      "buildable": false,
+      "disabled_reason": "Windows image builds are not yet supported by the manager.",
+      "label": "packer",
+      "display_name": "Packer",
+      "type": "packer",
+      "path": "templates/windows/windows2025/packer",
+      "build_manifest": "templates/windows/windows2025/packer/build.json",
+      "artifact": {
+        "kind": "iso",
+        "url": null,
+        "file": null
+      },
+      "provisioner": {
+        "interface_version": 2,
+        "runner_images_directory": "images/windows",
+        "scripts_root_required": false,
+        "installation_media": [
+          {
+            "key": "primary_iso",
+            "required": true
+          },
+          {
+            "key": "virtio_iso",
+            "required": true
+          }
+        ]
+      },
+      "build_groups": [
+        "configure",
+        "install",
+        "reboot",
+        "cleanup"
+      ],
+      "build_requirements": {
+        "cpu_cores": 6,
+        "memory_mb": 8192,
+        "disk_gb": 200,
+        "temp_disk_gb": 50,
+        "estimated_minutes": 240
+      }
+    }
+  },
+  "template_path": "templates/windows/windows2025",
+  "template_json_path": "templates/windows/windows2025/template.json"
+}

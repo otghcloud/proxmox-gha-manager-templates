@@ -1,149 +1,25 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-09-02T22:23:35Z",
-  "image_builder_version": "0.0.12",
+  "schema_version": 2,
+  "generated_at": "2026-09-03T00:00:00Z",
+  "image_builder_version": "2026.09.03.1",
   "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
   "templates": [
     {
-      "id": "windows-server-2022-proxmox-x64",
-      "target": "pmx-windows2022",
-      "name": "Windows Server 2022 Proxmox",
-      "description": "Windows Server 2022 GitHub Actions self-hosted runner image for Proxmox VE",
-      "platform": "windows",
-      "os_family": "windows-server",
-      "os_version": "2022",
-      "architecture": "x64",
-      "builder": "proxmox",
-      "template_path": "templates/proxmox/windows/windows2022",
-      "template_json_path": "templates/proxmox/windows/windows2022/template.json",
-      "packer_file": "templates/proxmox/windows/windows2022/windows2022.pkr.hcl",
-      "image_name": "runner-image-pmx-windows2022",
-      "version": "0.0.12",
-      "release_date": "2026-09-02",
-      "iso_url": null,
-      "build_capability": {
-        "enabled": false,
-        "disabled_reason": "Windows image builds are not yet supported by the manager.",
-        "communicator": "winrm"
-      },
-      "packer": {
-        "interface_version": 1,
-        "runner_images_directory": "images/windows",
-        "scripts_root_required": false,
-        "installation_media": [
-          {
-            "key": "primary_iso",
-            "required": true
-          },
-          {
-            "key": "virtio_iso",
-            "required": true
-          }
-        ]
-      },
-      "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
-      "default_labels": [
-        "self-hosted",
-        "windows",
-        "x64",
-        "windows-2022"
-      ],
-      "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
-        "disk_gb": 200,
-        "temp_disk_gb": 50,
-        "requires_nested_virtualization": false,
-        "estimated_minutes": 240
-      }
-    },
-    {
-      "id": "windows-server-2025-proxmox-x64",
-      "target": "pmx-windows2025",
-      "name": "Windows Server 2025 Proxmox",
-      "description": "Windows Server 2025 GitHub Actions self-hosted runner image for Proxmox VE",
-      "platform": "windows",
-      "os_family": "windows-server",
-      "os_version": "2025",
-      "architecture": "x64",
-      "builder": "proxmox",
-      "template_path": "templates/proxmox/windows/windows2025",
-      "template_json_path": "templates/proxmox/windows/windows2025/template.json",
-      "packer_file": "templates/proxmox/windows/windows2025/windows2025.pkr.hcl",
-      "image_name": "runner-image-pmx-windows2025",
-      "version": "0.0.12",
-      "release_date": "2026-09-02",
-      "iso_url": null,
-      "build_capability": {
-        "enabled": false,
-        "disabled_reason": "Windows image builds are not yet supported by the manager.",
-        "communicator": "winrm"
-      },
-      "packer": {
-        "interface_version": 1,
-        "runner_images_directory": "images/windows",
-        "scripts_root_required": false,
-        "installation_media": [
-          {
-            "key": "primary_iso",
-            "required": true
-          },
-          {
-            "key": "virtio_iso",
-            "required": true
-          }
-        ]
-      },
-      "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
-      "default_labels": [
-        "self-hosted",
-        "windows",
-        "x64",
-        "windows-2025"
-      ],
-      "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
-        "disk_gb": 200,
-        "temp_disk_gb": 50,
-        "requires_nested_virtualization": false,
-        "estimated_minutes": 240
-      }
-    },
-    {
-      "id": "ubuntu-24.04-proxmox-x64",
-      "target": "ubuntu-24.04",
+      "schema_version": 2,
+      "id": "ubuntu-24.04",
       "name": "Ubuntu 24.04",
-      "description": "GHA-MGR Image - ubuntu-24.04",
-      "platform": "linux",
-      "os_family": "ubuntu",
-      "os_version": "24.04",
-      "architecture": "x64",
-      "builder": "proxmox",
-      "template_path": "templates/proxmox/ubuntu/ubuntu2404",
-      "template_json_path": "templates/proxmox/ubuntu/ubuntu2404/template.json",
-      "packer_file": "templates/proxmox/ubuntu/ubuntu2404/ubuntu2404.pkr.hcl",
-      "image_name": "gha-ubuntu-24.04",
-      "version": "0.0.12",
-      "release_date": "2026-09-02",
-      "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
-      "build_capability": {
-        "enabled": true,
-        "disabled_reason": null,
-        "communicator": "ssh"
+      "description": "Proxmox compatible Ubuntu 24.04 GitHub Actions runner image",
+      "metadata": {
+        "build_timestamp": "2026-09-03T00:00:00Z",
+        "version": "2026.09.03.1",
+        "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
-      "packer": {
-        "interface_version": 1,
-        "runner_images_directory": "images/ubuntu",
-        "scripts_root_required": true,
-        "installation_media": [
-          {
-            "key": "primary_iso",
-            "required": true
-          }
-        ]
+      "platform": {
+        "arch": "x64",
+        "type": "linux",
+        "os_family": "ubuntu",
+        "os_version": "24.04"
       },
-      "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
       "default_labels": [
         "self-hosted",
         "linux",
@@ -151,112 +27,424 @@
         "ubuntu-24.04",
         "ubuntu-latest"
       ],
-      "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
-        "disk_gb": 75,
-        "temp_disk_gb": null,
-        "requires_nested_virtualization": false,
-        "estimated_minutes": 60
-      }
+      "builders": {
+        "cloudimg": {
+          "buildable": false,
+          "disabled_reason": "Cloud image builds are not yet supported.",
+          "label": "cloudimg",
+          "display_name": "Cloud image",
+          "type": "cloudimg",
+          "path": "templates/ubuntu/ubuntu2404/cloudimg",
+          "build_manifest": "templates/ubuntu/ubuntu2404/cloudimg/build.json",
+          "artifact": {
+            "kind": "image_url",
+            "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/noble-server-pmx-cloudimg-amd64.img",
+            "file": null
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "cloudimg",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 75,
+            "temp_disk_gb": null,
+            "estimated_minutes": 60
+          }
+        },
+        "packer": {
+          "buildable": true,
+          "disabled_reason": null,
+          "label": "packer",
+          "display_name": "Packer",
+          "type": "packer",
+          "path": "templates/ubuntu/ubuntu2404/packer",
+          "build_manifest": "templates/ubuntu/ubuntu2404/packer/build.json",
+          "artifact": {
+            "kind": "iso",
+            "url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
+            "file": "ubuntu-24.04.4-live-server-amd64.iso"
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "primary_iso",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 75,
+            "temp_disk_gb": null,
+            "estimated_minutes": 60
+          }
+        }
+      },
+      "template_path": "templates/ubuntu/ubuntu2404",
+      "template_json_path": "templates/ubuntu/ubuntu2404/template.json"
     },
     {
-      "id": "ubuntu-26.04-proxmox-x64",
-      "target": "ubuntu-26.04",
+      "schema_version": 2,
+      "id": "ubuntu-26.04",
       "name": "Ubuntu 26.04",
-      "description": "GHA-MGR Image - ubuntu-26.04",
-      "platform": "linux",
-      "os_family": "ubuntu",
-      "os_version": "26.04",
-      "architecture": "x64",
-      "builder": "proxmox",
-      "template_path": "templates/proxmox/ubuntu/ubuntu2604",
-      "template_json_path": "templates/proxmox/ubuntu/ubuntu2604/template.json",
-      "packer_file": "templates/proxmox/ubuntu/ubuntu2604/ubuntu2604.pkr.hcl",
-      "image_name": "gha-ubuntu-26.04",
-      "version": "0.0.12",
-      "release_date": "2026-09-02",
-      "iso_url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
-      "build_capability": {
-        "enabled": true,
-        "disabled_reason": null,
-        "communicator": "ssh"
+      "description": "Proxmox compatible Ubuntu 26.04 GitHub Actions runner image",
+      "metadata": {
+        "build_timestamp": "2026-09-03T00:00:00Z",
+        "version": "2026.09.03.1",
+        "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
-      "packer": {
-        "interface_version": 1,
-        "runner_images_directory": "images/ubuntu",
-        "scripts_root_required": true,
-        "installation_media": [
-          {
-            "key": "primary_iso",
-            "required": true
-          }
-        ]
+      "platform": {
+        "arch": "x64",
+        "type": "linux",
+        "os_family": "ubuntu",
+        "os_version": "26.04"
       },
-      "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-26.04"
       ],
-      "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
-        "disk_gb": 100,
-        "temp_disk_gb": null,
-        "requires_nested_virtualization": false,
-        "estimated_minutes": 60
-      }
+      "builders": {
+        "cloudimg": {
+          "buildable": false,
+          "disabled_reason": "Cloud image builds are not yet supported.",
+          "label": "cloudimg",
+          "display_name": "Cloud image",
+          "type": "cloudimg",
+          "path": "templates/ubuntu/ubuntu2604/cloudimg",
+          "build_manifest": "templates/ubuntu/ubuntu2604/cloudimg/build.json",
+          "artifact": {
+            "kind": "image_url",
+            "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/resolute-server-pmx-cloudimg-amd64.img",
+            "file": null
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "cloudimg",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 100,
+            "temp_disk_gb": null,
+            "estimated_minutes": 60
+          }
+        },
+        "packer": {
+          "buildable": true,
+          "disabled_reason": null,
+          "label": "packer",
+          "display_name": "Packer",
+          "type": "packer",
+          "path": "templates/ubuntu/ubuntu2604/packer",
+          "build_manifest": "templates/ubuntu/ubuntu2604/packer/build.json",
+          "artifact": {
+            "kind": "iso",
+            "url": "https://releases.ubuntu.com/resolute/ubuntu-26.04.1-live-server-amd64.iso",
+            "file": "ubuntu-26.04.1-live-server-amd64.iso"
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "primary_iso",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 100,
+            "temp_disk_gb": null,
+            "estimated_minutes": 60
+          }
+        }
+      },
+      "template_path": "templates/ubuntu/ubuntu2604",
+      "template_json_path": "templates/ubuntu/ubuntu2604/template.json"
     },
     {
-      "id": "ubuntu-slim-proxmox-x64",
-      "target": "ubuntu-slim",
+      "schema_version": 2,
+      "id": "ubuntu-slim",
       "name": "Ubuntu Slim",
-      "description": "GHA-MGR Image - ubuntu-slim",
-      "platform": "linux",
-      "os_family": "ubuntu",
-      "os_version": "24.04-slim",
-      "architecture": "x64",
-      "builder": "proxmox",
-      "template_path": "templates/proxmox/ubuntu/ubuntu-slim",
-      "template_json_path": "templates/proxmox/ubuntu/ubuntu-slim/template.json",
-      "packer_file": "templates/proxmox/ubuntu/ubuntu-slim/ubuntu-slim.pkr.hcl",
-      "image_name": "gha-ubuntu-slim",
-      "version": "0.0.12",
-      "release_date": "2026-09-02",
-      "iso_url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
-      "build_capability": {
-        "enabled": true,
-        "disabled_reason": null,
-        "communicator": "ssh"
+      "description": "Proxmox compatible \"ubuntu-slim\" GitHub Actions runner image",
+      "metadata": {
+        "build_timestamp": "2026-09-03T00:00:00Z",
+        "version": "2026.09.03.1",
+        "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
-      "packer": {
-        "interface_version": 1,
-        "runner_images_directory": "images/ubuntu-slim",
-        "scripts_root_required": true,
-        "installation_media": [
-          {
-            "key": "primary_iso",
-            "required": true
-          }
-        ]
+      "platform": {
+        "arch": "x64",
+        "type": "linux",
+        "os_family": "ubuntu",
+        "os_version": "24.04"
       },
-      "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
       "default_labels": [
         "self-hosted",
         "linux",
         "x64",
         "ubuntu-slim"
       ],
-      "build_requirements": {
-        "cpu_cores": 2,
-        "memory_mb": 4096,
-        "disk_gb": 50,
-        "temp_disk_gb": null,
-        "requires_nested_virtualization": false,
-        "estimated_minutes": 25
-      }
+      "builders": {
+        "cloudimg": {
+          "buildable": false,
+          "disabled_reason": "Cloud image builds are not yet supported.",
+          "label": "cloudimg",
+          "display_name": "Cloud image",
+          "type": "cloudimg",
+          "path": "templates/ubuntu/ubuntu-slim/cloudimg",
+          "build_manifest": "templates/ubuntu/ubuntu-slim/cloudimg/build.json",
+          "artifact": {
+            "kind": "image_url",
+            "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/noble-server-pmx-cloudimg-amd64.img",
+            "file": null
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu-slim",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "cloudimg",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 4,
+            "memory_mb": 8192,
+            "disk_gb": 40,
+            "temp_disk_gb": null,
+            "estimated_minutes": 25
+          }
+        },
+        "packer": {
+          "buildable": true,
+          "disabled_reason": null,
+          "label": "packer",
+          "display_name": "Packer",
+          "type": "packer",
+          "path": "templates/ubuntu/ubuntu-slim/packer",
+          "build_manifest": "templates/ubuntu/ubuntu-slim/packer/build.json",
+          "artifact": {
+            "kind": "iso",
+            "url": "https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso",
+            "file": "ubuntu-24.04.4-live-server-amd64.iso"
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/ubuntu-slim",
+            "scripts_root_required": true,
+            "installation_media": [
+              {
+                "key": "primary_iso",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 4,
+            "memory_mb": 8192,
+            "disk_gb": 40,
+            "temp_disk_gb": null,
+            "estimated_minutes": 25
+          }
+        }
+      },
+      "template_path": "templates/ubuntu/ubuntu-slim",
+      "template_json_path": "templates/ubuntu/ubuntu-slim/template.json"
+    },
+    {
+      "schema_version": 2,
+      "id": "windows-server-2022",
+      "name": "Windows Server 2022",
+      "description": "Proxmox compatible Windows Server 2022 GitHub Actions runner image",
+      "metadata": {
+        "build_timestamp": "2026-09-03T00:00:00Z",
+        "version": "2026.09.03.1",
+        "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
+      },
+      "platform": {
+        "arch": "x64",
+        "type": "windows",
+        "os_family": "windows-server",
+        "os_version": "2022"
+      },
+      "default_labels": [
+        "self-hosted",
+        "windows",
+        "x64",
+        "windows-2022"
+      ],
+      "builders": {
+        "packer": {
+          "buildable": false,
+          "disabled_reason": "Windows image builds are not yet supported by the manager.",
+          "label": "packer",
+          "display_name": "Packer",
+          "type": "packer",
+          "path": "templates/windows/windows2022/packer",
+          "build_manifest": "templates/windows/windows2022/packer/build.json",
+          "artifact": {
+            "kind": "iso",
+            "url": null,
+            "file": null
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/windows",
+            "scripts_root_required": false,
+            "installation_media": [
+              {
+                "key": "primary_iso",
+                "required": true
+              },
+              {
+                "key": "virtio_iso",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "reboot",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 200,
+            "temp_disk_gb": 50,
+            "estimated_minutes": 240
+          }
+        }
+      },
+      "template_path": "templates/windows/windows2022",
+      "template_json_path": "templates/windows/windows2022/template.json"
+    },
+    {
+      "schema_version": 2,
+      "id": "windows-server-2025",
+      "name": "Windows Server 2025",
+      "description": "Proxmox compatible Windows Server 2025 GitHub Actions runner image",
+      "metadata": {
+        "build_timestamp": "2026-09-03T00:00:00Z",
+        "version": "2026.09.03.1",
+        "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
+      },
+      "platform": {
+        "arch": "x64",
+        "type": "windows",
+        "os_family": "windows-server",
+        "os_version": "2025"
+      },
+      "default_labels": [
+        "self-hosted",
+        "windows",
+        "x64",
+        "windows-2025"
+      ],
+      "builders": {
+        "packer": {
+          "buildable": false,
+          "disabled_reason": "Windows image builds are not yet supported by the manager.",
+          "label": "packer",
+          "display_name": "Packer",
+          "type": "packer",
+          "path": "templates/windows/windows2025/packer",
+          "build_manifest": "templates/windows/windows2025/packer/build.json",
+          "artifact": {
+            "kind": "iso",
+            "url": null,
+            "file": null
+          },
+          "provisioner": {
+            "interface_version": 2,
+            "runner_images_directory": "images/windows",
+            "scripts_root_required": false,
+            "installation_media": [
+              {
+                "key": "primary_iso",
+                "required": true
+              },
+              {
+                "key": "virtio_iso",
+                "required": true
+              }
+            ]
+          },
+          "build_groups": [
+            "configure",
+            "install",
+            "reboot",
+            "cleanup"
+          ],
+          "build_requirements": {
+            "cpu_cores": 6,
+            "memory_mb": 8192,
+            "disk_gb": 200,
+            "temp_disk_gb": 50,
+            "estimated_minutes": 240
+          }
+        }
+      },
+      "template_path": "templates/windows/windows2025",
+      "template_json_path": "templates/windows/windows2025/template.json"
     }
   ],
   "labels": {
