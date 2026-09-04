@@ -24,6 +24,54 @@
           "description": "Upload upstream assets, scripts and toolsets",
           "required": true,
           "sequence": 2
+        },
+        {
+          "id": "rearrange-helper-modules-and-toolset-file",
+          "name": "Rearrange helper modules and toolset file",
+          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
+          "description": "Rearrange helper modules and toolset file",
+          "required": true,
+          "sequence": 3
+        },
+        {
+          "id": "create-installer-admin-account-and-enable-winrm-basic-auth",
+          "name": "Create installer admin account and enable WinRM basic auth",
+          "marker": "[image-builder:stage:create-installer-admin-account-and-enable-winrm-basic-auth]",
+          "description": "Create installer admin account and enable WinRM basic auth",
+          "required": true,
+          "sequence": 4
+        },
+        {
+          "id": "verify-installer-account-is-a-local-admin",
+          "name": "Verify installer account is a local admin",
+          "marker": "[image-builder:stage:verify-installer-account-is-a-local-admin]",
+          "description": "Verify installer account is a local admin",
+          "required": true,
+          "sequence": 5
+        },
+        {
+          "id": "enable-driver-test-signing",
+          "name": "Enable driver test signing",
+          "marker": "[image-builder:stage:enable-driver-test-signing]",
+          "description": "Enable driver test signing",
+          "required": true,
+          "sequence": 6
+        },
+        {
+          "id": "disable-the-wlan-service",
+          "name": "Disable the WLAN service",
+          "marker": "[image-builder:stage:disable-the-wlan-service]",
+          "description": "Disable the WLAN service",
+          "required": true,
+          "sequence": 9
+        },
+        {
+          "id": "uninstall-the-bundled-azure-powershell-msi",
+          "name": "Uninstall the bundled Azure PowerShell MSI",
+          "marker": "[image-builder:stage:uninstall-the-bundled-azure-powershell-msi]",
+          "description": "Uninstall the bundled Azure PowerShell MSI",
+          "required": true,
+          "sequence": 17
         }
       ]
     },
@@ -33,12 +81,76 @@
       "display_order": 2,
       "stages": [
         {
-          "id": "rearrange-helper-modules-and-toolset-file",
-          "name": "Rearrange helper modules and toolset file",
-          "marker": "[image-builder:stage:rearrange-helper-modules-and-toolset-file]",
-          "description": "Rearrange helper modules and toolset file",
+          "id": "base-image-config-defender-powershell-windows-features-chocolatey",
+          "name": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
+          "marker": "[image-builder:stage:base-image-config-defender-powershell-windows-features-chocolatey]",
+          "description": "Base image config: Defender, PowerShell, Windows features, Chocolatey",
           "required": true,
-          "sequence": 3
+          "sequence": 7
+        },
+        {
+          "id": "install-docker-compose-powershell-core-webpi-and-tortoisesvn",
+          "name": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
+          "marker": "[image-builder:stage:install-docker-compose-powershell-core-webpi-and-tortoisesvn]",
+          "description": "Install Docker, Compose, PowerShell Core, WebPI and TortoiseSVN",
+          "required": true,
+          "sequence": 10
+        },
+        {
+          "id": "install-visual-studio-and-kubernetes-tools",
+          "name": "Install Visual Studio and Kubernetes tools",
+          "marker": "[image-builder:stage:install-visual-studio-and-kubernetes-tools]",
+          "description": "Install Visual Studio and Kubernetes tools",
+          "required": true,
+          "sequence": 12
+        },
+        {
+          "id": "install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli",
+          "name": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
+          "marker": "[image-builder:stage:install-wix-wdk-vs-extensions-azure-cli-chocolatey-packages-java-kotli]",
+          "description": "Install WiX, WDK, VS extensions, Azure CLI, Chocolatey packages, Java, Kotlin, OpenSSL",
+          "required": true,
+          "sequence": 14
+        },
+        {
+          "id": "install-the-service-fabric-sdk",
+          "name": "Install the Service Fabric SDK",
+          "marker": "[image-builder:stage:install-the-service-fabric-sdk]",
+          "description": "Install the Service Fabric SDK",
+          "required": true,
+          "sequence": 15
+        },
+        {
+          "id": "install-the-main-runner-toolset",
+          "name": "Install the main runner toolset",
+          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
+          "description": "Install the main runner toolset",
+          "required": true,
+          "sequence": 18
+        },
+        {
+          "id": "windows-updates-shell-and-developer-mode-config-llvm",
+          "name": "Windows Updates, shell and developer mode config, LLVM",
+          "marker": "[image-builder:stage:windows-updates-shell-and-developer-mode-config-llvm]",
+          "description": "Windows Updates, shell and developer mode config, LLVM",
+          "required": true,
+          "sequence": 19
+        },
+        {
+          "id": "download-the-github-actions-runner-binary",
+          "name": "Download the GitHub Actions runner binary",
+          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
+          "description": "Download the GitHub Actions runner binary",
+          "required": true,
+          "sequence": 22
+        },
+        {
+          "id": "native-images-system-and-user-config-post-build-validation",
+          "name": "Native images, system and user config, post-build validation",
+          "marker": "[image-builder:stage:native-images-system-and-user-config-post-build-validation]",
+          "description": "Native images, system and user config, post-build validation",
+          "required": true,
+          "sequence": 23
         }
       ]
     },
@@ -54,6 +166,46 @@
           "description": "Reboot, waiting for the Containers feature to finish enabling",
           "required": true,
           "sequence": 8
+        },
+        {
+          "id": "reboot-after-the-docker-install",
+          "name": "Reboot after the Docker install",
+          "marker": "[image-builder:stage:reboot-after-the-docker-install]",
+          "description": "Reboot after the Docker install",
+          "required": true,
+          "sequence": 11
+        },
+        {
+          "id": "reboot-after-visual-studio",
+          "name": "Reboot after Visual Studio",
+          "marker": "[image-builder:stage:reboot-after-visual-studio]",
+          "description": "Reboot after Visual Studio",
+          "required": true,
+          "sequence": 13
+        },
+        {
+          "id": "reboot-after-the-service-fabric-sdk",
+          "name": "Reboot after the Service Fabric SDK",
+          "marker": "[image-builder:stage:reboot-after-the-service-fabric-sdk]",
+          "description": "Reboot after the Service Fabric SDK",
+          "required": true,
+          "sequence": 16
+        },
+        {
+          "id": "reboot-waiting-for-windows-update-servicing-to-complete",
+          "name": "Reboot, waiting for Windows Update servicing to complete",
+          "marker": "[image-builder:stage:reboot-waiting-for-windows-update-servicing-to-complete]",
+          "description": "Reboot, waiting for Windows Update servicing to complete",
+          "required": true,
+          "sequence": 20
+        },
+        {
+          "id": "final-reboot-before-sysprep",
+          "name": "Final reboot before sysprep",
+          "marker": "[image-builder:stage:final-reboot-before-sysprep]",
+          "description": "Final reboot before sysprep",
+          "required": true,
+          "sequence": 24
         }
       ]
     },
@@ -63,12 +215,20 @@
       "display_order": 4,
       "stages": [
         {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
+          "id": "post-reboot-windows-updates-and-cleanup",
+          "name": "Post-reboot Windows Updates and cleanup",
+          "marker": "[image-builder:stage:post-reboot-windows-updates-and-cleanup]",
+          "description": "Post-reboot Windows Updates and cleanup",
           "required": true,
-          "sequence": 30
+          "sequence": 21
+        },
+        {
+          "id": "sysprep-generalize-for-the-proxmox-template",
+          "name": "Sysprep generalize for the Proxmox template",
+          "marker": "[image-builder:stage:sysprep-generalize-for-the-proxmox-template]",
+          "description": "Sysprep generalize for the Proxmox template",
+          "required": true,
+          "sequence": 25
         }
       ]
     }
