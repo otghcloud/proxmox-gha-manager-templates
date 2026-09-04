@@ -228,6 +228,15 @@ build {
     inline = ["echo '[image-builder:stage:configure-the-image-environment] Configure the image environment'"]
   }
 
+  provisioner "shell-local" {
+    inline = ["echo '[image-builder:stage:resize-tmp-filesystem] Resize /tmp filesystem'"]
+  }
+
+  provisioner "shell" {
+    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    inline          = ["mount -o remount,size=5G /tmp"]
+  }
+
   provisioner "shell" {
     environment_vars = ["IMAGE_VERSION=${local.image_version}", "IMAGE_OS=${local.image_os}", "HELPER_SCRIPTS=${local.helper_script_folder}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
