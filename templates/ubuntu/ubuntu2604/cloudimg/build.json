@@ -10,10 +10,10 @@
       "display_order": 1,
       "stages": [
         {
-          "id": "prepare-image-generation",
-          "name": "Prepare image generation workspace",
-          "marker": "[image-builder:stage:prepare-image-generation]",
-          "description": "Prepare image generation workspace",
+          "id": "create-the-image-generation-directory",
+          "name": "Create the image generation directory",
+          "marker": "[image-builder:stage:create-the-image-generation-directory]",
+          "description": "Create the image generation directory",
           "required": true,
           "sequence": 1
         },
@@ -26,12 +26,84 @@
           "sequence": 2
         },
         {
-          "id": "configure-github-api-wrapper",
+          "id": "upload-github-api-curl-wrapper",
+          "name": "Upload GitHub API curl wrapper",
+          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+          "description": "Upload GitHub API curl wrapper",
+          "required": true,
+          "sequence": 3
+        },
+        {
+          "id": "configure-github-api-rate-limit-wrapper",
           "name": "Configure GitHub API rate-limit wrapper",
           "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
           "description": "Configure GitHub API rate-limit wrapper",
           "required": true,
-          "sequence": 3
+          "sequence": 4
+        },
+        {
+          "id": "configure-the-apt-mock",
+          "name": "Configure the apt mock",
+          "marker": "[image-builder:stage:configure-the-apt-mock]",
+          "description": "Configure the apt mock",
+          "required": true,
+          "sequence": 5
+        },
+        {
+          "id": "add-microsoft-repos-and-configure-apt-sources",
+          "name": "Add Microsoft repos and configure apt sources",
+          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
+          "description": "Add Microsoft repos and configure apt sources",
+          "required": true,
+          "sequence": 6
+        },
+        {
+          "id": "configure-system-limits",
+          "name": "Configure system limits",
+          "marker": "[image-builder:stage:configure-system-limits]",
+          "description": "Configure system limits",
+          "required": true,
+          "sequence": 7
+        },
+        {
+          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
+          "name": "Upload installer scripts, post-gen assets, tests and toolset",
+          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
+          "description": "Upload installer scripts, post-gen assets, tests and toolset",
+          "required": true,
+          "sequence": 8
+        },
+        {
+          "id": "rename-post-gen-to-post-generation",
+          "name": "Rename post-gen to post-generation",
+          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
+          "description": "Rename post-gen to post-generation",
+          "required": true,
+          "sequence": 9
+        },
+        {
+          "id": "write-the-image-data-file",
+          "name": "Write the image data file",
+          "marker": "[image-builder:stage:write-the-image-data-file]",
+          "description": "Write the image data file",
+          "required": true,
+          "sequence": 10
+        },
+        {
+          "id": "stub-waagent-conf-for-the-upstream-environment-script",
+          "name": "Stub waagent.conf for the upstream environment script",
+          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
+          "description": "Stub waagent.conf for the upstream environment script",
+          "required": true,
+          "sequence": 11
+        },
+        {
+          "id": "configure-the-image-environment",
+          "name": "Configure the image environment",
+          "marker": "[image-builder:stage:configure-the-image-environment]",
+          "description": "Configure the image environment",
+          "required": true,
+          "sequence": 12
         }
       ]
     },
@@ -41,20 +113,124 @@
       "display_order": 2,
       "stages": [
         {
-          "id": "install-main-toolset",
-          "name": "Install main toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install main toolset",
+          "id": "install-vital-apt-packages",
+          "name": "Install vital apt packages",
+          "marker": "[image-builder:stage:install-vital-apt-packages]",
+          "description": "Install vital apt packages",
           "required": true,
-          "sequence": 4
+          "sequence": 13
         },
         {
-          "id": "install-actions-runner",
-          "name": "Install GitHub Actions runner",
-          "marker": "[image-builder:stage:install-actions-runner]",
-          "description": "Install GitHub Actions runner",
+          "id": "install-powershell",
+          "name": "Install PowerShell",
+          "marker": "[image-builder:stage:install-powershell]",
+          "description": "Install PowerShell",
           "required": true,
-          "sequence": 5
+          "sequence": 14
+        },
+        {
+          "id": "install-powershell-and-azure-modules",
+          "name": "Install PowerShell and Azure modules",
+          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
+          "description": "Install PowerShell and Azure modules",
+          "required": true,
+          "sequence": 15
+        },
+        {
+          "id": "install-the-main-runner-toolset",
+          "name": "Install the main runner toolset",
+          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
+          "description": "Install the main runner toolset",
+          "required": true,
+          "sequence": 16
+        },
+        {
+          "id": "install-docker",
+          "name": "Install Docker",
+          "marker": "[image-builder:stage:install-docker]",
+          "description": "Install Docker",
+          "required": true,
+          "sequence": 17
+        },
+        {
+          "id": "install-and-configure-the-hosted-toolcache",
+          "name": "Install and configure the hosted toolcache",
+          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
+          "description": "Install and configure the hosted toolcache",
+          "required": true,
+          "sequence": 18
+        },
+        {
+          "id": "install-pipx-packages",
+          "name": "Install pipx packages",
+          "marker": "[image-builder:stage:install-pipx-packages]",
+          "description": "Install pipx packages",
+          "required": true,
+          "sequence": 19
+        },
+        {
+          "id": "install-homebrew",
+          "name": "Install Homebrew",
+          "marker": "[image-builder:stage:install-homebrew]",
+          "description": "Install Homebrew",
+          "required": true,
+          "sequence": 20
+        },
+        {
+          "id": "configure-snap",
+          "name": "Configure snap",
+          "marker": "[image-builder:stage:configure-snap]",
+          "description": "Configure snap",
+          "required": true,
+          "sequence": 21
+        },
+        {
+          "id": "record-the-installed-dpkg-package-list",
+          "name": "Record the installed dpkg package list",
+          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
+          "description": "Record the installed dpkg package list",
+          "required": true,
+          "sequence": 22
+        },
+        {
+          "id": "reboot-the-vm",
+          "name": "Reboot the VM",
+          "marker": "[image-builder:stage:reboot-the-vm]",
+          "description": "Reboot the VM",
+          "required": true,
+          "sequence": 23
+        },
+        {
+          "id": "cleanup-after-the-reboot",
+          "name": "Cleanup after the reboot",
+          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
+          "description": "Cleanup after the reboot",
+          "required": true,
+          "sequence": 24
+        },
+        {
+          "id": "configure-the-system",
+          "name": "Configure the system",
+          "marker": "[image-builder:stage:configure-the-system]",
+          "description": "Configure the system",
+          "required": true,
+          "sequence": 25
+        },
+        {
+          "id": "post-build-validation",
+          "name": "Post-build validation",
+          "marker": "[image-builder:stage:post-build-validation]",
+          "description": "Post-build validation",
+          "required": true,
+          "sequence": 26
+        },
+        {
+          "id": "download-the-github-actions-runner-binary",
+          "name": "Download the GitHub Actions runner binary",
+          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
+          "description": "Download the GitHub Actions runner binary",
+          "required": true,
+          "sequence": 27
         }
       ]
     },
@@ -64,12 +240,12 @@
       "display_order": 3,
       "stages": [
         {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
+          "id": "cleanup-prior-to-proxmox-template-creation",
+          "name": "Cleanup prior to Proxmox template creation",
+          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
+          "description": "Cleanup prior to Proxmox template creation",
           "required": true,
-          "sequence": 6
+          "sequence": 28
         }
       ]
     }

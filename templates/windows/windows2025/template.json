@@ -4,8 +4,8 @@
   "name": "Windows Server 2025",
   "description": "Proxmox compatible Windows Server 2025 GitHub Actions runner image",
   "metadata": {
-    "build_timestamp": "2026-09-03T22:45:00Z",
-    "version": "2026.09.03.2",
+    "build_timestamp": "2026-09-04T01:17:53Z",
+    "version": "2026.09.04.1",
     "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
   },
   "platform": {
