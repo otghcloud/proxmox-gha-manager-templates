@@ -104,6 +104,14 @@
           "description": "Configure the image environment",
           "required": true,
           "sequence": 12
+        },
+        {
+          "id": "resize-tmp-filesystem",
+          "name": "Resize /tmp filesystem",
+          "marker": "[image-builder:stage:resize-tmp-filesystem]",
+          "description": "Resize /tmp filesystem",
+          "required": true,
+          "sequence": 13
         }
       ]
     },
@@ -118,7 +126,7 @@
           "marker": "[image-builder:stage:install-vital-apt-packages]",
           "description": "Install vital apt packages",
           "required": true,
-          "sequence": 13
+          "sequence": 14
         },
         {
           "id": "install-powershell",
@@ -126,7 +134,7 @@
           "marker": "[image-builder:stage:install-powershell]",
           "description": "Install PowerShell",
           "required": true,
-          "sequence": 14
+          "sequence": 15
         },
         {
           "id": "install-powershell-and-azure-modules",
@@ -134,7 +142,7 @@
           "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
           "description": "Install PowerShell and Azure modules",
           "required": true,
-          "sequence": 15
+          "sequence": 16
         },
         {
           "id": "install-the-main-runner-toolset",
@@ -142,7 +150,7 @@
           "marker": "[image-builder:stage:install-the-main-runner-toolset]",
           "description": "Install the main runner toolset",
           "required": true,
-          "sequence": 16
+          "sequence": 17
         },
         {
           "id": "install-docker",
@@ -150,7 +158,7 @@
           "marker": "[image-builder:stage:install-docker]",
           "description": "Install Docker",
           "required": true,
-          "sequence": 17
+          "sequence": 18
         },
         {
           "id": "install-and-configure-the-hosted-toolcache",
@@ -158,7 +166,7 @@
           "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
           "description": "Install and configure the hosted toolcache",
           "required": true,
-          "sequence": 18
+          "sequence": 19
         },
         {
           "id": "install-pipx-packages",
@@ -166,7 +174,7 @@
           "marker": "[image-builder:stage:install-pipx-packages]",
           "description": "Install pipx packages",
           "required": true,
-          "sequence": 19
+          "sequence": 20
         },
         {
           "id": "install-homebrew",
@@ -174,7 +182,7 @@
           "marker": "[image-builder:stage:install-homebrew]",
           "description": "Install Homebrew",
           "required": true,
-          "sequence": 20
+          "sequence": 21
         },
         {
           "id": "configure-snap",
@@ -182,7 +190,7 @@
           "marker": "[image-builder:stage:configure-snap]",
           "description": "Configure snap",
           "required": true,
-          "sequence": 21
+          "sequence": 22
         },
         {
           "id": "record-the-installed-dpkg-package-list",
@@ -190,7 +198,7 @@
           "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
           "description": "Record the installed dpkg package list",
           "required": true,
-          "sequence": 22
+          "sequence": 23
         },
         {
           "id": "reboot-the-vm",
@@ -198,7 +206,7 @@
           "marker": "[image-builder:stage:reboot-the-vm]",
           "description": "Reboot the VM",
           "required": true,
-          "sequence": 23
+          "sequence": 24
         },
         {
           "id": "cleanup-after-the-reboot",
@@ -206,7 +214,7 @@
           "marker": "[image-builder:stage:cleanup-after-the-reboot]",
           "description": "Cleanup after the reboot",
           "required": true,
-          "sequence": 24
+          "sequence": 25
         },
         {
           "id": "configure-the-system",
@@ -214,7 +222,7 @@
           "marker": "[image-builder:stage:configure-the-system]",
           "description": "Configure the system",
           "required": true,
-          "sequence": 25
+          "sequence": 26
         },
         {
           "id": "post-build-validation",
@@ -222,7 +230,7 @@
           "marker": "[image-builder:stage:post-build-validation]",
           "description": "Post-build validation",
           "required": true,
-          "sequence": 26
+          "sequence": 27
         },
         {
           "id": "download-the-github-actions-runner-binary",
@@ -230,7 +238,7 @@
           "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
           "description": "Download the GitHub Actions runner binary",
           "required": true,
-          "sequence": 27
+          "sequence": 28
         }
       ]
     },
@@ -245,7 +253,7 @@
           "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
           "description": "Cleanup prior to Proxmox template creation",
           "required": true,
-          "sequence": 28
+          "sequence": 29
         }
       ]
     }
