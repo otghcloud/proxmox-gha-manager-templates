@@ -1,253 +1,428 @@
 {
-  "schema_version": 2,
-  "builder": "cloudimg",
-  "template_id": "ubuntu-26.04",
-  "display_name": "Cloud image build",
-  "stage_groups": [
-    {
-      "id": "configure",
-      "label": "Configure",
-      "display_order": 1,
-      "stages": [
+    "schema_version": 2,
+    "builder": "cloudimg",
+    "template_id": "ubuntu-26.04",
+    "display_name": "Cloud image build",
+    "stage_groups": [
         {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "required": true,
-          "sequence": 1
+            "id": "configure",
+            "label": "Configure",
+            "display_order": 1,
+            "stages": [
+                {
+                    "id": "create-the-image-generation-directory",
+                    "name": "Create the image generation directory",
+                    "marker": "[image-builder:stage:create-the-image-generation-directory]",
+                    "description": "Create the image generation directory",
+                    "required": true,
+                    "sequence": 1,
+                    "commands": [
+                        "sudo mkdir -p /imagegeneration/helpers /imagegeneration/build /imagegeneration/toolsets",
+                        "sudo chmod 777 /imagegeneration"
+                    ]
+                },
+                {
+                    "id": "upload-helper-scripts",
+                    "name": "Upload helper scripts",
+                    "marker": "[image-builder:stage:upload-helper-scripts]",
+                    "description": "Upload helper scripts",
+                    "required": true,
+                    "sequence": 2,
+                    "commands": [],
+                    "uploads": [
+                        {
+                            "source": "scripts/helpers",
+                            "destination": "/imagegeneration/helpers"
+                        }
+                    ]
+                },
+                {
+                    "id": "upload-github-api-curl-wrapper",
+                    "name": "Upload GitHub API curl wrapper",
+                    "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+                    "description": "Upload GitHub API curl wrapper",
+                    "required": true,
+                    "sequence": 3,
+                    "commands": [],
+                    "uploads": [
+                        {
+                            "source": "scripts/github-api-curl-wrapper.sh",
+                            "source_root": "catalog_root",
+                            "destination": "/tmp/github-api-curl-wrapper.sh",
+                            "mode": 493
+                        }
+                    ]
+                },
+                {
+                    "id": "configure-github-api-rate-limit-wrapper",
+                    "name": "Configure GitHub API rate-limit wrapper",
+                    "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
+                    "description": "Configure GitHub API rate-limit wrapper",
+                    "required": true,
+                    "sequence": 4,
+                    "commands": [
+                        "sudo install -m 0755 /tmp/github-api-curl-wrapper.sh /usr/local/bin/curl",
+                        "printf \"GITHUB_API_MIN_REMAINING=%s\\nGITHUB_API_WAIT_BUFFER_SECONDS=%s\\n\" \"$GH_API_MIN_REMAINING\" \"$GH_API_WAIT_BUFFER_SECONDS\" | sudo tee /etc/github-api-rate-limit.conf >/dev/null",
+                        "if [ -n \"$GH_API_TOKEN\" ]; then printf \"%s\" \"$GH_API_TOKEN\" | sudo tee /etc/github-api-token >/dev/null && sudo chmod 0644 /etc/github-api-token; fi"
+                    ],
+                    "environment": {
+                        "GH_API_TOKEN": "github_api_token",
+                        "GH_API_MIN_REMAINING": "github_api_min_remaining",
+                        "GH_API_WAIT_BUFFER_SECONDS": "github_api_wait_buffer_seconds"
+                    }
+                },
+                {
+                    "id": "configure-the-apt-mock",
+                    "name": "Configure the apt mock",
+                    "marker": "[image-builder:stage:configure-the-apt-mock]",
+                    "description": "Configure the apt mock",
+                    "required": true,
+                    "sequence": 5,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-apt-mock.sh'",
+                        "sudo bash /imagegeneration/toolsets/configure-apt-mock.sh"
+                    ]
+                },
+                {
+                    "id": "add-microsoft-repos-and-configure-apt-sources",
+                    "name": "Add Microsoft repos and configure apt sources",
+                    "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
+                    "description": "Add Microsoft repos and configure apt sources",
+                    "required": true,
+                    "sequence": 6,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-ms-repos.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-apt-sources.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-apt.sh'"
+                    ]
+                },
+                {
+                    "id": "configure-system-limits",
+                    "name": "Configure system limits",
+                    "marker": "[image-builder:stage:configure-system-limits]",
+                    "description": "Configure system limits",
+                    "required": true,
+                    "sequence": 7,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-limits.sh'"
+                    ]
+                },
+                {
+                    "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
+                    "name": "Upload installer scripts, post-gen assets, tests and toolset",
+                    "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
+                    "description": "Upload installer scripts, post-gen assets, tests and toolset",
+                    "required": true,
+                    "sequence": 8,
+                    "commands": [],
+                    "uploads": [
+                        {
+                            "source": "scripts/build",
+                            "destination": "/imagegeneration/toolsets"
+                        },
+                        {
+                            "source": "scripts/tests",
+                            "destination": "/imagegeneration/tests"
+                        },
+                        {
+                            "source": "assets/post-gen",
+                            "destination": "/imagegeneration/post-gen"
+                        },
+                        {
+                            "source": "toolsets/toolset-2604.json",
+                            "destination": "/imagegeneration/toolsets/toolset.json"
+                        }
+                    ]
+                },
+                {
+                    "id": "rename-post-gen-to-post-generation",
+                    "name": "Rename post-gen to post-generation",
+                    "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
+                    "description": "Rename post-gen to post-generation",
+                    "required": true,
+                    "sequence": 9,
+                    "commands": [
+                        "sudo mv /imagegeneration/post-gen /imagegeneration/post-generation"
+                    ]
+                },
+                {
+                    "id": "write-the-image-data-file",
+                    "name": "Write the image data file",
+                    "marker": "[image-builder:stage:write-the-image-data-file]",
+                    "description": "Write the image data file",
+                    "required": true,
+                    "sequence": 10,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-image-data.sh'"
+                    ]
+                },
+                {
+                    "id": "stub-waagent-conf-for-the-upstream-environment-script",
+                    "name": "Stub waagent.conf for the upstream environment script",
+                    "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
+                    "description": "Stub waagent.conf for the upstream environment script",
+                    "required": true,
+                    "sequence": 11,
+                    "commands": [
+                        "sudo touch /etc/waagent.conf",
+                        "grep -q ResourceDisk.Format /etc/waagent.conf || echo 'ResourceDisk.Format=n' | sudo tee -a /etc/waagent.conf >/dev/null",
+                        "grep -q ResourceDisk.EnableSwap /etc/waagent.conf || echo 'ResourceDisk.EnableSwap=n' | sudo tee -a /etc/waagent.conf >/dev/null",
+                        "grep -q ResourceDisk.SwapSizeMB /etc/waagent.conf || echo 'ResourceDisk.SwapSizeMB=0' | sudo tee -a /etc/waagent.conf >/dev/null"
+                    ]
+                },
+                {
+                    "id": "configure-the-image-environment",
+                    "name": "Configure the image environment",
+                    "marker": "[image-builder:stage:configure-the-image-environment]",
+                    "description": "Configure the image environment",
+                    "required": true,
+                    "sequence": 12,
+                    "commands": []
+                }
+            ]
         },
         {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "required": true,
-          "sequence": 2
+            "id": "install",
+            "label": "Install",
+            "display_order": 2,
+            "stages": [
+                {
+                    "id": "install-vital-apt-packages",
+                    "name": "Install vital apt packages",
+                    "marker": "[image-builder:stage:install-vital-apt-packages]",
+                    "description": "Install vital apt packages",
+                    "required": true,
+                    "sequence": 13,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-apt-vital.sh'"
+                    ]
+                },
+                {
+                    "id": "install-powershell",
+                    "name": "Install PowerShell",
+                    "marker": "[image-builder:stage:install-powershell]",
+                    "description": "Install PowerShell",
+                    "required": true,
+                    "sequence": 14,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-powershell.sh'"
+                    ]
+                },
+                {
+                    "id": "install-powershell-and-azure-modules",
+                    "name": "Install PowerShell and Azure modules",
+                    "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
+                    "description": "Install PowerShell and Azure modules",
+                    "required": true,
+                    "sequence": 15,
+                    "commands": [
+                        "sudo pwsh -File '/imagegeneration/toolsets/Install-PowerShellModules.ps1'",
+                        "sudo pwsh -File '/imagegeneration/toolsets/Install-PowerShellAzModules.ps1'"
+                    ]
+                },
+                {
+                    "id": "install-the-main-runner-toolset",
+                    "name": "Install the main runner toolset",
+                    "marker": "[image-builder:stage:install-the-main-runner-toolset]",
+                    "description": "Install the main runner toolset",
+                    "required": true,
+                    "sequence": 16,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-actions-cache.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-apt-common.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azcopy.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azure-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azure-devops-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-bicep.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-apache.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-aws-tools.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-clang.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-cmake.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-codeql-bundle.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-awf.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-container-tools.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-dotnetcore-sdk.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-microsoft-edge.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-gcc-compilers.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-firefox.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-gfortran.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-git.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-git-lfs.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-github-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-google-chrome.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-google-cloud-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-haskell.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-java-tools.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-kubernetes-tools.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-kotlin.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-mysql.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-nginx.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-nvm.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-nodejs.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-copilot-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-bazel.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-php.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-postgresql.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-ruby.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-rust.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-selenium.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-packer.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-vcpkg.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-dpkg.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-yq.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-android-sdk.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-pypy.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-python.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-zstd.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-ninja.sh'",
+                        "sudo usermod -aG docker \"$(id -un)\""
+                    ]
+                },
+                {
+                    "id": "install-docker",
+                    "name": "Install Docker",
+                    "marker": "[image-builder:stage:install-docker]",
+                    "description": "Install Docker",
+                    "required": true,
+                    "sequence": 17,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-docker.sh'",
+                        "sudo usermod -aG docker \"$(id -un)\""
+                    ]
+                },
+                {
+                    "id": "install-and-configure-the-hosted-toolcache",
+                    "name": "Install and configure the hosted toolcache",
+                    "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
+                    "description": "Install and configure the hosted toolcache",
+                    "required": true,
+                    "sequence": 18,
+                    "commands": [
+                        "sudo pwsh -File '/imagegeneration/toolsets/Install-Toolset.ps1'",
+                        "sudo pwsh -File '/imagegeneration/toolsets/Configure-Toolset.ps1'"
+                    ]
+                },
+                {
+                    "id": "install-pipx-packages",
+                    "name": "Install pipx packages",
+                    "marker": "[image-builder:stage:install-pipx-packages]",
+                    "description": "Install pipx packages",
+                    "required": true,
+                    "sequence": 19,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-pipx-packages.sh'"
+                    ]
+                },
+                {
+                    "id": "install-homebrew",
+                    "name": "Install Homebrew",
+                    "marker": "[image-builder:stage:install-homebrew]",
+                    "description": "Install Homebrew",
+                    "required": true,
+                    "sequence": 20,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/install-homebrew.sh'"
+                    ]
+                },
+                {
+                    "id": "configure-snap",
+                    "name": "Configure snap",
+                    "marker": "[image-builder:stage:configure-snap]",
+                    "description": "Configure snap",
+                    "required": true,
+                    "sequence": 21,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-snap.sh'"
+                    ]
+                },
+                {
+                    "id": "record-the-installed-dpkg-package-list",
+                    "name": "Record the installed dpkg package list",
+                    "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
+                    "description": "Record the installed dpkg package list",
+                    "required": true,
+                    "sequence": 22,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/list-dpkg.sh'"
+                    ]
+                },
+                {
+                    "id": "reboot-the-vm",
+                    "name": "Reboot the VM",
+                    "marker": "[image-builder:stage:reboot-the-vm]",
+                    "description": "Reboot the VM",
+                    "required": true,
+                    "sequence": 23,
+                    "commands": []
+                },
+                {
+                    "id": "cleanup-after-the-reboot",
+                    "name": "Cleanup after the reboot",
+                    "marker": "[image-builder:stage:cleanup-after-the-reboot]",
+                    "description": "Cleanup after the reboot",
+                    "required": true,
+                    "sequence": 24,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/cleanup.sh'"
+                    ]
+                },
+                {
+                    "id": "configure-the-system",
+                    "name": "Configure the system",
+                    "marker": "[image-builder:stage:configure-the-system]",
+                    "description": "Configure the system",
+                    "required": true,
+                    "sequence": 25,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-system.sh'"
+                    ]
+                },
+                {
+                    "id": "post-build-validation",
+                    "name": "Post-build validation",
+                    "marker": "[image-builder:stage:post-build-validation]",
+                    "description": "Post-build validation",
+                    "required": true,
+                    "sequence": 26,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/post-build-validation.sh'"
+                    ]
+                },
+                {
+                    "id": "download-the-github-actions-runner-binary",
+                    "name": "Download the GitHub Actions runner binary",
+                    "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
+                    "description": "Download the GitHub Actions runner binary",
+                    "required": true,
+                    "sequence": 27,
+                    "commands": [
+                        "set -e",
+                        "sudo mkdir -p /opt/actions-runner",
+                        "sudo chown \"$(id -un)\":\"$(id -gn)\" /opt/actions-runner",
+                        "cd /opt/actions-runner && RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | grep \"tag_name\" | head -n1 | sed -E \"s/.*\\\\\"v([^\\\\\"]+)\\\\\".*/\\1/\") && curl -fsSL -o actions-runner.tar.gz \"https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz\" && tar xzf actions-runner.tar.gz && rm actions-runner.tar.gz && sudo ./bin/installdependencies.sh"
+                    ]
+                }
+            ]
         },
         {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "required": true,
-          "sequence": 3
-        },
-        {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "required": true,
-          "sequence": 4
-        },
-        {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "required": true,
-          "sequence": 5
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "required": true,
-          "sequence": 6
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "required": true,
-          "sequence": 7
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "required": true,
-          "sequence": 8
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "required": true,
-          "sequence": 9
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "required": true,
-          "sequence": 10
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "required": true,
-          "sequence": 11
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "required": true,
-          "sequence": 12
+            "id": "cleanup",
+            "label": "Cleanup",
+            "display_order": 3,
+            "stages": [
+                {
+                    "id": "cleanup-prior-to-proxmox-template-creation",
+                    "name": "Cleanup prior to Proxmox template creation",
+                    "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
+                    "description": "Cleanup prior to Proxmox template creation",
+                    "required": true,
+                    "sequence": 28,
+                    "commands": [
+                        "sudo cloud-init clean",
+                        "sudo rm -f /etc/ssh/ssh_host_*",
+                        "sudo truncate -s 0 /etc/machine-id"
+                    ]
+                }
+            ]
         }
-      ]
-    },
-    {
-      "id": "install",
-      "label": "Install",
-      "display_order": 2,
-      "stages": [
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "required": true,
-          "sequence": 13
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "required": true,
-          "sequence": 14
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "required": true,
-          "sequence": 15
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "required": true,
-          "sequence": 16
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "required": true,
-          "sequence": 17
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "required": true,
-          "sequence": 18
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "required": true,
-          "sequence": 19
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "required": true,
-          "sequence": 20
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "required": true,
-          "sequence": 21
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "required": true,
-          "sequence": 22
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "required": true,
-          "sequence": 23
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "required": true,
-          "sequence": 24
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "required": true,
-          "sequence": 25
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "required": true,
-          "sequence": 26
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "required": true,
-          "sequence": 27
-        }
-      ]
-    },
-    {
-      "id": "cleanup",
-      "label": "Cleanup",
-      "display_order": 3,
-      "stages": [
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "required": true,
-          "sequence": 28
-        }
-      ]
-    }
-  ]
+    ]
 }

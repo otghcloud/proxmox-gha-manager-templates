@@ -4,8 +4,8 @@
   "name": "Ubuntu 26.04",
   "description": "Proxmox compatible Ubuntu 26.04 GitHub Actions runner image",
   "metadata": {
-    "build_timestamp": "2026-09-04T09:37:30Z",
-    "version": "2026.09.04.2",
+    "build_timestamp": "2026-09-04T15:56:36Z",
+    "version": "2026.09.04.3",
     "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
   },
   "platform": {
@@ -22,8 +22,8 @@
   ],
   "builders": {
     "cloudimg": {
-      "buildable": false,
-      "disabled_reason": "Cloud image builds are not yet supported.",
+      "buildable": true,
+      "disabled_reason": null,
       "label": "cloudimg",
       "display_name": "Cloud image",
       "type": "cloudimg",
@@ -31,7 +31,7 @@
       "build_manifest": "templates/ubuntu/ubuntu2604/cloudimg/build.json",
       "artifact": {
         "kind": "image_url",
-        "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/resolute-server-pmx-cloudimg-amd64.img",
+        "url": "https://otgh-static-assets.s3.otgh.cloud/cloud-images/ubuntu-26.04-server-pmx-cloudimg-amd64.img",
         "file": null
       },
       "provisioner": {

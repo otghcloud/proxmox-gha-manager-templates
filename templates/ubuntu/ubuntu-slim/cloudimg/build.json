@@ -1,77 +1,155 @@
 {
-  "schema_version": 2,
-  "builder": "cloudimg",
-  "template_id": "ubuntu-slim",
-  "display_name": "Cloud image build",
-  "stage_groups": [
-    {
-      "id": "configure",
-      "label": "Configure",
-      "display_order": 1,
-      "stages": [
+    "schema_version": 2,
+    "builder": "cloudimg",
+    "template_id": "ubuntu-slim",
+    "display_name": "Cloud image build",
+    "stage_groups": [
         {
-          "id": "prepare-image-generation",
-          "name": "Prepare image generation workspace",
-          "marker": "[image-builder:stage:prepare-image-generation]",
-          "description": "Prepare image generation workspace",
-          "required": true,
-          "sequence": 1
+            "id": "configure",
+            "label": "Configure",
+            "display_order": 1,
+            "stages": [
+                {
+                    "id": "prepare-image-generation",
+                    "name": "Prepare image generation workspace",
+                    "marker": "[image-builder:stage:prepare-image-generation]",
+                    "description": "Prepare image generation workspace",
+                    "required": true,
+                    "sequence": 1,
+                    "commands": [
+                        "sudo mkdir -p /imagegeneration/helpers /imagegeneration/build /imagegeneration/toolsets",
+                        "sudo chmod 777 /imagegeneration"
+                    ]
+                },
+                {
+                    "id": "upload-slim-assets",
+                    "name": "Upload ubuntu-slim scripts and assets",
+                    "marker": "[image-builder:stage:upload-slim-assets]",
+                    "description": "Upload ubuntu-slim scripts and assets",
+                    "required": true,
+                    "sequence": 2,
+                    "commands": [],
+                    "uploads": [
+                        {
+                            "source": "scripts/helpers",
+                            "destination": "/imagegeneration/helpers"
+                        },
+                        {
+                            "source": "scripts/build",
+                            "destination": "/imagegeneration/build"
+                        },
+                        {
+                            "source": "toolsets",
+                            "destination": "/imagegeneration/toolsets"
+                        }
+                    ]
+                },
+                {
+                    "id": "configure-github-api-wrapper",
+                    "name": "Configure GitHub API rate-limit wrapper",
+                    "marker": "[image-builder:stage:configure-github-api-wrapper]",
+                    "description": "Configure GitHub API rate-limit wrapper",
+                    "required": true,
+                    "sequence": 3,
+                    "commands": [
+                        "sudo install -m 0755 /tmp/github-api-curl-wrapper.sh /usr/local/bin/curl",
+                        "printf \"GITHUB_API_MIN_REMAINING=%s\\nGITHUB_API_WAIT_BUFFER_SECONDS=%s\\n\" \"$GH_API_MIN_REMAINING\" \"$GH_API_WAIT_BUFFER_SECONDS\" | sudo tee /etc/github-api-rate-limit.conf >/dev/null",
+                        "if [ -n \"$GH_API_TOKEN\" ]; then printf \"%s\" \"$GH_API_TOKEN\" | sudo tee /etc/github-api-token >/dev/null && sudo chmod 0644 /etc/github-api-token; fi"
+                    ],
+                    "uploads": [
+                        {
+                            "source": "scripts/github-api-curl-wrapper.sh",
+                            "source_root": "catalog_root",
+                            "destination": "/tmp/github-api-curl-wrapper.sh",
+                            "mode": 493
+                        }
+                    ],
+                    "environment": {
+                        "GH_API_TOKEN": "github_api_token",
+                        "GH_API_MIN_REMAINING": "github_api_min_remaining",
+                        "GH_API_WAIT_BUFFER_SECONDS": "github_api_wait_buffer_seconds"
+                    }
+                }
+            ]
         },
         {
-          "id": "upload-slim-assets",
-          "name": "Upload ubuntu-slim scripts and assets",
-          "marker": "[image-builder:stage:upload-slim-assets]",
-          "description": "Upload ubuntu-slim scripts and assets",
-          "required": true,
-          "sequence": 2
+            "id": "install",
+            "label": "Install",
+            "display_order": 2,
+            "stages": [
+                {
+                    "id": "install-slim-toolset",
+                    "name": "Install ubuntu-slim toolset",
+                    "marker": "[image-builder:stage:install-slim-toolset]",
+                    "description": "Install ubuntu-slim toolset",
+                    "required": true,
+                    "sequence": 4,
+                    "commands": [
+                        "sudo bash '/imagegeneration/toolsets/configure-apt-sources.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-apt.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-apt-vital.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-ms-repos.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-image-data-file.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-environment.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-actions-cache.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-apt-common.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azcopy.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azure-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-azure-devops-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-bicep.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-aws-tools.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-git.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-git-lfs.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-github-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-google-cloud-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-nvm.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-nodejs.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-powershell.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-dpkg.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-yq.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-python.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-zstd.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-pipx-packages.sh'",
+                        "sudo bash '/imagegeneration/toolsets/install-docker-cli.sh'",
+                        "sudo bash '/imagegeneration/toolsets/configure-system.sh'",
+                        "sudo bash '/imagegeneration/helpers/cleanup.sh'"
+                    ]
+                },
+                {
+                    "id": "install-actions-runner",
+                    "name": "Install GitHub Actions runner",
+                    "marker": "[image-builder:stage:install-actions-runner]",
+                    "description": "Install GitHub Actions runner",
+                    "required": true,
+                    "sequence": 5,
+                    "commands": [
+                        "set -e",
+                        "sudo mkdir -p /opt/actions-runner",
+                        "sudo chown \"$(id -un)\":\"$(id -gn)\" /opt/actions-runner",
+                        "cd /opt/actions-runner && RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | grep \"tag_name\" | head -n1 | sed -E \"s/.*\\\\\"v([^\\\\\"]+)\\\\\".*/\\1/\") && curl -fsSL -o actions-runner.tar.gz \"https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz\" && tar xzf actions-runner.tar.gz && rm actions-runner.tar.gz && sudo ./bin/installdependencies.sh"
+                    ]
+                }
+            ]
         },
         {
-          "id": "configure-github-api-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "required": true,
-          "sequence": 3
+            "id": "cleanup",
+            "label": "Cleanup",
+            "display_order": 3,
+            "stages": [
+                {
+                    "id": "cleanup-template",
+                    "name": "Cleanup prior to template creation",
+                    "marker": "[image-builder:stage:cleanup-template]",
+                    "description": "Cleanup prior to template creation",
+                    "required": true,
+                    "sequence": 6,
+                    "commands": [
+                        "sudo cloud-init clean",
+                        "sudo rm -f /etc/ssh/ssh_host_*",
+                        "sudo truncate -s 0 /etc/machine-id"
+                    ]
+                }
+            ]
         }
-      ]
-    },
-    {
-      "id": "install",
-      "label": "Install",
-      "display_order": 2,
-      "stages": [
-        {
-          "id": "install-slim-toolset",
-          "name": "Install ubuntu-slim toolset",
-          "marker": "[image-builder:stage:install-slim-toolset]",
-          "description": "Install ubuntu-slim toolset",
-          "required": true,
-          "sequence": 4
-        },
-        {
-          "id": "install-actions-runner",
-          "name": "Install GitHub Actions runner",
-          "marker": "[image-builder:stage:install-actions-runner]",
-          "description": "Install GitHub Actions runner",
-          "required": true,
-          "sequence": 5
-        }
-      ]
-    },
-    {
-      "id": "cleanup",
-      "label": "Cleanup",
-      "display_order": 3,
-      "stages": [
-        {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
-          "required": true,
-          "sequence": 6
-        }
-      ]
-    }
-  ]
+    ]
 }
