@@ -63,3 +63,66 @@ jobs:
           done < <(find templates -name template.json | sort)
 
           echo "Validated $(jq '.templates | length' templates.json) template metadata entries."
+
+  validate-stage-scripts:
+    name: ci:stage-scripts
+    runs-on: ['self-hosted', 'ubuntu-slim']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+
+      - name: Assert every stage script a manifest references is present
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f templates.json ]]; then
+            echo "No generated template artifact is present yet."
+            exit 0
+          fi
+
+          missing=0
+          checked=0
+
+          # Manifests reference stage scripts relative to their own directory. A missing one
+          # only surfaces mid-build in the manager, so it is worth catching before publishing.
+          while IFS= read -r manifest; do
+            manifest_dir="$(dirname "${manifest}")"
+
+            while IFS= read -r script; do
+              [[ -z "${script}" ]] && continue
+              checked=$((checked + 1))
+
+              if [[ ! -f "${manifest_dir}/${script}" ]]; then
+                echo "${manifest}: stage script does not exist: ${script}" >&2
+                missing=$((missing + 1))
+              fi
+            done < <(jq -r '.stage_groups[].stages[].script // empty' "${manifest}")
+          done < <(find templates -name build.json | sort)
+
+          if (( missing > 0 )); then
+            echo "${missing} stage script(s) referenced but not shipped." >&2
+            exit 1
+          fi
+
+          echo "Checked ${checked} stage script reference(s)."
+
+      - name: Shellcheck the bundled stage scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          shopt -s nullglob globstar
+          scripts=(templates/**/stage-scripts/*.sh)
+          shopt -u nullglob globstar
+
+          if (( ${#scripts[@]} == 0 )); then
+            echo "No stage scripts in this artifact."
+            exit 0
+          fi
+
+          shellcheck -S warning "${scripts[@]}"
+          echo "Shellchecked ${#scripts[@]} stage script(s)."
+
