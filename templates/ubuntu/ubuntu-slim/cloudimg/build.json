@@ -1,8 +1,8 @@
 {
-    "schema_version": 2,
+    "schema_version": 3,
     "builder": "cloudimg",
     "template_id": "ubuntu-slim",
-    "display_name": "Cloud image build",
+    "display_name": "Ubuntu Slim",
     "stage_groups": [
         {
             "id": "configure",
@@ -11,36 +11,68 @@
             "stages": [
                 {
                     "id": "prepare-image-generation",
-                    "name": "Prepare image generation workspace",
+                    "name": "Prepare the image generation workspace",
                     "marker": "[image-builder:stage:prepare-image-generation]",
-                    "description": "Prepare image generation workspace",
+                    "description": "Prepare the image generation workspace",
                     "required": true,
                     "sequence": 1,
-                    "commands": [
-                        "sudo mkdir -p /imagegeneration/helpers /imagegeneration/build /imagegeneration/toolsets",
-                        "sudo chmod 777 /imagegeneration"
+                    "script": "stage-scripts/prepare-image-generation.sh"
+                },
+                {
+                    "id": "upload-build",
+                    "name": "Upload build scripts",
+                    "marker": "[image-builder:stage:upload-build]",
+                    "description": "Upload build scripts",
+                    "required": true,
+                    "sequence": 2,
+                    "uploads": [
+                        {
+                            "source": "scripts/build",
+                            "destination": "/imagegeneration/build"
+                        }
                     ]
                 },
                 {
-                    "id": "upload-slim-assets",
-                    "name": "Upload ubuntu-slim scripts and assets",
-                    "marker": "[image-builder:stage:upload-slim-assets]",
-                    "description": "Upload ubuntu-slim scripts and assets",
+                    "id": "upload-helpers",
+                    "name": "Upload helper scripts",
+                    "marker": "[image-builder:stage:upload-helpers]",
+                    "description": "Upload helper scripts",
                     "required": true,
-                    "sequence": 2,
-                    "commands": [],
+                    "sequence": 3,
                     "uploads": [
                         {
                             "source": "scripts/helpers",
                             "destination": "/imagegeneration/helpers"
-                        },
-                        {
-                            "source": "scripts/build",
-                            "destination": "/imagegeneration/build"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "id": "upload-toolsets",
+                    "name": "Upload the toolset definitions",
+                    "marker": "[image-builder:stage:upload-toolsets]",
+                    "description": "Upload the toolset definitions",
+                    "required": true,
+                    "sequence": 4,
+                    "uploads": [
                         {
                             "source": "toolsets",
                             "destination": "/imagegeneration/toolsets"
+                        }
+                    ]
+                },
+                {
+                    "id": "upload-github-api-curl-wrapper",
+                    "name": "Upload GitHub API curl wrapper",
+                    "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+                    "description": "Upload GitHub API curl wrapper",
+                    "required": true,
+                    "sequence": 5,
+                    "uploads": [
+                        {
+                            "source": "scripts/github-api-curl-wrapper.sh",
+                            "source_root": "catalog_root",
+                            "destination": "/tmp/github-api-curl-wrapper.sh",
+                            "mode": 493
                         }
                     ]
                 },
@@ -50,104 +82,304 @@
                     "marker": "[image-builder:stage:configure-github-api-wrapper]",
                     "description": "Configure GitHub API rate-limit wrapper",
                     "required": true,
-                    "sequence": 3,
-                    "commands": [
-                        "sudo install -m 0755 /tmp/github-api-curl-wrapper.sh /usr/local/bin/curl",
-                        "printf \"GITHUB_API_MIN_REMAINING=%s\\nGITHUB_API_WAIT_BUFFER_SECONDS=%s\\n\" \"$GH_API_MIN_REMAINING\" \"$GH_API_WAIT_BUFFER_SECONDS\" | sudo tee /etc/github-api-rate-limit.conf >/dev/null",
-                        "if [ -n \"$GH_API_TOKEN\" ]; then printf \"%s\" \"$GH_API_TOKEN\" | sudo tee /etc/github-api-token >/dev/null && sudo chmod 0644 /etc/github-api-token; fi"
-                    ],
-                    "uploads": [
-                        {
-                            "source": "scripts/github-api-curl-wrapper.sh",
-                            "source_root": "catalog_root",
-                            "destination": "/tmp/github-api-curl-wrapper.sh",
-                            "mode": 493
-                        }
-                    ],
+                    "sequence": 6,
                     "environment": {
                         "GH_API_TOKEN": "github_api_token",
                         "GH_API_MIN_REMAINING": "github_api_min_remaining",
                         "GH_API_WAIT_BUFFER_SECONDS": "github_api_wait_buffer_seconds"
-                    }
+                    },
+                    "script": "stage-scripts/configure-github-api-wrapper.sh"
                 }
             ]
         },
         {
-            "id": "install",
-            "label": "Install",
+            "id": "toolset",
+            "label": "Runner toolset",
             "display_order": 2,
             "stages": [
                 {
-                    "id": "install-slim-toolset",
-                    "name": "Install ubuntu-slim toolset",
-                    "marker": "[image-builder:stage:install-slim-toolset]",
-                    "description": "Install ubuntu-slim toolset",
+                    "id": "configure-apt-sources",
+                    "name": "Configure apt sources",
+                    "marker": "[image-builder:stage:configure-apt-sources]",
+                    "description": "Configure apt sources",
                     "required": true,
-                    "sequence": 4,
-                    "commands": [
-                        "sudo bash '/imagegeneration/toolsets/configure-apt-sources.sh'",
-                        "sudo bash '/imagegeneration/toolsets/configure-apt.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-apt-vital.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-ms-repos.sh'",
-                        "sudo bash '/imagegeneration/toolsets/configure-image-data-file.sh'",
-                        "sudo bash '/imagegeneration/toolsets/configure-environment.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-actions-cache.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-apt-common.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-azcopy.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-azure-cli.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-azure-devops-cli.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-bicep.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-aws-tools.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-git.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-git-lfs.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-github-cli.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-google-cloud-cli.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-nvm.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-nodejs.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-powershell.sh'",
-                        "sudo bash '/imagegeneration/toolsets/configure-dpkg.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-yq.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-python.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-zstd.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-pipx-packages.sh'",
-                        "sudo bash '/imagegeneration/toolsets/install-docker-cli.sh'",
-                        "sudo bash '/imagegeneration/toolsets/configure-system.sh'",
-                        "sudo bash '/imagegeneration/helpers/cleanup.sh'"
-                    ]
+                    "sequence": 7,
+                    "script": "stage-scripts/configure-apt-sources.sh"
                 },
                 {
-                    "id": "install-actions-runner",
-                    "name": "Install GitHub Actions runner",
-                    "marker": "[image-builder:stage:install-actions-runner]",
-                    "description": "Install GitHub Actions runner",
+                    "id": "configure-apt",
+                    "name": "Configure apt",
+                    "marker": "[image-builder:stage:configure-apt]",
+                    "description": "Configure apt",
                     "required": true,
-                    "sequence": 5,
-                    "commands": [
-                        "set -e",
-                        "sudo mkdir -p /opt/actions-runner",
-                        "sudo chown \"$(id -un)\":\"$(id -gn)\" /opt/actions-runner",
-                        "cd /opt/actions-runner && RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | grep \"tag_name\" | head -n1 | sed -E \"s/.*\\\\\"v([^\\\\\"]+)\\\\\".*/\\1/\") && curl -fsSL -o actions-runner.tar.gz \"https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz\" && tar xzf actions-runner.tar.gz && rm actions-runner.tar.gz && sudo ./bin/installdependencies.sh"
-                    ]
+                    "sequence": 8,
+                    "script": "stage-scripts/configure-apt.sh"
+                },
+                {
+                    "id": "install-apt-vital",
+                    "name": "Install apt vital",
+                    "marker": "[image-builder:stage:install-apt-vital]",
+                    "description": "Install apt vital",
+                    "required": true,
+                    "sequence": 9,
+                    "script": "stage-scripts/install-apt-vital.sh"
+                },
+                {
+                    "id": "install-ms-repos",
+                    "name": "Install Microsoft repos",
+                    "marker": "[image-builder:stage:install-ms-repos]",
+                    "description": "Install Microsoft repos",
+                    "required": true,
+                    "sequence": 10,
+                    "script": "stage-scripts/install-ms-repos.sh"
+                },
+                {
+                    "id": "configure-image-data-file",
+                    "name": "Configure image data file",
+                    "marker": "[image-builder:stage:configure-image-data-file]",
+                    "description": "Configure image data file",
+                    "required": true,
+                    "sequence": 11,
+                    "script": "stage-scripts/configure-image-data-file.sh"
+                },
+                {
+                    "id": "configure-environment",
+                    "name": "Configure environment",
+                    "marker": "[image-builder:stage:configure-environment]",
+                    "description": "Configure environment",
+                    "required": true,
+                    "sequence": 12,
+                    "script": "stage-scripts/configure-environment.sh"
+                },
+                {
+                    "id": "install-actions-cache",
+                    "name": "Install Actions cache",
+                    "marker": "[image-builder:stage:install-actions-cache]",
+                    "description": "Install Actions cache",
+                    "required": true,
+                    "sequence": 13,
+                    "script": "stage-scripts/install-actions-cache.sh"
+                },
+                {
+                    "id": "install-apt-common",
+                    "name": "Install apt common",
+                    "marker": "[image-builder:stage:install-apt-common]",
+                    "description": "Install apt common",
+                    "required": true,
+                    "sequence": 14,
+                    "script": "stage-scripts/install-apt-common.sh"
+                },
+                {
+                    "id": "install-azcopy",
+                    "name": "Install AzCopy",
+                    "marker": "[image-builder:stage:install-azcopy]",
+                    "description": "Install AzCopy",
+                    "required": true,
+                    "sequence": 15,
+                    "script": "stage-scripts/install-azcopy.sh"
+                },
+                {
+                    "id": "install-azure-cli",
+                    "name": "Install Azure CLI",
+                    "marker": "[image-builder:stage:install-azure-cli]",
+                    "description": "Install Azure CLI",
+                    "required": true,
+                    "sequence": 16,
+                    "script": "stage-scripts/install-azure-cli.sh"
+                },
+                {
+                    "id": "install-azure-devops-cli",
+                    "name": "Install Azure DevOps CLI",
+                    "marker": "[image-builder:stage:install-azure-devops-cli]",
+                    "description": "Install Azure DevOps CLI",
+                    "required": true,
+                    "sequence": 17,
+                    "script": "stage-scripts/install-azure-devops-cli.sh"
+                },
+                {
+                    "id": "install-bicep",
+                    "name": "Install Bicep",
+                    "marker": "[image-builder:stage:install-bicep]",
+                    "description": "Install Bicep",
+                    "required": true,
+                    "sequence": 18,
+                    "script": "stage-scripts/install-bicep.sh"
+                },
+                {
+                    "id": "install-aws-tools",
+                    "name": "Install AWS tools",
+                    "marker": "[image-builder:stage:install-aws-tools]",
+                    "description": "Install AWS tools",
+                    "required": true,
+                    "sequence": 19,
+                    "script": "stage-scripts/install-aws-tools.sh"
+                },
+                {
+                    "id": "install-git",
+                    "name": "Install Git",
+                    "marker": "[image-builder:stage:install-git]",
+                    "description": "Install Git",
+                    "required": true,
+                    "sequence": 20,
+                    "script": "stage-scripts/install-git.sh"
+                },
+                {
+                    "id": "install-git-lfs",
+                    "name": "Install Git LFS",
+                    "marker": "[image-builder:stage:install-git-lfs]",
+                    "description": "Install Git LFS",
+                    "required": true,
+                    "sequence": 21,
+                    "script": "stage-scripts/install-git-lfs.sh"
+                },
+                {
+                    "id": "install-github-cli",
+                    "name": "Install GitHub CLI",
+                    "marker": "[image-builder:stage:install-github-cli]",
+                    "description": "Install GitHub CLI",
+                    "required": true,
+                    "sequence": 22,
+                    "script": "stage-scripts/install-github-cli.sh"
+                },
+                {
+                    "id": "install-google-cloud-cli",
+                    "name": "Install Google cloud CLI",
+                    "marker": "[image-builder:stage:install-google-cloud-cli]",
+                    "description": "Install Google cloud CLI",
+                    "required": true,
+                    "sequence": 23,
+                    "script": "stage-scripts/install-google-cloud-cli.sh"
+                },
+                {
+                    "id": "install-nvm",
+                    "name": "Install nvm",
+                    "marker": "[image-builder:stage:install-nvm]",
+                    "description": "Install nvm",
+                    "required": true,
+                    "sequence": 24,
+                    "script": "stage-scripts/install-nvm.sh"
+                },
+                {
+                    "id": "install-nodejs",
+                    "name": "Install Node.js",
+                    "marker": "[image-builder:stage:install-nodejs]",
+                    "description": "Install Node.js",
+                    "required": true,
+                    "sequence": 25,
+                    "script": "stage-scripts/install-nodejs.sh"
+                },
+                {
+                    "id": "install-powershell",
+                    "name": "Install PowerShell",
+                    "marker": "[image-builder:stage:install-powershell]",
+                    "description": "Install PowerShell",
+                    "required": true,
+                    "sequence": 26,
+                    "script": "stage-scripts/install-powershell.sh"
+                },
+                {
+                    "id": "configure-dpkg",
+                    "name": "Configure dpkg",
+                    "marker": "[image-builder:stage:configure-dpkg]",
+                    "description": "Configure dpkg",
+                    "required": true,
+                    "sequence": 27,
+                    "script": "stage-scripts/configure-dpkg.sh"
+                },
+                {
+                    "id": "install-yq",
+                    "name": "Install yq",
+                    "marker": "[image-builder:stage:install-yq]",
+                    "description": "Install yq",
+                    "required": true,
+                    "sequence": 28,
+                    "script": "stage-scripts/install-yq.sh"
+                },
+                {
+                    "id": "install-python",
+                    "name": "Install Python",
+                    "marker": "[image-builder:stage:install-python]",
+                    "description": "Install Python",
+                    "required": true,
+                    "sequence": 29,
+                    "script": "stage-scripts/install-python.sh"
+                },
+                {
+                    "id": "install-zstd",
+                    "name": "Install zstd",
+                    "marker": "[image-builder:stage:install-zstd]",
+                    "description": "Install zstd",
+                    "required": true,
+                    "sequence": 30,
+                    "script": "stage-scripts/install-zstd.sh"
+                },
+                {
+                    "id": "install-pipx-packages",
+                    "name": "Install pipx packages",
+                    "marker": "[image-builder:stage:install-pipx-packages]",
+                    "description": "Install pipx packages",
+                    "required": true,
+                    "sequence": 31,
+                    "script": "stage-scripts/install-pipx-packages.sh"
+                },
+                {
+                    "id": "install-docker-cli",
+                    "name": "Install Docker CLI",
+                    "marker": "[image-builder:stage:install-docker-cli]",
+                    "description": "Install Docker CLI",
+                    "required": true,
+                    "sequence": 32,
+                    "script": "stage-scripts/install-docker-cli.sh"
+                },
+                {
+                    "id": "configure-system",
+                    "name": "Configure system",
+                    "marker": "[image-builder:stage:configure-system]",
+                    "description": "Configure system",
+                    "required": true,
+                    "sequence": 33,
+                    "script": "stage-scripts/configure-system.sh"
+                },
+                {
+                    "id": "cleanup",
+                    "name": "Cleanup",
+                    "marker": "[image-builder:stage:cleanup]",
+                    "description": "Cleanup",
+                    "required": true,
+                    "sequence": 34,
+                    "script": "stage-scripts/cleanup.sh"
+                }
+            ]
+        },
+        {
+            "id": "finalise",
+            "label": "Finalise",
+            "display_order": 3,
+            "stages": [
+                {
+                    "id": "install-actions-runner",
+                    "name": "Install the GitHub Actions runner",
+                    "marker": "[image-builder:stage:install-actions-runner]",
+                    "description": "Install the GitHub Actions runner",
+                    "required": true,
+                    "sequence": 35,
+                    "script": "stage-scripts/install-actions-runner.sh"
                 }
             ]
         },
         {
             "id": "cleanup",
             "label": "Cleanup",
-            "display_order": 3,
+            "display_order": 4,
             "stages": [
                 {
                     "id": "cleanup-template",
-                    "name": "Cleanup prior to template creation",
+                    "name": "Cleanup prior to Proxmox template creation",
                     "marker": "[image-builder:stage:cleanup-template]",
-                    "description": "Cleanup prior to template creation",
+                    "description": "Cleanup prior to Proxmox template creation",
                     "required": true,
-                    "sequence": 6,
-                    "commands": [
-                        "sudo cloud-init clean",
-                        "sudo rm -f /etc/ssh/ssh_host_*",
-                        "sudo truncate -s 0 /etc/machine-id"
-                    ]
+                    "sequence": 36,
+                    "script": "stage-scripts/cleanup-template.sh"
                 }
             ]
         }

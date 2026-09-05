@@ -1,0 +1,389 @@
+{
+  "template_id": "ubuntu-24.04",
+  "display_name": "Ubuntu 24.04",
+  "upstream_template": "runner-images/images/ubuntu/templates/build.ubuntu-24_04.pkr.hcl",
+  "packer": {
+    "source": "source.proxmox-iso.ubuntu2404",
+    "name": "ubuntu2404"
+  },
+  "rewrites": [
+    {
+      "pattern": "\\$\\{path\\.root\\}/\\.\\./scripts/",
+      "replacement": "${local.ubuntu_root}/scripts/"
+    },
+    {
+      "pattern": "\\$\\{path\\.root\\}/\\.\\./assets/",
+      "replacement": "${local.ubuntu_root}/assets/"
+    },
+    {
+      "pattern": "\\$\\{path\\.root\\}/\\.\\./toolsets/",
+      "replacement": "${local.ubuntu_root}/toolsets/"
+    },
+    {
+      "pattern": "\\$\\{var\\.(image_folder|helper_script_folder|installer_script_folder|imagedata_file|image_version|image_os)\\}",
+      "replacement": "${local.\\1}"
+    }
+  ],
+  "transforms": {
+    "drop": [
+      {
+        "file_source": "software-report-base"
+      },
+      {
+        "inline_contains": "waagent -force -deprovision"
+      },
+      {
+        "inline_contains": "Generate-SoftwareReport.ps1"
+      },
+      {
+        "file_source": "software-report.md"
+      },
+      {
+        "file_source": "software-report.json"
+      }
+    ],
+    "remove_sources": [
+      {
+        "selector": {
+          "file_source": "post-gen"
+        },
+        "sources": [
+          "docs-gen"
+        ]
+      }
+    ],
+    "explode": [
+      {
+        "script": "install-actions-cache.sh"
+      }
+    ],
+    "insert": [
+      {
+        "after": {
+          "file_source": "helpers"
+        },
+        "provisioners": [
+          {
+            "type": "file",
+            "source": "${path.root}/../../../../scripts/github-api-curl-wrapper.sh",
+            "destination": "/tmp/github-api-curl-wrapper.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "GH_API_TOKEN=${var.github_api_token}",
+              "GH_API_MIN_REMAINING=${var.github_api_min_remaining}",
+              "GH_API_WAIT_BUFFER_SECONDS=${var.github_api_wait_buffer_seconds}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+              "install -m 0755 /tmp/github-api-curl-wrapper.sh /usr/local/bin/curl",
+              "printf 'GITHUB_API_MIN_REMAINING=%s\\nGITHUB_API_WAIT_BUFFER_SECONDS=%s\\n' \"$GH_API_MIN_REMAINING\" \"$GH_API_WAIT_BUFFER_SECONDS\" > /etc/github-api-rate-limit.conf",
+              "if [ -n \"$GH_API_TOKEN\" ]; then printf '%s' \"$GH_API_TOKEN\" > /etc/github-api-token; chmod 644 /etc/github-api-token; fi"
+            ]
+          }
+        ]
+      },
+      {
+        "before": {
+          "script": "configure-environment.sh"
+        },
+        "provisioners": [
+          {
+            "type": "shell",
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+              "touch /etc/waagent.conf",
+              "grep -q ResourceDisk.Format /etc/waagent.conf || echo 'ResourceDisk.Format=n' >> /etc/waagent.conf",
+              "grep -q ResourceDisk.EnableSwap /etc/waagent.conf || echo 'ResourceDisk.EnableSwap=n' >> /etc/waagent.conf",
+              "grep -q ResourceDisk.SwapSizeMB /etc/waagent.conf || echo 'ResourceDisk.SwapSizeMB=0' >> /etc/waagent.conf"
+            ]
+          }
+        ]
+      },
+      {
+        "after": {
+          "script": "install-docker.sh"
+        },
+        "provisioners": [
+          {
+            "type": "shell",
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+              "usermod -aG docker ${var.ssh_username}"
+            ]
+          }
+        ]
+      },
+      {
+        "at": "end",
+        "provisioners": [
+          {
+            "type": "shell",
+            "inline": [
+              "set -e",
+              "sudo mkdir -p /opt/actions-runner",
+              "sudo chown ${var.ssh_username}:${var.ssh_username} /opt/actions-runner",
+              "cd /opt/actions-runner",
+              "RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | grep '\"tag_name\"' | head -n1 | sed -E 's/.*\"v([^\"]+)\".*/\\1/')",
+              "curl -o actions-runner-linux-x64.tar.gz -L \"https://github.com/actions/runner/releases/download/v$${RUNNER_VERSION}/actions-runner-linux-x64-$${RUNNER_VERSION}.tar.gz\"",
+              "tar xzf actions-runner-linux-x64.tar.gz && rm actions-runner-linux-x64.tar.gz",
+              "sudo ./bin/installdependencies.sh"
+            ]
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "SSH_PUBLIC_KEY=${var.ssh_public_key}"
+            ],
+            "inline": [
+              "set -e",
+              "if [ -n \"$SSH_PUBLIC_KEY\" ]; then mkdir -p ~/.ssh && chmod 700 ~/.ssh && printf '%s\\n' \"$SSH_PUBLIC_KEY\" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys; fi"
+            ]
+          },
+          {
+            "type": "shell",
+            "inline": [
+              "sudo cloud-init clean",
+              "sudo rm -f /etc/ssh/ssh_host_*",
+              "sudo truncate -s 0 /etc/machine-id"
+            ]
+          }
+        ]
+      }
+    ],
+    "remove_inline": [
+      {
+        "selector": {
+          "inline_contains": "post-gen ${var.image_folder}/post-generation"
+        },
+        "matching": [
+          "docs-gen"
+        ]
+      }
+    ]
+  },
+  "stages": {
+    "create-the-image-generation-directory": {
+      "name": "Create the image generation directory",
+      "match": {
+        "inline_contains": "mkdir ${local.image_folder}"
+      }
+    },
+    "configure-github-api-rate-limit-wrapper": {
+      "name": "Configure GitHub API rate-limit wrapper",
+      "match": {
+        "inline_contains": "install -m 0755 /tmp/github-api-curl-wrapper.sh"
+      }
+    },
+    "rename-post-gen-to-post-generation": {
+      "name": "Rename post-gen to post-generation",
+      "match": {
+        "inline_contains": "post-gen ${local.image_folder}/post-generation"
+      }
+    },
+    "stub-waagent-conf": {
+      "name": "Stub waagent.conf for the upstream environment script",
+      "match": {
+        "inline_contains": "touch /etc/waagent.conf"
+      }
+    },
+    "install-docker": {
+      "name": "Install Docker",
+      "also": [
+        {
+          "inline_contains": "usermod -aG docker"
+        }
+      ]
+    },
+    "reboot-the-vm": {
+      "name": "Reboot the VM",
+      "match": {
+        "inline_contains": "sudo reboot"
+      }
+    },
+    "download-the-actions-runner": {
+      "name": "Download the GitHub Actions runner",
+      "match": {
+        "inline_contains": "sudo mkdir -p /opt/actions-runner"
+      }
+    },
+    "install-ssh-public-key": {
+      "name": "Install SSH public key",
+      "match": {
+        "inline_contains": "SSH_PUBLIC_KEY"
+      }
+    },
+    "cleanup-for-template-creation": {
+      "name": "Cleanup prior to Proxmox template creation",
+      "match": {
+        "inline_contains": "sudo cloud-init clean"
+      }
+    },
+    "upload-helpers": {
+      "name": "Upload helper scripts"
+    },
+    "upload-github-api-curl-wrapper": {
+      "name": "Upload GitHub API curl wrapper"
+    },
+    "upload-build": {
+      "name": "Upload installer scripts"
+    },
+    "upload-post-gen": {
+      "name": "Upload post-gen assets and tests"
+    },
+    "upload-toolset-2404": {
+      "name": "Upload the toolset definition"
+    },
+    "configure-apt-mock": {
+      "name": "Configure the apt mock"
+    },
+    "install-ms-repos": {
+      "name": "Add Microsoft repos and configure apt sources"
+    },
+    "configure-limits": {
+      "name": "Configure system limits"
+    },
+    "configure-image-data": {
+      "name": "Write the image data file"
+    },
+    "configure-environment": {
+      "name": "Configure the image environment"
+    },
+    "install-apt-vital": {
+      "name": "Install vital apt packages"
+    },
+    "install-powershell": {
+      "name": "Install PowerShell"
+    },
+    "Install-PowerShellModules": {
+      "name": "Install PowerShell and Azure modules"
+    },
+    "Install-Toolset": {
+      "name": "Install and configure the hosted toolcache"
+    },
+    "list-dpkg": {
+      "name": "Record the installed dpkg package list"
+    },
+    "cleanup": {
+      "name": "Cleanup after the reboot"
+    },
+    "configure-system": {
+      "name": "Configure the system"
+    },
+    "post-build-validation": {
+      "name": "Post-build validation"
+    }
+  },
+  "groups": [
+    {
+      "id": "configure",
+      "label": "Configure",
+      "starts_at": "create-the-image-generation-directory"
+    },
+    {
+      "id": "base",
+      "label": "Base packages",
+      "starts_at": "install-apt-vital"
+    },
+    {
+      "id": "toolset",
+      "label": "Runner toolset",
+      "starts_at": "install-actions-cache"
+    },
+    {
+      "id": "finalise",
+      "label": "Finalise",
+      "starts_at": "install-docker"
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "starts_at": "cleanup-for-template-creation"
+    }
+  ],
+  "cloudimg": {
+    "locals": {
+      "ubuntu_root": "@runner_images",
+      "helper_script_folder": "/imagegeneration/helpers",
+      "image_folder": "/imagegeneration",
+      "installer_script_folder": "/imagegeneration/toolsets",
+      "imagedata_file": "/imagegeneration/imagedata.json",
+      "image_version": "dev",
+      "image_os": "ubuntu24"
+    },
+    "vars": {
+      "root": "@template",
+      "github_api_token": "$GH_API_TOKEN",
+      "github_api_min_remaining": "$GH_API_MIN_REMAINING",
+      "github_api_wait_buffer_seconds": "$GH_API_WAIT_BUFFER_SECONDS",
+      "ssh_username": "\"$SSH_USERNAME\"",
+      "ssh_public_key": "$SSH_PUBLIC_KEY"
+    },
+    "preamble_exports": {
+      "SSH_USERNAME": "\"$(id -un)\""
+    },
+    "catalog_environment": {
+      "GH_API_TOKEN": "github_api_token",
+      "GH_API_MIN_REMAINING": "github_api_min_remaining",
+      "GH_API_WAIT_BUFFER_SECONDS": "github_api_wait_buffer_seconds"
+    },
+    "source_roots": [
+      {
+        "prefix": "@runner_images/",
+        "source_root": null
+      },
+      {
+        "prefix": "@template/../../../../",
+        "source_root": "catalog_root",
+        "executable": true
+      }
+    ],
+    "script_destinations": {
+      "@runner_images/scripts/build/": "/imagegeneration/toolsets",
+      "@runner_images/scripts/helpers/": "/imagegeneration/helpers"
+    },
+    "upload_destinations": {
+      "scripts/tests": "/imagegeneration/tests",
+      "assets/post-gen": "/imagegeneration/post-gen"
+    },
+    "skip_stages": [
+      "install-ssh-public-key"
+    ],
+    "no_script_stages": [
+      "reboot-the-vm"
+    ],
+    "move_stages": [
+      {
+        "id": "upload-build",
+        "after": "upload-github-api-curl-wrapper"
+      },
+      {
+        "id": "upload-post-gen",
+        "after": "upload-build"
+      },
+      {
+        "id": "upload-toolset-2404",
+        "after": "upload-post-gen"
+      }
+    ],
+    "stage_overrides": {
+      "create-the-image-generation-directory": {
+        "append": [
+          "sudo mkdir -p /imagegeneration/helpers /imagegeneration/toolsets /imagegeneration/tests /imagegeneration/post-gen"
+        ]
+      },
+      "download-the-actions-runner": {
+        "prepend": [
+          "echo \"==> Waiting for any in-progress apt/dpkg lock to clear\"",
+          "for _ in $(seq 1 60); do",
+          "    if ! sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; then",
+          "        break",
+          "    fi",
+          "    sleep 1",
+          "done"
+        ]
+      }
+    }
+  }
+}

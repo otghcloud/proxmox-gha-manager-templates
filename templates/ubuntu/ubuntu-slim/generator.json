@@ -1,0 +1,588 @@
+{
+  "template_id": "ubuntu-slim",
+  "display_name": "Ubuntu Slim",
+  "upstream_template": null,
+  "packer": {
+    "source": "source.proxmox-iso.ubuntu-slim",
+    "name": "ubuntu-slim"
+  },
+  "rewrites": [],
+  "transforms": {
+    "insert": [
+      {
+        "at": "end",
+        "provisioners": [
+          {
+            "type": "shell",
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+              "mkdir -p /imagegeneration",
+              "chmod 777 /imagegeneration"
+            ]
+          },
+          {
+            "type": "file",
+            "destination": "${local.build_script_folder}",
+            "source": "${local.ubuntu_slim_root}/scripts/build"
+          },
+          {
+            "type": "file",
+            "destination": "${local.helper_script_folder}",
+            "source": "${local.ubuntu_slim_root}/scripts/helpers"
+          },
+          {
+            "type": "file",
+            "destination": "${local.installer_script_folder}",
+            "source": "${local.ubuntu_slim_root}/toolsets"
+          },
+          {
+            "type": "file",
+            "source": "${path.root}/../../../../scripts/github-api-curl-wrapper.sh",
+            "destination": "/tmp/github-api-curl-wrapper.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "GH_API_TOKEN=${var.github_api_token}",
+              "GH_API_MIN_REMAINING=${var.github_api_min_remaining}",
+              "GH_API_WAIT_BUFFER_SECONDS=${var.github_api_wait_buffer_seconds}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+              "install -m 0755 /tmp/github-api-curl-wrapper.sh /usr/local/bin/curl",
+              "printf 'GITHUB_API_MIN_REMAINING=%s\\nGITHUB_API_WAIT_BUFFER_SECONDS=%s\\n' \"$GH_API_MIN_REMAINING\" \"$GH_API_WAIT_BUFFER_SECONDS\" > /etc/github-api-rate-limit.conf",
+              "if [ -n \"$GH_API_TOKEN\" ]; then printf '%s' \"$GH_API_TOKEN\" > /etc/github-api-token; chmod 644 /etc/github-api-token; fi"
+            ]
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-apt-sources.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-apt.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-apt-vital.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-ms-repos.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-image-data-file.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-environment.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-actions-cache.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-apt-common.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-azcopy.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-azure-cli.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-azure-devops-cli.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-bicep.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-aws-tools.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-git.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-git-lfs.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-github-cli.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-google-cloud-cli.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-nvm.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-nodejs.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-powershell.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-dpkg.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-yq.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-python.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-zstd.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-pipx-packages.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/install-docker-cli.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/build/configure-system.sh"
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "HELPER_SCRIPTS=${local.helper_script_folder}",
+              "INSTALLER_SCRIPT_FOLDER=${local.installer_script_folder}",
+              "DEBIAN_FRONTEND=noninteractive",
+              "IMAGE_VERSION=${local.image_version}",
+              "IMAGE_OS=${local.image_os}",
+              "IMAGEDATA_NAME=${local.imagedata_name}"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'",
+            "script": "${local.ubuntu_slim_root}/scripts/helpers/cleanup.sh"
+          },
+          {
+            "type": "shell",
+            "inline": [
+              "set -e",
+              "sudo mkdir -p /opt/actions-runner",
+              "sudo chown ${var.ssh_username}:${var.ssh_username} /opt/actions-runner",
+              "cd /opt/actions-runner",
+              "RUNNER_VERSION=$(curl -fsSL https://api.github.com/repos/actions/runner/releases/latest | grep '\"tag_name\"' | head -n1 | sed -E 's/.*\"v([^\"]+)\".*/\\1/')",
+              "curl -o actions-runner-linux-x64.tar.gz -L \"https://github.com/actions/runner/releases/download/v$${RUNNER_VERSION}/actions-runner-linux-x64-$${RUNNER_VERSION}.tar.gz\"",
+              "tar xzf actions-runner-linux-x64.tar.gz && rm actions-runner-linux-x64.tar.gz",
+              "sudo ./bin/installdependencies.sh"
+            ]
+          },
+          {
+            "type": "shell",
+            "environment_vars": [
+              "SSH_PUBLIC_KEY=${var.ssh_public_key}"
+            ],
+            "inline": [
+              "set -e",
+              "if [ -n \"$SSH_PUBLIC_KEY\" ]; then mkdir -p ~/.ssh && chmod 700 ~/.ssh && printf '%s\\n' \"$SSH_PUBLIC_KEY\" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys; fi"
+            ]
+          },
+          {
+            "type": "shell",
+            "inline": [
+              "sudo cloud-init clean",
+              "sudo rm -f /etc/ssh/ssh_host_*",
+              "sudo truncate -s 0 /etc/machine-id"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "stages": {
+    "prepare-image-generation": {
+      "name": "Prepare the image generation workspace",
+      "match": {
+        "inline_contains": "mkdir -p /imagegeneration"
+      }
+    },
+    "configure-github-api-wrapper": {
+      "name": "Configure GitHub API rate-limit wrapper",
+      "match": {
+        "inline_contains": "install -m 0755 /tmp/github-api-curl-wrapper.sh"
+      }
+    },
+    "install-actions-runner": {
+      "name": "Install the GitHub Actions runner",
+      "match": {
+        "inline_contains": "sudo mkdir -p /opt/actions-runner"
+      }
+    },
+    "install-ssh-public-key": {
+      "name": "Install SSH public key",
+      "match": {
+        "inline_contains": "SSH_PUBLIC_KEY"
+      }
+    },
+    "cleanup-template": {
+      "name": "Cleanup prior to Proxmox template creation",
+      "match": {
+        "inline_contains": "sudo cloud-init clean"
+      }
+    },
+    "upload-build": {
+      "name": "Upload build scripts"
+    },
+    "upload-helpers": {
+      "name": "Upload helper scripts"
+    },
+    "upload-toolsets": {
+      "name": "Upload the toolset definitions"
+    },
+    "upload-github-api-curl-wrapper": {
+      "name": "Upload GitHub API curl wrapper"
+    }
+  },
+  "groups": [
+    {
+      "id": "configure",
+      "label": "Configure",
+      "starts_at": "prepare-image-generation"
+    },
+    {
+      "id": "toolset",
+      "label": "Runner toolset",
+      "starts_at": "configure-apt-sources"
+    },
+    {
+      "id": "finalise",
+      "label": "Finalise",
+      "starts_at": "install-actions-runner"
+    },
+    {
+      "id": "cleanup",
+      "label": "Cleanup",
+      "starts_at": "cleanup-template"
+    }
+  ],
+  "cloudimg": {
+    "locals": {
+      "ubuntu_slim_root": "@runner_images",
+      "helper_script_folder": "/imagegeneration/helpers",
+      "build_script_folder": "/imagegeneration/build",
+      "installer_script_folder": "/imagegeneration/toolsets",
+      "image_version": "dev",
+      "image_os": "ubuntu24-slim",
+      "imagedata_name": "ubuntu:24.04-slim"
+    },
+    "vars": {
+      "root": "@template",
+      "github_api_token": "$GH_API_TOKEN",
+      "github_api_min_remaining": "$GH_API_MIN_REMAINING",
+      "github_api_wait_buffer_seconds": "$GH_API_WAIT_BUFFER_SECONDS",
+      "ssh_username": "\"$SSH_USERNAME\"",
+      "ssh_public_key": "$SSH_PUBLIC_KEY"
+    },
+    "preamble_exports": {
+      "SSH_USERNAME": "\"$(id -un)\""
+    },
+    "catalog_environment": {
+      "GH_API_TOKEN": "github_api_token",
+      "GH_API_MIN_REMAINING": "github_api_min_remaining",
+      "GH_API_WAIT_BUFFER_SECONDS": "github_api_wait_buffer_seconds"
+    },
+    "source_roots": [
+      {
+        "prefix": "@runner_images/",
+        "source_root": null
+      },
+      {
+        "prefix": "@template/../../../../",
+        "source_root": "catalog_root",
+        "executable": true
+      }
+    ],
+    "script_destinations": {
+      "@runner_images/scripts/build/": "/imagegeneration/build",
+      "@runner_images/scripts/helpers/": "/imagegeneration/helpers"
+    },
+    "upload_destinations": {},
+    "skip_stages": [
+      "install-ssh-public-key"
+    ],
+    "no_script_stages": [],
+    "move_stages": [],
+    "stage_overrides": {
+      "prepare-image-generation": {
+        "append": [
+          "sudo mkdir -p /imagegeneration/helpers /imagegeneration/build /imagegeneration/toolsets"
+        ]
+      },
+      "install-actions-runner": {
+        "prepend": [
+          "echo \"==> Waiting for any in-progress apt/dpkg lock to clear\"",
+          "for _ in $(seq 1 60); do",
+          "    if ! sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; then",
+          "        break",
+          "    fi",
+          "    sleep 1",
+          "done"
+        ]
+      }
+    }
+  }
+}

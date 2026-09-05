@@ -1,85 +1,332 @@
 {
-  "schema_version": 2,
-  "builder": "packer",
-  "template_id": "ubuntu-slim",
-  "display_name": "Packer build",
-  "stage_groups": [
-    {
-      "id": "configure",
-      "label": "Configure",
-      "display_order": 1,
-      "stages": [
+    "schema_version": 3,
+    "builder": "packer",
+    "template_id": "ubuntu-slim",
+    "display_name": "Ubuntu Slim",
+    "stage_groups": [
         {
-          "id": "prepare-image-generation",
-          "name": "Prepare image generation workspace",
-          "marker": "[image-builder:stage:prepare-image-generation]",
-          "description": "Prepare image generation workspace",
-          "required": true,
-          "sequence": 1
+            "id": "configure",
+            "label": "Configure",
+            "display_order": 1,
+            "stages": [
+                {
+                    "id": "prepare-image-generation",
+                    "name": "Prepare the image generation workspace",
+                    "marker": "[image-builder:stage:prepare-image-generation]",
+                    "description": "Prepare the image generation workspace",
+                    "required": true,
+                    "sequence": 1
+                },
+                {
+                    "id": "upload-build",
+                    "name": "Upload build scripts",
+                    "marker": "[image-builder:stage:upload-build]",
+                    "description": "Upload build scripts",
+                    "required": true,
+                    "sequence": 2
+                },
+                {
+                    "id": "upload-helpers",
+                    "name": "Upload helper scripts",
+                    "marker": "[image-builder:stage:upload-helpers]",
+                    "description": "Upload helper scripts",
+                    "required": true,
+                    "sequence": 3
+                },
+                {
+                    "id": "upload-toolsets",
+                    "name": "Upload the toolset definitions",
+                    "marker": "[image-builder:stage:upload-toolsets]",
+                    "description": "Upload the toolset definitions",
+                    "required": true,
+                    "sequence": 4
+                },
+                {
+                    "id": "upload-github-api-curl-wrapper",
+                    "name": "Upload GitHub API curl wrapper",
+                    "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+                    "description": "Upload GitHub API curl wrapper",
+                    "required": true,
+                    "sequence": 5
+                },
+                {
+                    "id": "configure-github-api-wrapper",
+                    "name": "Configure GitHub API rate-limit wrapper",
+                    "marker": "[image-builder:stage:configure-github-api-wrapper]",
+                    "description": "Configure GitHub API rate-limit wrapper",
+                    "required": true,
+                    "sequence": 6
+                }
+            ]
         },
         {
-          "id": "upload-slim-assets",
-          "name": "Upload ubuntu-slim scripts and assets",
-          "marker": "[image-builder:stage:upload-slim-assets]",
-          "description": "Upload ubuntu-slim scripts and assets",
-          "required": true,
-          "sequence": 2
+            "id": "toolset",
+            "label": "Runner toolset",
+            "display_order": 2,
+            "stages": [
+                {
+                    "id": "configure-apt-sources",
+                    "name": "Configure apt sources",
+                    "marker": "[image-builder:stage:configure-apt-sources]",
+                    "description": "Configure apt sources",
+                    "required": true,
+                    "sequence": 7
+                },
+                {
+                    "id": "configure-apt",
+                    "name": "Configure apt",
+                    "marker": "[image-builder:stage:configure-apt]",
+                    "description": "Configure apt",
+                    "required": true,
+                    "sequence": 8
+                },
+                {
+                    "id": "install-apt-vital",
+                    "name": "Install apt vital",
+                    "marker": "[image-builder:stage:install-apt-vital]",
+                    "description": "Install apt vital",
+                    "required": true,
+                    "sequence": 9
+                },
+                {
+                    "id": "install-ms-repos",
+                    "name": "Install Microsoft repos",
+                    "marker": "[image-builder:stage:install-ms-repos]",
+                    "description": "Install Microsoft repos",
+                    "required": true,
+                    "sequence": 10
+                },
+                {
+                    "id": "configure-image-data-file",
+                    "name": "Configure image data file",
+                    "marker": "[image-builder:stage:configure-image-data-file]",
+                    "description": "Configure image data file",
+                    "required": true,
+                    "sequence": 11
+                },
+                {
+                    "id": "configure-environment",
+                    "name": "Configure environment",
+                    "marker": "[image-builder:stage:configure-environment]",
+                    "description": "Configure environment",
+                    "required": true,
+                    "sequence": 12
+                },
+                {
+                    "id": "install-actions-cache",
+                    "name": "Install Actions cache",
+                    "marker": "[image-builder:stage:install-actions-cache]",
+                    "description": "Install Actions cache",
+                    "required": true,
+                    "sequence": 13
+                },
+                {
+                    "id": "install-apt-common",
+                    "name": "Install apt common",
+                    "marker": "[image-builder:stage:install-apt-common]",
+                    "description": "Install apt common",
+                    "required": true,
+                    "sequence": 14
+                },
+                {
+                    "id": "install-azcopy",
+                    "name": "Install AzCopy",
+                    "marker": "[image-builder:stage:install-azcopy]",
+                    "description": "Install AzCopy",
+                    "required": true,
+                    "sequence": 15
+                },
+                {
+                    "id": "install-azure-cli",
+                    "name": "Install Azure CLI",
+                    "marker": "[image-builder:stage:install-azure-cli]",
+                    "description": "Install Azure CLI",
+                    "required": true,
+                    "sequence": 16
+                },
+                {
+                    "id": "install-azure-devops-cli",
+                    "name": "Install Azure DevOps CLI",
+                    "marker": "[image-builder:stage:install-azure-devops-cli]",
+                    "description": "Install Azure DevOps CLI",
+                    "required": true,
+                    "sequence": 17
+                },
+                {
+                    "id": "install-bicep",
+                    "name": "Install Bicep",
+                    "marker": "[image-builder:stage:install-bicep]",
+                    "description": "Install Bicep",
+                    "required": true,
+                    "sequence": 18
+                },
+                {
+                    "id": "install-aws-tools",
+                    "name": "Install AWS tools",
+                    "marker": "[image-builder:stage:install-aws-tools]",
+                    "description": "Install AWS tools",
+                    "required": true,
+                    "sequence": 19
+                },
+                {
+                    "id": "install-git",
+                    "name": "Install Git",
+                    "marker": "[image-builder:stage:install-git]",
+                    "description": "Install Git",
+                    "required": true,
+                    "sequence": 20
+                },
+                {
+                    "id": "install-git-lfs",
+                    "name": "Install Git LFS",
+                    "marker": "[image-builder:stage:install-git-lfs]",
+                    "description": "Install Git LFS",
+                    "required": true,
+                    "sequence": 21
+                },
+                {
+                    "id": "install-github-cli",
+                    "name": "Install GitHub CLI",
+                    "marker": "[image-builder:stage:install-github-cli]",
+                    "description": "Install GitHub CLI",
+                    "required": true,
+                    "sequence": 22
+                },
+                {
+                    "id": "install-google-cloud-cli",
+                    "name": "Install Google cloud CLI",
+                    "marker": "[image-builder:stage:install-google-cloud-cli]",
+                    "description": "Install Google cloud CLI",
+                    "required": true,
+                    "sequence": 23
+                },
+                {
+                    "id": "install-nvm",
+                    "name": "Install nvm",
+                    "marker": "[image-builder:stage:install-nvm]",
+                    "description": "Install nvm",
+                    "required": true,
+                    "sequence": 24
+                },
+                {
+                    "id": "install-nodejs",
+                    "name": "Install Node.js",
+                    "marker": "[image-builder:stage:install-nodejs]",
+                    "description": "Install Node.js",
+                    "required": true,
+                    "sequence": 25
+                },
+                {
+                    "id": "install-powershell",
+                    "name": "Install PowerShell",
+                    "marker": "[image-builder:stage:install-powershell]",
+                    "description": "Install PowerShell",
+                    "required": true,
+                    "sequence": 26
+                },
+                {
+                    "id": "configure-dpkg",
+                    "name": "Configure dpkg",
+                    "marker": "[image-builder:stage:configure-dpkg]",
+                    "description": "Configure dpkg",
+                    "required": true,
+                    "sequence": 27
+                },
+                {
+                    "id": "install-yq",
+                    "name": "Install yq",
+                    "marker": "[image-builder:stage:install-yq]",
+                    "description": "Install yq",
+                    "required": true,
+                    "sequence": 28
+                },
+                {
+                    "id": "install-python",
+                    "name": "Install Python",
+                    "marker": "[image-builder:stage:install-python]",
+                    "description": "Install Python",
+                    "required": true,
+                    "sequence": 29
+                },
+                {
+                    "id": "install-zstd",
+                    "name": "Install zstd",
+                    "marker": "[image-builder:stage:install-zstd]",
+                    "description": "Install zstd",
+                    "required": true,
+                    "sequence": 30
+                },
+                {
+                    "id": "install-pipx-packages",
+                    "name": "Install pipx packages",
+                    "marker": "[image-builder:stage:install-pipx-packages]",
+                    "description": "Install pipx packages",
+                    "required": true,
+                    "sequence": 31
+                },
+                {
+                    "id": "install-docker-cli",
+                    "name": "Install Docker CLI",
+                    "marker": "[image-builder:stage:install-docker-cli]",
+                    "description": "Install Docker CLI",
+                    "required": true,
+                    "sequence": 32
+                },
+                {
+                    "id": "configure-system",
+                    "name": "Configure system",
+                    "marker": "[image-builder:stage:configure-system]",
+                    "description": "Configure system",
+                    "required": true,
+                    "sequence": 33
+                },
+                {
+                    "id": "cleanup",
+                    "name": "Cleanup",
+                    "marker": "[image-builder:stage:cleanup]",
+                    "description": "Cleanup",
+                    "required": true,
+                    "sequence": 34
+                }
+            ]
         },
         {
-          "id": "configure-github-api-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "required": true,
-          "sequence": 3
+            "id": "finalise",
+            "label": "Finalise",
+            "display_order": 3,
+            "stages": [
+                {
+                    "id": "install-actions-runner",
+                    "name": "Install the GitHub Actions runner",
+                    "marker": "[image-builder:stage:install-actions-runner]",
+                    "description": "Install the GitHub Actions runner",
+                    "required": true,
+                    "sequence": 35
+                },
+                {
+                    "id": "install-ssh-public-key",
+                    "name": "Install SSH public key",
+                    "marker": "[image-builder:stage:install-ssh-public-key]",
+                    "description": "Install SSH public key",
+                    "required": true,
+                    "sequence": 36
+                }
+            ]
+        },
+        {
+            "id": "cleanup",
+            "label": "Cleanup",
+            "display_order": 4,
+            "stages": [
+                {
+                    "id": "cleanup-template",
+                    "name": "Cleanup prior to Proxmox template creation",
+                    "marker": "[image-builder:stage:cleanup-template]",
+                    "description": "Cleanup prior to Proxmox template creation",
+                    "required": true,
+                    "sequence": 37
+                }
+            ]
         }
-      ]
-    },
-    {
-      "id": "install",
-      "label": "Install",
-      "display_order": 2,
-      "stages": [
-        {
-          "id": "install-slim-toolset",
-          "name": "Install ubuntu-slim toolset",
-          "marker": "[image-builder:stage:install-slim-toolset]",
-          "description": "Install ubuntu-slim toolset",
-          "required": true,
-          "sequence": 4
-        },
-        {
-          "id": "install-actions-runner",
-          "name": "Install GitHub Actions runner",
-          "marker": "[image-builder:stage:install-actions-runner]",
-          "description": "Install GitHub Actions runner",
-          "required": true,
-          "sequence": 5
-        },
-        {
-          "id": "install-ssh-public-key",
-          "name": "Install SSH public key",
-          "marker": "[image-builder:stage:install-ssh-public-key]",
-          "description": "Install SSH public key",
-          "required": true,
-          "sequence": 6
-        }
-      ]
-    },
-    {
-      "id": "cleanup",
-      "label": "Cleanup",
-      "display_order": 3,
-      "stages": [
-        {
-          "id": "cleanup-template",
-          "name": "Cleanup prior to template creation",
-          "marker": "[image-builder:stage:cleanup-template]",
-          "description": "Cleanup prior to template creation",
-          "required": true,
-          "sequence": 7
-        }
-      ]
-    }
-  ]
+    ]
 }
