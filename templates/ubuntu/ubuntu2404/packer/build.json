@@ -1,261 +1,691 @@
 {
-  "schema_version": 2,
-  "builder": "packer",
-  "template_id": "ubuntu-24.04",
-  "display_name": "Packer build",
-  "stage_groups": [
-    {
-      "id": "configure",
-      "label": "Configure",
-      "display_order": 1,
-      "stages": [
+    "schema_version": 3,
+    "builder": "packer",
+    "template_id": "ubuntu-24.04",
+    "display_name": "Ubuntu 24.04",
+    "stage_groups": [
         {
-          "id": "create-the-image-generation-directory",
-          "name": "Create the image generation directory",
-          "marker": "[image-builder:stage:create-the-image-generation-directory]",
-          "description": "Create the image generation directory",
-          "required": true,
-          "sequence": 1
+            "id": "configure",
+            "label": "Configure",
+            "display_order": 1,
+            "stages": [
+                {
+                    "id": "create-the-image-generation-directory",
+                    "name": "Create the image generation directory",
+                    "marker": "[image-builder:stage:create-the-image-generation-directory]",
+                    "description": "Create the image generation directory",
+                    "required": true,
+                    "sequence": 1
+                },
+                {
+                    "id": "upload-helpers",
+                    "name": "Upload helper scripts",
+                    "marker": "[image-builder:stage:upload-helpers]",
+                    "description": "Upload helper scripts",
+                    "required": true,
+                    "sequence": 2
+                },
+                {
+                    "id": "upload-github-api-curl-wrapper",
+                    "name": "Upload GitHub API curl wrapper",
+                    "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
+                    "description": "Upload GitHub API curl wrapper",
+                    "required": true,
+                    "sequence": 3
+                },
+                {
+                    "id": "configure-github-api-rate-limit-wrapper",
+                    "name": "Configure GitHub API rate-limit wrapper",
+                    "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
+                    "description": "Configure GitHub API rate-limit wrapper",
+                    "required": true,
+                    "sequence": 4
+                },
+                {
+                    "id": "configure-apt-mock",
+                    "name": "Configure the apt mock",
+                    "marker": "[image-builder:stage:configure-apt-mock]",
+                    "description": "Configure the apt mock",
+                    "required": true,
+                    "sequence": 5
+                },
+                {
+                    "id": "install-ms-repos",
+                    "name": "Add Microsoft repos and configure apt sources",
+                    "marker": "[image-builder:stage:install-ms-repos]",
+                    "description": "Add Microsoft repos and configure apt sources",
+                    "required": true,
+                    "sequence": 6
+                },
+                {
+                    "id": "configure-limits",
+                    "name": "Configure system limits",
+                    "marker": "[image-builder:stage:configure-limits]",
+                    "description": "Configure system limits",
+                    "required": true,
+                    "sequence": 7
+                },
+                {
+                    "id": "upload-build",
+                    "name": "Upload installer scripts",
+                    "marker": "[image-builder:stage:upload-build]",
+                    "description": "Upload installer scripts",
+                    "required": true,
+                    "sequence": 8
+                },
+                {
+                    "id": "upload-post-gen",
+                    "name": "Upload post-gen assets and tests",
+                    "marker": "[image-builder:stage:upload-post-gen]",
+                    "description": "Upload post-gen assets and tests",
+                    "required": true,
+                    "sequence": 9
+                },
+                {
+                    "id": "upload-toolset-2404",
+                    "name": "Upload the toolset definition",
+                    "marker": "[image-builder:stage:upload-toolset-2404]",
+                    "description": "Upload the toolset definition",
+                    "required": true,
+                    "sequence": 10
+                },
+                {
+                    "id": "rename-post-gen-to-post-generation",
+                    "name": "Rename post-gen to post-generation",
+                    "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
+                    "description": "Rename post-gen to post-generation",
+                    "required": true,
+                    "sequence": 11
+                },
+                {
+                    "id": "configure-image-data",
+                    "name": "Write the image data file",
+                    "marker": "[image-builder:stage:configure-image-data]",
+                    "description": "Write the image data file",
+                    "required": true,
+                    "sequence": 12
+                },
+                {
+                    "id": "stub-waagent-conf",
+                    "name": "Stub waagent.conf for the upstream environment script",
+                    "marker": "[image-builder:stage:stub-waagent-conf]",
+                    "description": "Stub waagent.conf for the upstream environment script",
+                    "required": true,
+                    "sequence": 13
+                },
+                {
+                    "id": "configure-environment",
+                    "name": "Configure the image environment",
+                    "marker": "[image-builder:stage:configure-environment]",
+                    "description": "Configure the image environment",
+                    "required": true,
+                    "sequence": 14
+                }
+            ]
         },
         {
-          "id": "upload-helper-scripts",
-          "name": "Upload helper scripts",
-          "marker": "[image-builder:stage:upload-helper-scripts]",
-          "description": "Upload helper scripts",
-          "required": true,
-          "sequence": 2
+            "id": "base",
+            "label": "Base packages",
+            "display_order": 2,
+            "stages": [
+                {
+                    "id": "install-apt-vital",
+                    "name": "Install vital apt packages",
+                    "marker": "[image-builder:stage:install-apt-vital]",
+                    "description": "Install vital apt packages",
+                    "required": true,
+                    "sequence": 15
+                },
+                {
+                    "id": "install-powershell",
+                    "name": "Install PowerShell",
+                    "marker": "[image-builder:stage:install-powershell]",
+                    "description": "Install PowerShell",
+                    "required": true,
+                    "sequence": 16
+                },
+                {
+                    "id": "Install-PowerShellModules",
+                    "name": "Install PowerShell and Azure modules",
+                    "marker": "[image-builder:stage:Install-PowerShellModules]",
+                    "description": "Install PowerShell and Azure modules",
+                    "required": true,
+                    "sequence": 17
+                }
+            ]
         },
         {
-          "id": "upload-github-api-curl-wrapper",
-          "name": "Upload GitHub API curl wrapper",
-          "marker": "[image-builder:stage:upload-github-api-curl-wrapper]",
-          "description": "Upload GitHub API curl wrapper",
-          "required": true,
-          "sequence": 3
+            "id": "toolset",
+            "label": "Runner toolset",
+            "display_order": 3,
+            "stages": [
+                {
+                    "id": "install-actions-cache",
+                    "name": "Install Actions cache",
+                    "marker": "[image-builder:stage:install-actions-cache]",
+                    "description": "Install Actions cache",
+                    "required": true,
+                    "sequence": 18
+                },
+                {
+                    "id": "install-apt-common",
+                    "name": "Install apt common",
+                    "marker": "[image-builder:stage:install-apt-common]",
+                    "description": "Install apt common",
+                    "required": true,
+                    "sequence": 19
+                },
+                {
+                    "id": "install-azcopy",
+                    "name": "Install AzCopy",
+                    "marker": "[image-builder:stage:install-azcopy]",
+                    "description": "Install AzCopy",
+                    "required": true,
+                    "sequence": 20
+                },
+                {
+                    "id": "install-azure-cli",
+                    "name": "Install Azure CLI",
+                    "marker": "[image-builder:stage:install-azure-cli]",
+                    "description": "Install Azure CLI",
+                    "required": true,
+                    "sequence": 21
+                },
+                {
+                    "id": "install-azure-devops-cli",
+                    "name": "Install Azure DevOps CLI",
+                    "marker": "[image-builder:stage:install-azure-devops-cli]",
+                    "description": "Install Azure DevOps CLI",
+                    "required": true,
+                    "sequence": 22
+                },
+                {
+                    "id": "install-bicep",
+                    "name": "Install Bicep",
+                    "marker": "[image-builder:stage:install-bicep]",
+                    "description": "Install Bicep",
+                    "required": true,
+                    "sequence": 23
+                },
+                {
+                    "id": "install-apache",
+                    "name": "Install Apache",
+                    "marker": "[image-builder:stage:install-apache]",
+                    "description": "Install Apache",
+                    "required": true,
+                    "sequence": 24
+                },
+                {
+                    "id": "install-aws-tools",
+                    "name": "Install AWS tools",
+                    "marker": "[image-builder:stage:install-aws-tools]",
+                    "description": "Install AWS tools",
+                    "required": true,
+                    "sequence": 25
+                },
+                {
+                    "id": "install-clang",
+                    "name": "Install Clang",
+                    "marker": "[image-builder:stage:install-clang]",
+                    "description": "Install Clang",
+                    "required": true,
+                    "sequence": 26
+                },
+                {
+                    "id": "install-swift",
+                    "name": "Install Swift",
+                    "marker": "[image-builder:stage:install-swift]",
+                    "description": "Install Swift",
+                    "required": true,
+                    "sequence": 27
+                },
+                {
+                    "id": "install-cmake",
+                    "name": "Install CMake",
+                    "marker": "[image-builder:stage:install-cmake]",
+                    "description": "Install CMake",
+                    "required": true,
+                    "sequence": 28
+                },
+                {
+                    "id": "install-codeql-bundle",
+                    "name": "Install CodeQL bundle",
+                    "marker": "[image-builder:stage:install-codeql-bundle]",
+                    "description": "Install CodeQL bundle",
+                    "required": true,
+                    "sequence": 29
+                },
+                {
+                    "id": "install-awf",
+                    "name": "Install AWF",
+                    "marker": "[image-builder:stage:install-awf]",
+                    "description": "Install AWF",
+                    "required": true,
+                    "sequence": 30
+                },
+                {
+                    "id": "install-container-tools",
+                    "name": "Install container tools",
+                    "marker": "[image-builder:stage:install-container-tools]",
+                    "description": "Install container tools",
+                    "required": true,
+                    "sequence": 31
+                },
+                {
+                    "id": "install-dotnetcore-sdk",
+                    "name": "Install .NET Core SDK",
+                    "marker": "[image-builder:stage:install-dotnetcore-sdk]",
+                    "description": "Install .NET Core SDK",
+                    "required": true,
+                    "sequence": 32
+                },
+                {
+                    "id": "install-microsoft-edge",
+                    "name": "Install Microsoft Edge",
+                    "marker": "[image-builder:stage:install-microsoft-edge]",
+                    "description": "Install Microsoft Edge",
+                    "required": true,
+                    "sequence": 33
+                },
+                {
+                    "id": "install-gcc-compilers",
+                    "name": "Install GCC compilers",
+                    "marker": "[image-builder:stage:install-gcc-compilers]",
+                    "description": "Install GCC compilers",
+                    "required": true,
+                    "sequence": 34
+                },
+                {
+                    "id": "install-firefox",
+                    "name": "Install Firefox",
+                    "marker": "[image-builder:stage:install-firefox]",
+                    "description": "Install Firefox",
+                    "required": true,
+                    "sequence": 35
+                },
+                {
+                    "id": "install-gfortran",
+                    "name": "Install GFortran",
+                    "marker": "[image-builder:stage:install-gfortran]",
+                    "description": "Install GFortran",
+                    "required": true,
+                    "sequence": 36
+                },
+                {
+                    "id": "install-git",
+                    "name": "Install Git",
+                    "marker": "[image-builder:stage:install-git]",
+                    "description": "Install Git",
+                    "required": true,
+                    "sequence": 37
+                },
+                {
+                    "id": "install-git-lfs",
+                    "name": "Install Git LFS",
+                    "marker": "[image-builder:stage:install-git-lfs]",
+                    "description": "Install Git LFS",
+                    "required": true,
+                    "sequence": 38
+                },
+                {
+                    "id": "install-github-cli",
+                    "name": "Install GitHub CLI",
+                    "marker": "[image-builder:stage:install-github-cli]",
+                    "description": "Install GitHub CLI",
+                    "required": true,
+                    "sequence": 39
+                },
+                {
+                    "id": "install-google-chrome",
+                    "name": "Install Google Chrome",
+                    "marker": "[image-builder:stage:install-google-chrome]",
+                    "description": "Install Google Chrome",
+                    "required": true,
+                    "sequence": 40
+                },
+                {
+                    "id": "install-google-cloud-cli",
+                    "name": "Install Google cloud CLI",
+                    "marker": "[image-builder:stage:install-google-cloud-cli]",
+                    "description": "Install Google cloud CLI",
+                    "required": true,
+                    "sequence": 41
+                },
+                {
+                    "id": "install-haskell",
+                    "name": "Install Haskell",
+                    "marker": "[image-builder:stage:install-haskell]",
+                    "description": "Install Haskell",
+                    "required": true,
+                    "sequence": 42
+                },
+                {
+                    "id": "install-java-tools",
+                    "name": "Install Java tools",
+                    "marker": "[image-builder:stage:install-java-tools]",
+                    "description": "Install Java tools",
+                    "required": true,
+                    "sequence": 43
+                },
+                {
+                    "id": "install-kubernetes-tools",
+                    "name": "Install Kubernetes tools",
+                    "marker": "[image-builder:stage:install-kubernetes-tools]",
+                    "description": "Install Kubernetes tools",
+                    "required": true,
+                    "sequence": 44
+                },
+                {
+                    "id": "install-miniconda",
+                    "name": "Install Miniconda",
+                    "marker": "[image-builder:stage:install-miniconda]",
+                    "description": "Install Miniconda",
+                    "required": true,
+                    "sequence": 45
+                },
+                {
+                    "id": "install-kotlin",
+                    "name": "Install Kotlin",
+                    "marker": "[image-builder:stage:install-kotlin]",
+                    "description": "Install Kotlin",
+                    "required": true,
+                    "sequence": 46
+                },
+                {
+                    "id": "install-mysql",
+                    "name": "Install MySQL",
+                    "marker": "[image-builder:stage:install-mysql]",
+                    "description": "Install MySQL",
+                    "required": true,
+                    "sequence": 47
+                },
+                {
+                    "id": "install-nginx",
+                    "name": "Install nginx",
+                    "marker": "[image-builder:stage:install-nginx]",
+                    "description": "Install nginx",
+                    "required": true,
+                    "sequence": 48
+                },
+                {
+                    "id": "install-nvm",
+                    "name": "Install nvm",
+                    "marker": "[image-builder:stage:install-nvm]",
+                    "description": "Install nvm",
+                    "required": true,
+                    "sequence": 49
+                },
+                {
+                    "id": "install-nodejs",
+                    "name": "Install Node.js",
+                    "marker": "[image-builder:stage:install-nodejs]",
+                    "description": "Install Node.js",
+                    "required": true,
+                    "sequence": 50
+                },
+                {
+                    "id": "install-copilot-cli",
+                    "name": "Install Copilot CLI",
+                    "marker": "[image-builder:stage:install-copilot-cli]",
+                    "description": "Install Copilot CLI",
+                    "required": true,
+                    "sequence": 51
+                },
+                {
+                    "id": "install-bazel",
+                    "name": "Install Bazel",
+                    "marker": "[image-builder:stage:install-bazel]",
+                    "description": "Install Bazel",
+                    "required": true,
+                    "sequence": 52
+                },
+                {
+                    "id": "install-php",
+                    "name": "Install PHP",
+                    "marker": "[image-builder:stage:install-php]",
+                    "description": "Install PHP",
+                    "required": true,
+                    "sequence": 53
+                },
+                {
+                    "id": "install-postgresql",
+                    "name": "Install PostgreSQL",
+                    "marker": "[image-builder:stage:install-postgresql]",
+                    "description": "Install PostgreSQL",
+                    "required": true,
+                    "sequence": 54
+                },
+                {
+                    "id": "install-pulumi",
+                    "name": "Install Pulumi",
+                    "marker": "[image-builder:stage:install-pulumi]",
+                    "description": "Install Pulumi",
+                    "required": true,
+                    "sequence": 55
+                },
+                {
+                    "id": "install-ruby",
+                    "name": "Install Ruby",
+                    "marker": "[image-builder:stage:install-ruby]",
+                    "description": "Install Ruby",
+                    "required": true,
+                    "sequence": 56
+                },
+                {
+                    "id": "install-rust",
+                    "name": "Install Rust",
+                    "marker": "[image-builder:stage:install-rust]",
+                    "description": "Install Rust",
+                    "required": true,
+                    "sequence": 57
+                },
+                {
+                    "id": "install-julia",
+                    "name": "Install Julia",
+                    "marker": "[image-builder:stage:install-julia]",
+                    "description": "Install Julia",
+                    "required": true,
+                    "sequence": 58
+                },
+                {
+                    "id": "install-selenium",
+                    "name": "Install Selenium",
+                    "marker": "[image-builder:stage:install-selenium]",
+                    "description": "Install Selenium",
+                    "required": true,
+                    "sequence": 59
+                },
+                {
+                    "id": "install-packer",
+                    "name": "Install Packer",
+                    "marker": "[image-builder:stage:install-packer]",
+                    "description": "Install Packer",
+                    "required": true,
+                    "sequence": 60
+                },
+                {
+                    "id": "install-vcpkg",
+                    "name": "Install vcpkg",
+                    "marker": "[image-builder:stage:install-vcpkg]",
+                    "description": "Install vcpkg",
+                    "required": true,
+                    "sequence": 61
+                },
+                {
+                    "id": "configure-dpkg",
+                    "name": "Configure dpkg",
+                    "marker": "[image-builder:stage:configure-dpkg]",
+                    "description": "Configure dpkg",
+                    "required": true,
+                    "sequence": 62
+                },
+                {
+                    "id": "install-yq",
+                    "name": "Install yq",
+                    "marker": "[image-builder:stage:install-yq]",
+                    "description": "Install yq",
+                    "required": true,
+                    "sequence": 63
+                },
+                {
+                    "id": "install-android-sdk",
+                    "name": "Install Android SDK",
+                    "marker": "[image-builder:stage:install-android-sdk]",
+                    "description": "Install Android SDK",
+                    "required": true,
+                    "sequence": 64
+                },
+                {
+                    "id": "install-pypy",
+                    "name": "Install PyPy",
+                    "marker": "[image-builder:stage:install-pypy]",
+                    "description": "Install PyPy",
+                    "required": true,
+                    "sequence": 65
+                },
+                {
+                    "id": "install-python",
+                    "name": "Install Python",
+                    "marker": "[image-builder:stage:install-python]",
+                    "description": "Install Python",
+                    "required": true,
+                    "sequence": 66
+                },
+                {
+                    "id": "install-zstd",
+                    "name": "Install zstd",
+                    "marker": "[image-builder:stage:install-zstd]",
+                    "description": "Install zstd",
+                    "required": true,
+                    "sequence": 67
+                },
+                {
+                    "id": "install-ninja",
+                    "name": "Install Ninja",
+                    "marker": "[image-builder:stage:install-ninja]",
+                    "description": "Install Ninja",
+                    "required": true,
+                    "sequence": 68
+                }
+            ]
         },
         {
-          "id": "configure-github-api-rate-limit-wrapper",
-          "name": "Configure GitHub API rate-limit wrapper",
-          "marker": "[image-builder:stage:configure-github-api-rate-limit-wrapper]",
-          "description": "Configure GitHub API rate-limit wrapper",
-          "required": true,
-          "sequence": 4
+            "id": "finalise",
+            "label": "Finalise",
+            "display_order": 4,
+            "stages": [
+                {
+                    "id": "install-docker",
+                    "name": "Install Docker",
+                    "marker": "[image-builder:stage:install-docker]",
+                    "description": "Install Docker",
+                    "required": true,
+                    "sequence": 69
+                },
+                {
+                    "id": "Install-Toolset",
+                    "name": "Install and configure the hosted toolcache",
+                    "marker": "[image-builder:stage:Install-Toolset]",
+                    "description": "Install and configure the hosted toolcache",
+                    "required": true,
+                    "sequence": 70
+                },
+                {
+                    "id": "install-pipx-packages",
+                    "name": "Install pipx packages",
+                    "marker": "[image-builder:stage:install-pipx-packages]",
+                    "description": "Install pipx packages",
+                    "required": true,
+                    "sequence": 71
+                },
+                {
+                    "id": "install-homebrew",
+                    "name": "Install Homebrew",
+                    "marker": "[image-builder:stage:install-homebrew]",
+                    "description": "Install Homebrew",
+                    "required": true,
+                    "sequence": 72
+                },
+                {
+                    "id": "configure-snap",
+                    "name": "Configure snap",
+                    "marker": "[image-builder:stage:configure-snap]",
+                    "description": "Configure snap",
+                    "required": true,
+                    "sequence": 73
+                },
+                {
+                    "id": "list-dpkg",
+                    "name": "Record the installed dpkg package list",
+                    "marker": "[image-builder:stage:list-dpkg]",
+                    "description": "Record the installed dpkg package list",
+                    "required": true,
+                    "sequence": 74
+                },
+                {
+                    "id": "reboot-the-vm",
+                    "name": "Reboot the VM",
+                    "marker": "[image-builder:stage:reboot-the-vm]",
+                    "description": "Reboot the VM",
+                    "required": true,
+                    "sequence": 75
+                },
+                {
+                    "id": "cleanup",
+                    "name": "Cleanup after the reboot",
+                    "marker": "[image-builder:stage:cleanup]",
+                    "description": "Cleanup after the reboot",
+                    "required": true,
+                    "sequence": 76
+                },
+                {
+                    "id": "configure-system",
+                    "name": "Configure the system",
+                    "marker": "[image-builder:stage:configure-system]",
+                    "description": "Configure the system",
+                    "required": true,
+                    "sequence": 77
+                },
+                {
+                    "id": "post-build-validation",
+                    "name": "Post-build validation",
+                    "marker": "[image-builder:stage:post-build-validation]",
+                    "description": "Post-build validation",
+                    "required": true,
+                    "sequence": 78
+                },
+                {
+                    "id": "download-the-actions-runner",
+                    "name": "Download the GitHub Actions runner",
+                    "marker": "[image-builder:stage:download-the-actions-runner]",
+                    "description": "Download the GitHub Actions runner",
+                    "required": true,
+                    "sequence": 79
+                },
+                {
+                    "id": "install-ssh-public-key",
+                    "name": "Install SSH public key",
+                    "marker": "[image-builder:stage:install-ssh-public-key]",
+                    "description": "Install SSH public key",
+                    "required": true,
+                    "sequence": 80
+                }
+            ]
         },
         {
-          "id": "configure-the-apt-mock",
-          "name": "Configure the apt mock",
-          "marker": "[image-builder:stage:configure-the-apt-mock]",
-          "description": "Configure the apt mock",
-          "required": true,
-          "sequence": 5
-        },
-        {
-          "id": "add-microsoft-repos-and-configure-apt-sources",
-          "name": "Add Microsoft repos and configure apt sources",
-          "marker": "[image-builder:stage:add-microsoft-repos-and-configure-apt-sources]",
-          "description": "Add Microsoft repos and configure apt sources",
-          "required": true,
-          "sequence": 6
-        },
-        {
-          "id": "configure-system-limits",
-          "name": "Configure system limits",
-          "marker": "[image-builder:stage:configure-system-limits]",
-          "description": "Configure system limits",
-          "required": true,
-          "sequence": 7
-        },
-        {
-          "id": "upload-installer-scripts-post-gen-assets-tests-and-toolset",
-          "name": "Upload installer scripts, post-gen assets, tests and toolset",
-          "marker": "[image-builder:stage:upload-installer-scripts-post-gen-assets-tests-and-toolset]",
-          "description": "Upload installer scripts, post-gen assets, tests and toolset",
-          "required": true,
-          "sequence": 8
-        },
-        {
-          "id": "rename-post-gen-to-post-generation",
-          "name": "Rename post-gen to post-generation",
-          "marker": "[image-builder:stage:rename-post-gen-to-post-generation]",
-          "description": "Rename post-gen to post-generation",
-          "required": true,
-          "sequence": 9
-        },
-        {
-          "id": "write-the-image-data-file",
-          "name": "Write the image data file",
-          "marker": "[image-builder:stage:write-the-image-data-file]",
-          "description": "Write the image data file",
-          "required": true,
-          "sequence": 10
-        },
-        {
-          "id": "stub-waagent-conf-for-the-upstream-environment-script",
-          "name": "Stub waagent.conf for the upstream environment script",
-          "marker": "[image-builder:stage:stub-waagent-conf-for-the-upstream-environment-script]",
-          "description": "Stub waagent.conf for the upstream environment script",
-          "required": true,
-          "sequence": 11
-        },
-        {
-          "id": "configure-the-image-environment",
-          "name": "Configure the image environment",
-          "marker": "[image-builder:stage:configure-the-image-environment]",
-          "description": "Configure the image environment",
-          "required": true,
-          "sequence": 12
+            "id": "cleanup",
+            "label": "Cleanup",
+            "display_order": 5,
+            "stages": [
+                {
+                    "id": "cleanup-for-template-creation",
+                    "name": "Cleanup prior to Proxmox template creation",
+                    "marker": "[image-builder:stage:cleanup-for-template-creation]",
+                    "description": "Cleanup prior to Proxmox template creation",
+                    "required": true,
+                    "sequence": 81
+                }
+            ]
         }
-      ]
-    },
-    {
-      "id": "install",
-      "label": "Install",
-      "display_order": 2,
-      "stages": [
-        {
-          "id": "install-vital-apt-packages",
-          "name": "Install vital apt packages",
-          "marker": "[image-builder:stage:install-vital-apt-packages]",
-          "description": "Install vital apt packages",
-          "required": true,
-          "sequence": 13
-        },
-        {
-          "id": "install-powershell",
-          "name": "Install PowerShell",
-          "marker": "[image-builder:stage:install-powershell]",
-          "description": "Install PowerShell",
-          "required": true,
-          "sequence": 14
-        },
-        {
-          "id": "install-powershell-and-azure-modules",
-          "name": "Install PowerShell and Azure modules",
-          "marker": "[image-builder:stage:install-powershell-and-azure-modules]",
-          "description": "Install PowerShell and Azure modules",
-          "required": true,
-          "sequence": 15
-        },
-        {
-          "id": "install-the-main-runner-toolset",
-          "name": "Install the main runner toolset",
-          "marker": "[image-builder:stage:install-the-main-runner-toolset]",
-          "description": "Install the main runner toolset",
-          "required": true,
-          "sequence": 16
-        },
-        {
-          "id": "install-docker",
-          "name": "Install Docker",
-          "marker": "[image-builder:stage:install-docker]",
-          "description": "Install Docker",
-          "required": true,
-          "sequence": 17
-        },
-        {
-          "id": "install-and-configure-the-hosted-toolcache",
-          "name": "Install and configure the hosted toolcache",
-          "marker": "[image-builder:stage:install-and-configure-the-hosted-toolcache]",
-          "description": "Install and configure the hosted toolcache",
-          "required": true,
-          "sequence": 18
-        },
-        {
-          "id": "install-pipx-packages",
-          "name": "Install pipx packages",
-          "marker": "[image-builder:stage:install-pipx-packages]",
-          "description": "Install pipx packages",
-          "required": true,
-          "sequence": 19
-        },
-        {
-          "id": "install-homebrew",
-          "name": "Install Homebrew",
-          "marker": "[image-builder:stage:install-homebrew]",
-          "description": "Install Homebrew",
-          "required": true,
-          "sequence": 20
-        },
-        {
-          "id": "configure-snap",
-          "name": "Configure snap",
-          "marker": "[image-builder:stage:configure-snap]",
-          "description": "Configure snap",
-          "required": true,
-          "sequence": 21
-        },
-        {
-          "id": "record-the-installed-dpkg-package-list",
-          "name": "Record the installed dpkg package list",
-          "marker": "[image-builder:stage:record-the-installed-dpkg-package-list]",
-          "description": "Record the installed dpkg package list",
-          "required": true,
-          "sequence": 22
-        },
-        {
-          "id": "reboot-the-vm",
-          "name": "Reboot the VM",
-          "marker": "[image-builder:stage:reboot-the-vm]",
-          "description": "Reboot the VM",
-          "required": true,
-          "sequence": 23
-        },
-        {
-          "id": "cleanup-after-the-reboot",
-          "name": "Cleanup after the reboot",
-          "marker": "[image-builder:stage:cleanup-after-the-reboot]",
-          "description": "Cleanup after the reboot",
-          "required": true,
-          "sequence": 24
-        },
-        {
-          "id": "configure-the-system",
-          "name": "Configure the system",
-          "marker": "[image-builder:stage:configure-the-system]",
-          "description": "Configure the system",
-          "required": true,
-          "sequence": 25
-        },
-        {
-          "id": "post-build-validation",
-          "name": "Post-build validation",
-          "marker": "[image-builder:stage:post-build-validation]",
-          "description": "Post-build validation",
-          "required": true,
-          "sequence": 26
-        },
-        {
-          "id": "download-the-github-actions-runner-binary",
-          "name": "Download the GitHub Actions runner binary",
-          "marker": "[image-builder:stage:download-the-github-actions-runner-binary]",
-          "description": "Download the GitHub Actions runner binary",
-          "required": true,
-          "sequence": 27
-        },
-        {
-          "id": "install-ssh-public-key",
-          "name": "Install SSH public key",
-          "marker": "[image-builder:stage:install-ssh-public-key]",
-          "description": "Install SSH public key",
-          "required": true,
-          "sequence": 28
-        }
-      ]
-    },
-    {
-      "id": "cleanup",
-      "label": "Cleanup",
-      "display_order": 3,
-      "stages": [
-        {
-          "id": "cleanup-prior-to-proxmox-template-creation",
-          "name": "Cleanup prior to Proxmox template creation",
-          "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
-          "description": "Cleanup prior to Proxmox template creation",
-          "required": true,
-          "sequence": 29
-        }
-      ]
-    }
-  ]
+    ]
 }
