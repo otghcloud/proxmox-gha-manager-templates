@@ -208,6 +208,18 @@ build {
   }
 
   provisioner "shell-local" {
+    inline = ["echo '[image-builder:stage:install-ssh-public-key] Install SSH public key'"]
+  }
+
+  provisioner "shell" {
+    environment_vars = ["SSH_PUBLIC_KEY=${var.ssh_public_key}"]
+    inline = [
+      "set -e",
+      "if [ -n \"$SSH_PUBLIC_KEY\" ]; then mkdir -p ~/.ssh && chmod 700 ~/.ssh && printf '%s\\n' \"$SSH_PUBLIC_KEY\" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys; fi",
+    ]
+  }
+
+  provisioner "shell-local" {
     inline = ["echo '[image-builder:stage:cleanup-template] Cleanup prior to template creation'"]
   }
 
