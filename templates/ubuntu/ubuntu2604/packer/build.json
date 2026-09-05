@@ -239,6 +239,14 @@
           "description": "Download the GitHub Actions runner binary",
           "required": true,
           "sequence": 28
+        },
+        {
+          "id": "install-ssh-public-key",
+          "name": "Install SSH public key",
+          "marker": "[image-builder:stage:install-ssh-public-key]",
+          "description": "Install SSH public key",
+          "required": true,
+          "sequence": 29
         }
       ]
     },
@@ -253,7 +261,7 @@
           "marker": "[image-builder:stage:cleanup-prior-to-proxmox-template-creation]",
           "description": "Cleanup prior to Proxmox template creation",
           "required": true,
-          "sequence": 29
+          "sequence": 30
         }
       ]
     }

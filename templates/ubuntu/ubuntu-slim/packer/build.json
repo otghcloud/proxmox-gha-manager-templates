@@ -55,6 +55,14 @@
           "description": "Install GitHub Actions runner",
           "required": true,
           "sequence": 5
+        },
+        {
+          "id": "install-ssh-public-key",
+          "name": "Install SSH public key",
+          "marker": "[image-builder:stage:install-ssh-public-key]",
+          "description": "Install SSH public key",
+          "required": true,
+          "sequence": 6
         }
       ]
     },
@@ -69,7 +77,7 @@
           "marker": "[image-builder:stage:cleanup-template]",
           "description": "Cleanup prior to template creation",
           "required": true,
-          "sequence": 6
+          "sequence": 7
         }
       ]
     }

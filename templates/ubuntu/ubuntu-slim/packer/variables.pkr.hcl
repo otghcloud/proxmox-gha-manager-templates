@@ -111,6 +111,12 @@ variable "ssh_password" {
   sensitive = true
 }
 
+variable "ssh_public_key" {
+  type        = string
+  default     = ""
+  description = "Optional SSH public key to add to the runner user's authorized_keys"
+}
+
 variable "ssh_username" {
   type    = string
   default = "runner"
