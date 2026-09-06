@@ -4,8 +4,8 @@
   "name": "Ubuntu 24.04",
   "description": "Proxmox compatible Ubuntu 24.04 GitHub Actions runner image",
   "metadata": {
-    "build_timestamp": "2026-09-06T00:23:00Z",
-    "version": "2026.09.06.1",
+    "build_timestamp": "2026-09-06T12:58:54Z",
+    "version": "2026.09.06.2",
     "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
   },
   "platform": {
@@ -52,11 +52,11 @@
         "cleanup"
       ],
       "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
+        "cpu_cores": 4,
+        "memory_mb": 4096,
         "disk_gb": 75,
         "temp_disk_gb": null,
-        "estimated_minutes": 60
+        "estimated_minutes": 30
       }
     },
     "packer": {
@@ -89,11 +89,11 @@
         "cleanup"
       ],
       "build_requirements": {
-        "cpu_cores": 6,
-        "memory_mb": 8192,
+        "cpu_cores": 4,
+        "memory_mb": 4096,
         "disk_gb": 75,
         "temp_disk_gb": null,
-        "estimated_minutes": 60
+        "estimated_minutes": 45
       }
     }
   },
