@@ -20,7 +20,8 @@ permissions:
 jobs:
   bump:
     name: release:bump
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     outputs:
       skip: ${{ steps.skip_check.outputs.skip }}
       version: ${{ steps.next_version.outputs.version }}
@@ -122,7 +123,8 @@ jobs:
     needs:
       - bump
     if: needs.bump.outputs.skip == 'false'
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     permissions:
       contents: write
     outputs:

@@ -16,7 +16,8 @@ permissions:
 jobs:
   validate:
     name: validate:pr-title
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
       - name: Check title format
