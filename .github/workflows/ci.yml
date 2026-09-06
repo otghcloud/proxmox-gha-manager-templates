@@ -14,7 +14,8 @@ permissions:
 jobs:
   validate-metadata:
     name: ci:metadata
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -66,7 +67,8 @@ jobs:
 
   validate-stage-scripts:
     name: ci:stage-scripts
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout
         uses: actions/checkout@v7

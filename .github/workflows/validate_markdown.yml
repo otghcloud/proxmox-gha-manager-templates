@@ -12,7 +12,8 @@ jobs:
     name: validate:markdown-lint
     permissions:
       contents: write
-    runs-on: ['self-hosted', 'ubuntu-latest']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -50,7 +51,8 @@ jobs:
     name: validate:markdown-links
     permissions:
       contents: read
-    runs-on: ['self-hosted', 'ubuntu-latest']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -75,7 +77,8 @@ jobs:
 
   all-checks-passed:
     name: validate:all-checks-passed
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     permissions: {}
     needs:
       - markdown-lint

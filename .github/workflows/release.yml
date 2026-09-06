@@ -27,7 +27,8 @@ jobs:
 
   all-checks-passed:
     name: release:all-checks-passed
-    runs-on: ['self-hosted', 'ubuntu-slim']
+    # TEMPORARY: Reinstate the self-hosted label once runner spawning is fixed.
+    runs-on: ubuntu-slim
     permissions: {}
     needs:
       - version
