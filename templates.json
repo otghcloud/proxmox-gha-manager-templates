@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-09-06T00:23:01Z",
-  "image_builder_version": "2026.09.06.1",
+  "generated_at": "2026-09-06T12:58:55Z",
+  "image_builder_version": "2026.09.06.2",
   "runner_images_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04",
   "templates": [
     {
@@ -10,8 +10,8 @@
       "name": "Ubuntu 24.04",
       "description": "Proxmox compatible Ubuntu 24.04 GitHub Actions runner image",
       "metadata": {
-        "build_timestamp": "2026-09-06T00:23:00Z",
-        "version": "2026.09.06.1",
+        "build_timestamp": "2026-09-06T12:58:54Z",
+        "version": "2026.09.06.2",
         "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
       "platform": {
@@ -58,11 +58,11 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 6,
-            "memory_mb": 8192,
+            "cpu_cores": 4,
+            "memory_mb": 4096,
             "disk_gb": 75,
             "temp_disk_gb": null,
-            "estimated_minutes": 60
+            "estimated_minutes": 30
           }
         },
         "packer": {
@@ -95,11 +95,11 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 6,
-            "memory_mb": 8192,
+            "cpu_cores": 4,
+            "memory_mb": 4096,
             "disk_gb": 75,
             "temp_disk_gb": null,
-            "estimated_minutes": 60
+            "estimated_minutes": 45
           }
         }
       },
@@ -112,8 +112,8 @@
       "name": "Ubuntu 26.04",
       "description": "Proxmox compatible Ubuntu 26.04 GitHub Actions runner image",
       "metadata": {
-        "build_timestamp": "2026-09-06T00:23:00Z",
-        "version": "2026.09.06.1",
+        "build_timestamp": "2026-09-06T12:58:54Z",
+        "version": "2026.09.06.2",
         "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
       "platform": {
@@ -159,11 +159,11 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 6,
-            "memory_mb": 8192,
-            "disk_gb": 100,
+            "cpu_cores": 4,
+            "memory_mb": 4096,
+            "disk_gb": 75,
             "temp_disk_gb": null,
-            "estimated_minutes": 60
+            "estimated_minutes": 30
           }
         },
         "packer": {
@@ -196,11 +196,11 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 6,
-            "memory_mb": 8192,
-            "disk_gb": 100,
+            "cpu_cores": 4,
+            "memory_mb": 4096,
+            "disk_gb": 75,
             "temp_disk_gb": null,
-            "estimated_minutes": 60
+            "estimated_minutes": 45
           }
         }
       },
@@ -213,8 +213,8 @@
       "name": "Ubuntu Slim",
       "description": "Proxmox compatible \"ubuntu-slim\" GitHub Actions runner image",
       "metadata": {
-        "build_timestamp": "2026-09-06T00:23:00Z",
-        "version": "2026.09.06.1",
+        "build_timestamp": "2026-09-06T12:58:54Z",
+        "version": "2026.09.06.2",
         "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
       "platform": {
@@ -260,11 +260,11 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 4,
-            "memory_mb": 8192,
-            "disk_gb": 40,
+            "cpu_cores": 2,
+            "memory_mb": 2048,
+            "disk_gb": 50,
             "temp_disk_gb": null,
-            "estimated_minutes": 25
+            "estimated_minutes": 10
           }
         },
         "packer": {
@@ -297,9 +297,9 @@
             "cleanup"
           ],
           "build_requirements": {
-            "cpu_cores": 4,
-            "memory_mb": 8192,
-            "disk_gb": 40,
+            "cpu_cores": 2,
+            "memory_mb": 2048,
+            "disk_gb": 50,
             "temp_disk_gb": null,
             "estimated_minutes": 25
           }
@@ -314,8 +314,8 @@
       "name": "Windows Server 2022",
       "description": "Proxmox compatible Windows Server 2022 GitHub Actions runner image",
       "metadata": {
-        "build_timestamp": "2026-09-06T00:23:00Z",
-        "version": "2026.09.06.1",
+        "build_timestamp": "2026-09-06T12:58:54Z",
+        "version": "2026.09.06.2",
         "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
       "platform": {
@@ -383,8 +383,8 @@
       "name": "Windows Server 2025",
       "description": "Proxmox compatible Windows Server 2025 GitHub Actions runner image",
       "metadata": {
-        "build_timestamp": "2026-09-06T00:23:00Z",
-        "version": "2026.09.06.1",
+        "build_timestamp": "2026-09-06T12:58:54Z",
+        "version": "2026.09.06.2",
         "upstream_commit": "be22fc2981aa0e7b5c194a6cee295ae749727c04"
       },
       "platform": {
